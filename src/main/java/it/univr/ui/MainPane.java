@@ -23,4 +23,8 @@ public class MainPane extends BorderPane {
             throw new RuntimeException(exception);
         }
     }
+
+    private void initMenuBar() {
+
+    }
 }
