@@ -33,6 +33,7 @@ public class App extends Application {
 
     private Stage stage;
     private Scene scene;
+    private boolean isDarkMode = true;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -42,7 +43,8 @@ public class App extends Application {
         Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
         Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
 
-        this.scene = new Scene(new MainPane());
+        MainPane mainPane = new MainPane(this);
+        this.scene = new Scene(mainPane);
         stage.setScene(scene);
         stage.setTitle("Word Automata");
         stage.setMinHeight(Constants.HEIGHT);
@@ -50,6 +52,17 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
 
+        mainPane.initMainPane();
+
+    }
+
+    public void changeTheme() {
+        if (isDarkMode) {
+            Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
+        } else {
+            Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
+        }
+        isDarkMode = !isDarkMode;
     }
 
     public void runApp(String[] args) {
