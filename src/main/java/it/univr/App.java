@@ -1,28 +1,11 @@
 package it.univr;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ConstrainedColumnResizeBase;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
 import java.io.IOException;
-
-import com.brunomnsilva.smartgraph.containers.SmartGraphDemoContainer;
-import com.brunomnsilva.smartgraph.example.City;
-import com.brunomnsilva.smartgraph.example.Distance;
-import com.brunomnsilva.smartgraph.graph.Graph;
-import com.brunomnsilva.smartgraph.graph.GraphEdgeList;
-import com.brunomnsilva.smartgraph.graph.Vertex;
-import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
-import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
-import com.brunomnsilva.smartgraph.graphview.SmartPlacementStrategy;
-
-import atlantafx.base.theme.PrimerDark;
-import atlantafx.base.theme.PrimerLight;
+import atlantafx.base.theme.NordDark;
+import atlantafx.base.theme.NordLight;
 import it.univr.ui.MainPane;
 import it.univr.utils.Constants;
 
@@ -40,8 +23,7 @@ public class App extends Application {
         this.stage = stage;
 
         // ATLANTA
-        Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
-        Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
+        Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
 
         MainPane mainPane = new MainPane(this);
         this.scene = new Scene(mainPane);
@@ -58,9 +40,9 @@ public class App extends Application {
 
     public void changeTheme() {
         if (isDarkMode) {
-            Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
+            Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
         } else {
-            Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
+            Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
         }
         isDarkMode = !isDarkMode;
     }
