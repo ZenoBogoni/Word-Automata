@@ -4,6 +4,13 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+
+import com.brunomnsilva.smartgraph.containers.ContentZoomScrollPane;
+import com.brunomnsilva.smartgraph.graph.Graph;
+import com.brunomnsilva.smartgraph.graph.GraphEdgeList;
+import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+
 import atlantafx.base.theme.NordDark;
 import atlantafx.base.theme.NordLight;
 import it.univr.ui.MainPane;
@@ -17,6 +24,7 @@ public class App extends Application {
     private Stage stage;
     private Scene scene;
     private boolean isDarkMode = true;
+    private MainPane mainPane;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -25,14 +33,15 @@ public class App extends Application {
         // ATLANTA
         Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
 
-        MainPane mainPane = new MainPane(this);
-        this.scene = new Scene(mainPane);
-        stage.setScene(scene);
-        stage.setTitle("Word Automata");
-        stage.setMinHeight(Constants.HEIGHT);
-        stage.setMinWidth(Constants.WIDTH);
-        stage.setScene(scene);
-        stage.show();
+        mainPane = new MainPane(this);
+
+        this.scene = new Scene(mainPane, Constants.WIDTH, Constants.HEIGHT);
+        this.stage.setScene(scene);
+        this.stage.setTitle("Word Automata");
+        this.stage.setMinHeight(Constants.HEIGHT);
+        this.stage.setMinWidth(Constants.WIDTH);
+        this.stage.setScene(scene);
+        this.stage.show();
 
         mainPane.initMainPane();
 

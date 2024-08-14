@@ -12,25 +12,32 @@ import com.brunomnsilva.smartgraph.graphview.SmartPlacementStrategy;
 import it.univr.App;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 public class MainPane extends BorderPane {
     private App app;
-    private Graph<String, String> g;
-    private SmartPlacementStrategy initialPlacement;
-    private SmartGraphPanel<String, String> graphView;
+    private Graph<String, String> graph = new GraphEdgeList<>();
+    private SmartPlacementStrategy initialPlacement = new SmartCircularSortedPlacementStrategy();
+    private SmartGraphPanel<String, String> graphView = new SmartGraphPanel<>(graph, initialPlacement);
+    private ContentZoomScrollPane graphPane = new ContentZoomScrollPane(graphView);
+    private boolean isBottomClosed = false;
 
-    @FXML
-    private ContentZoomScrollPane graphPane;
     @FXML
     private MenuBar menuBar;
     @FXML
+    private HBox bottomPane, bottomBar;
+    @FXML
+    private Button closePaneButton;
+    @FXML
     private Menu file = new Menu("File"), view = new Menu("View"), help = new Menu("Help");
     @FXML
-    private CheckMenuItem theme = new CheckMenuItem("Dark Mode");
+    private CheckMenuItem theme = new CheckMenuItem("Dark Mode"), autoLayout = new CheckMenuItem("Automatic Layout");
 
     public MainPane(App app) {
         this.app = app;
@@ -43,21 +50,23 @@ public class MainPane extends BorderPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-
+        initGraph();
     }
 
     public void initMainPane() {
         initMenuBar();
-        initGraph();
+        initBottomBar();
+        graphView.init();
+        graphView.setStyle("-fx-background-color: transparent");
+        graphView.update();
     }
 
     private void initMenuBar() {
         // MenuBar
-        menuBar.getMenus().add(file);
-        menuBar.getMenus().add(view);
-        menuBar.getMenus().add(help);
+        menuBar.getMenus().addAll(file, view, help);
+
         // View
-        view.getItems().add(theme);
+        view.getItems().addAll(theme, autoLayout);
 
         // DarkMode
         theme.setSelected(true);
@@ -65,48 +74,57 @@ public class MainPane extends BorderPane {
             app.changeTheme();
         });
 
+        // Auto Layout
+        autoLayout.setOnAction(e -> {
+            graphView.setAutomaticLayout(autoLayout.isSelected());
+            graphView.update();
+        });
+
     }
 
     private void initGraph() {
-        g = new GraphEdgeList<>();
-        initialPlacement = new SmartCircularSortedPlacementStrategy();
-        graphView = new SmartGraphPanel<>(g, initialPlacement);
-        graphPane = new ContentZoomScrollPane(graphView);
+        graph.insertVertex("A");
+        graph.insertVertex("B");
+        graph.insertVertex("C");
+        graph.insertVertex("D");
+        graph.insertVertex("E");
+        graph.insertVertex("F");
+        graph.insertVertex("G");
 
-        g.insertVertex("A");
-        g.insertVertex("B");
-        g.insertVertex("C");
-        g.insertVertex("D");
-        g.insertVertex("E");
-        g.insertVertex("F");
-        g.insertVertex("G");
+        graph.insertEdge("A", "B", "1");
+        graph.insertEdge("A", "C", "2");
+        graph.insertEdge("A", "D", "3");
+        graph.insertEdge("A", "E", "4");
+        graph.insertEdge("A", "F", "5");
+        graph.insertEdge("A", "G", "6");
 
-        g.insertEdge("A", "B", "1");
-        g.insertEdge("A", "C", "2");
-        g.insertEdge("A", "D", "3");
-        g.insertEdge("A", "E", "4");
-        g.insertEdge("A", "F", "5");
-        g.insertEdge("A", "G", "6");
+        graph.insertVertex("H");
+        graph.insertVertex("I");
+        graph.insertVertex("J");
+        graph.insertVertex("K");
+        graph.insertVertex("L");
+        graph.insertVertex("M");
+        graph.insertVertex("N");
 
-        g.insertVertex("H");
-        g.insertVertex("I");
-        g.insertVertex("J");
-        g.insertVertex("K");
-        g.insertVertex("L");
-        g.insertVertex("M");
-        g.insertVertex("N");
+        graph.insertEdge("H", "I", "7");
+        graph.insertEdge("H", "J", "8");
+        graph.insertEdge("H", "K", "9");
+        graph.insertEdge("H", "L", "10");
+        graph.insertEdge("H", "M", "11");
+        graph.insertEdge("H", "N", "12");
 
-        g.insertEdge("H", "I", "7");
-        g.insertEdge("H", "J", "8");
-        g.insertEdge("H", "K", "9");
-        g.insertEdge("H", "L", "10");
-        g.insertEdge("H", "M", "11");
-        g.insertEdge("H", "N", "12");
-
-        g.insertEdge("A", "H", "0");
+        graph.insertEdge("A", "H", "0");
 
         this.setCenter(graphPane);
-        graphPane.setContent(graphView);
-        graphView.init();
     }
+
+    private void initBottomBar() {
+        closePaneButton.setOnAction(e -> {
+            if (isBottomClosed) {
+                bottomBar.setPrefHeight(30);
+                bottomPane.setPrefHeight(0);
+            }
+        });
+    }
+
 }
