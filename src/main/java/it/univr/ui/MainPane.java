@@ -19,6 +19,8 @@ import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class MainPane extends BorderPane {
     private App app;
@@ -30,6 +32,10 @@ public class MainPane extends BorderPane {
 
     @FXML
     private MenuBar menuBar;
+    @FXML
+    private VBox sideMenuHidedable, sideMenuStatic;
+    @FXML
+    private HBox sideMenu;
     @FXML
     private Menu file = new Menu("File"), view = new Menu("View"), help = new Menu("Help");
     @FXML
@@ -87,6 +93,8 @@ public class MainPane extends BorderPane {
         addVertex.setOnAction(e -> {
 
         });
+        sideMenu.getChildren().remove(sideMenuHidedable);
+        sideMenu.resize(100, 100);
     }
 
 }
