@@ -3,6 +3,8 @@ package it.univr.ui;
 import java.io.IOException;
 
 import com.brunomnsilva.smartgraph.containers.ContentZoomScrollPane;
+import com.brunomnsilva.smartgraph.graph.Digraph;
+import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.GraphEdgeList;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
@@ -17,23 +19,17 @@ import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 
 public class MainPane extends BorderPane {
     private App app;
-    private Graph<String, String> graph = new GraphEdgeList<>();
+    private Digraph<String, String> graph = new DigraphEdgeList<>();
     private SmartPlacementStrategy initialPlacement = new SmartCircularSortedPlacementStrategy();
     private SmartGraphPanel<String, String> graphView = new SmartGraphPanel<>(graph, initialPlacement);
     private ContentZoomScrollPane graphPane = new ContentZoomScrollPane(graphView);
-    private boolean isBottomClosed = false;
+    private Button addVertex = new Button("Add Vertex");
 
     @FXML
     private MenuBar menuBar;
-    @FXML
-    private HBox bottomPane, bottomBar;
-    @FXML
-    private Button closePaneButton;
     @FXML
     private Menu file = new Menu("File"), view = new Menu("View"), help = new Menu("Help");
     @FXML
@@ -55,7 +51,7 @@ public class MainPane extends BorderPane {
 
     public void initMainPane() {
         initMenuBar();
-        initBottomBar();
+        initSideMenu();
         graphView.init();
         graphView.setStyle("-fx-background-color: transparent");
         graphView.update();
@@ -83,47 +79,13 @@ public class MainPane extends BorderPane {
     }
 
     private void initGraph() {
-        graph.insertVertex("A");
-        graph.insertVertex("B");
-        graph.insertVertex("C");
-        graph.insertVertex("D");
-        graph.insertVertex("E");
-        graph.insertVertex("F");
-        graph.insertVertex("G");
-
-        graph.insertEdge("A", "B", "1");
-        graph.insertEdge("A", "C", "2");
-        graph.insertEdge("A", "D", "3");
-        graph.insertEdge("A", "E", "4");
-        graph.insertEdge("A", "F", "5");
-        graph.insertEdge("A", "G", "6");
-
-        graph.insertVertex("H");
-        graph.insertVertex("I");
-        graph.insertVertex("J");
-        graph.insertVertex("K");
-        graph.insertVertex("L");
-        graph.insertVertex("M");
-        graph.insertVertex("N");
-
-        graph.insertEdge("H", "I", "7");
-        graph.insertEdge("H", "J", "8");
-        graph.insertEdge("H", "K", "9");
-        graph.insertEdge("H", "L", "10");
-        graph.insertEdge("H", "M", "11");
-        graph.insertEdge("H", "N", "12");
-
-        graph.insertEdge("A", "H", "0");
-
         this.setCenter(graphPane);
+        this.setBottom(addVertex);
     }
 
-    private void initBottomBar() {
-        closePaneButton.setOnAction(e -> {
-            if (isBottomClosed) {
-                bottomBar.setPrefHeight(30);
-                bottomPane.setPrefHeight(0);
-            }
+    private void initSideMenu() {
+        addVertex.setOnAction(e -> {
+
         });
     }
 
