@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -10,11 +11,13 @@
       <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER" />
    </top>
    <left>
-      <HBox fx:id="sideMenu" prefHeight="400.0" prefWidth="192.0" style="-fx-background-color: green;" BorderPane.alignment="CENTER">
+      <HBox fx:id="sideMenu" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: green;" BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="sideMenuStatic" prefHeight="400.0" prefWidth="108.0" style="-fx-background-color: black;" HBox.hgrow="ALWAYS" />
-            <VBox fx:id="sideMenuHidedable" prefHeight="400.0" prefWidth="219.0" style="-fx-background-color: gray;" HBox.hgrow="ALWAYS" />
+            <VBox fx:id="sideMenuStatic" fillWidth="false" prefHeight="400.0" prefWidth="50.0" style="-fx-background-color: black;" HBox.hgrow="NEVER" />
+            <VBox fx:id="sideMenuHidedable" prefHeight="400.0" prefWidth="95.0" style="-fx-background-color: gray;" HBox.hgrow="ALWAYS">
+               </VBox>
          </children>
+         
       </HBox>
    </left>
 </fx:root>

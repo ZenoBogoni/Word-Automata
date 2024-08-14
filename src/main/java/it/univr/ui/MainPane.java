@@ -5,24 +5,30 @@ import java.io.IOException;
 import com.brunomnsilva.smartgraph.containers.ContentZoomScrollPane;
 import com.brunomnsilva.smartgraph.graph.Digraph;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
+import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 import com.brunomnsilva.smartgraph.graphview.SmartPlacementStrategy;
 
 import it.univr.App;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 public class MainPane extends BorderPane {
 
     private static int count = 0;
+    private boolean isSideHidden = false;
 
     private App app;
     private Digraph<String, String> graph = new DigraphEdgeList<>();
@@ -30,6 +36,7 @@ public class MainPane extends BorderPane {
     private SmartGraphPanel<String, String> graphView = new SmartGraphPanel<>(graph, initialPlacement);
     private ContentZoomScrollPane graphPane = new ContentZoomScrollPane(graphView);
     private Button addVertex = new Button("Add Vertex");
+    public static SmartGraphVertexNode selectedVertexNode;
 
     @FXML
     private MenuBar menuBar;
@@ -87,17 +94,34 @@ public class MainPane extends BorderPane {
 
     private void initGraph() {
         this.setCenter(graphPane);
-        this.setBottom(addVertex);
+        graphPane.setPadding(new Insets(10));
+        graphView.setVertexDoubleClickAction(graphVertex -> {
+            System.out.println("Vertex contains element: " + graphVertex.getUnderlyingVertex().element());
+        });
     }
 
     private void initSideMenu() {
+
+        sideMenuHidedable.getChildren().addAll(addVertex);
+
         addVertex.setOnAction(e -> {
             graph.insertVertex(count + "");
+
             graphView.update();
             count++;
         });
-        sideMenu.getChildren().remove(sideMenuHidedable);
-        sideMenu.resize(100, 100);
+
+        sideMenuStatic.setOnMouseClicked(e -> {
+            if (isSideHidden) {
+                sideMenu.getChildren().add(sideMenuHidedable);
+                sideMenu.setPrefWidth(300);
+            } else {
+                sideMenu.getChildren().remove(sideMenuHidedable);
+                sideMenu.setPrefWidth(sideMenuStatic.getWidth());
+            }
+            isSideHidden = !isSideHidden;
+        });
+
     }
 
 }
