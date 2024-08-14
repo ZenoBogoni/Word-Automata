@@ -5,8 +5,6 @@ import java.io.IOException;
 import com.brunomnsilva.smartgraph.containers.ContentZoomScrollPane;
 import com.brunomnsilva.smartgraph.graph.Digraph;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
-import com.brunomnsilva.smartgraph.graph.Graph;
-import com.brunomnsilva.smartgraph.graph.GraphEdgeList;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartPlacementStrategy;
@@ -21,6 +19,9 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 
 public class MainPane extends BorderPane {
+
+    private static int count = 0;
+
     private App app;
     private Digraph<String, String> graph = new DigraphEdgeList<>();
     private SmartPlacementStrategy initialPlacement = new SmartCircularSortedPlacementStrategy();
@@ -85,7 +86,9 @@ public class MainPane extends BorderPane {
 
     private void initSideMenu() {
         addVertex.setOnAction(e -> {
-
+            graph.insertVertex(count + "");
+            graphView.update();
+            count++;
         });
     }
 
