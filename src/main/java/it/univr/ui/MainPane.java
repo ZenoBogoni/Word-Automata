@@ -12,6 +12,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 import com.brunomnsilva.smartgraph.graphview.SmartPlacementStrategy;
 
 import it.univr.App;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -19,15 +20,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 public class MainPane extends BorderPane {
 
     private static int count = 0;
+    private boolean isLinkingPhase = false;
     private boolean isSideHidden = false;
 
     private App app;
@@ -36,6 +40,9 @@ public class MainPane extends BorderPane {
     private SmartGraphPanel<String, String> graphView = new SmartGraphPanel<>(graph, initialPlacement);
     private ContentZoomScrollPane graphPane = new ContentZoomScrollPane(graphView);
     private Button addVertex = new Button("Add Vertex");
+    private Button linkVertecies = new Button("Link Vertecies");
+    private TextField TextField = new TextField();
+    private String nodeName;
     public static SmartGraphVertexNode selectedVertexNode;
 
     @FXML
@@ -101,12 +108,24 @@ public class MainPane extends BorderPane {
     }
 
     private void initSideMenu() {
-
         sideMenuHidedable.getChildren().addAll(addVertex);
+        sideMenuHidedable.getChildren().addAll(linkVertecies);
+        sideMenuHidedable.getChildren().addAll(TextField);
+
+        linkVertecies.setOnAction(e -> {
+            isLinkingPhase = !isLinkingPhase;
+        });
+
+        if (isLinkingPhase) {
+            graphView.setOnMouseClicked(e -> {
+
+                // graph.insertEdge(, , "ciao");
+            });
+        }
 
         addVertex.setOnAction(e -> {
-            graph.insertVertex(count + "");
-
+            nodeName = TextField.getText();
+            graph.insertVertex(nodeName);
             graphView.update();
             count++;
         });
