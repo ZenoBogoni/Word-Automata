@@ -31,6 +31,7 @@ import javafx.scene.text.Text;
 public class MainPane extends BorderPane {
 
     private static int count = 0;
+    private static int countSelected = 0;
     private boolean isLinkingPhase = false;
     private boolean isSideHidden = false;
 
@@ -42,8 +43,9 @@ public class MainPane extends BorderPane {
     private Button addVertex = new Button("Add Vertex");
     private Button linkVertecies = new Button("Link Vertecies");
     private TextField TextField = new TextField();
-    private String nodeName;
-    public static SmartGraphVertexNode selectedVertexNode;
+    private String nodeName, edgeName;
+    private Vertex node1, node2;
+    public static Vertex selectedVertexNode;
 
     @FXML
     private MenuBar menuBar;
@@ -114,14 +116,25 @@ public class MainPane extends BorderPane {
 
         linkVertecies.setOnAction(e -> {
             isLinkingPhase = !isLinkingPhase;
+
+            if (!isLinkingPhase) {
+                edgeName = TextField.getText();
+                graph.insertEdge(node1, node2, edgeName);
+                graphView.update();
+            }
         });
 
-        if (isLinkingPhase) {
-            graphView.setOnMouseClicked(e -> {
-
-                // graph.insertEdge(, , "ciao");
-            });
-        }
+        graphView.setOnMouseClicked(e -> {
+            if (isLinkingPhase) {
+                if (countSelected == 0) {
+                    node1 = selectedVertexNode;
+                    node2 = selectedVertexNode;
+                    countSelected++;
+                } else {
+                    node2 = selectedVertexNode;
+                }
+            }
+        });
 
         addVertex.setOnAction(e -> {
             nodeName = TextField.getText();
