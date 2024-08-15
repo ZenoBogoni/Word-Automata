@@ -493,7 +493,7 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
             isDragging = false;
 
             // ! AGGIUNTO IO -----------------
-            MainPane.selectedVertexNode = this;
+            MainPane.selectedVertexNode = underlyingVertex;
             // ! -----------------------------
             mouseEvent.consume();
         });
