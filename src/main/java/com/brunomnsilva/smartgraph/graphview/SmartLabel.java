@@ -26,6 +26,8 @@ package com.brunomnsilva.smartgraph.graphview;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 /**
@@ -37,15 +39,15 @@ import javafx.scene.text.Text;
  * @author brunomnsilva
  */
 public class SmartLabel extends Text implements SmartStylableNode {
-    
+
     private final SmartStyleProxy styleProxy;
 
     private final DoubleProperty layoutWidth;
     private final DoubleProperty layoutHeight;
 
-
     /**
      * Default constructor.
+     * 
      * @param text the text of the SmartLabel.
      */
     public SmartLabel(String text) {
@@ -54,29 +56,29 @@ public class SmartLabel extends Text implements SmartStylableNode {
 
     /**
      * Constructor that accepts an initial position.
-     * @param x initial x coordinate
-     * @param y initial y coordinate
+     * 
+     * @param x    initial x coordinate
+     * @param y    initial y coordinate
      * @param text the text of the SmartLabel.
      */
     public SmartLabel(double x, double y, String text) {
         super(x, y, text);
         styleProxy = new SmartStyleProxy(this);
 
-        this.layoutWidth = new SimpleDoubleProperty(  );
-        this.layoutHeight = new SimpleDoubleProperty(  );
+        this.layoutWidth = new SimpleDoubleProperty();
+        this.layoutHeight = new SimpleDoubleProperty();
 
         layoutBoundsProperty().addListener((observableValue, oldValue, newValue) -> {
-            if(newValue != null) {
-                if(Double.compare(layoutWidth.doubleValue(), newValue.getWidth()) != 0) {
+            if (newValue != null) {
+                if (Double.compare(layoutWidth.doubleValue(), newValue.getWidth()) != 0) {
                     layoutWidth.set(newValue.getWidth());
                 }
-                if(Double.compare(layoutHeight.doubleValue(), newValue.getHeight()) != 0) {
+                if (Double.compare(layoutHeight.doubleValue(), newValue.getHeight()) != 0) {
                     layoutHeight.set(newValue.getHeight());
                 }
             }
         });
     }
-
 
     /**
      * Returns the read-only property representing the layout width of this label.
@@ -97,11 +99,13 @@ public class SmartLabel extends Text implements SmartStylableNode {
     }
 
     /**
-     * Use instead of {@link #setText(String)} to allow for correct layout adjustments and label placement.
+     * Use instead of {@link #setText(String)} to allow for correct layout
+     * adjustments and label placement.
+     * 
      * @param text the text to display on the label
      */
     public void setText_(String text) {
-        if(getText().compareTo(text) != 0) {
+        if (getText().compareTo(text) != 0) {
             setText(text);
         }
     }

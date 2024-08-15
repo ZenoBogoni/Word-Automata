@@ -26,6 +26,7 @@ package com.brunomnsilva.smartgraph.graphview;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 
 import it.univr.ui.MainPane;
+import it.univr.utils.SceneReference;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -426,8 +427,8 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
         this.attachedLabel = label;
 
         label.xProperty().bind(centerXProperty().subtract(Bindings.divide(label.layoutWidthProperty(), 2.0)));
-        label.yProperty()
-                .bind(centerYProperty().add(Bindings.add(shapeProxy.radiusProperty(), label.layoutHeightProperty())));
+        label.yProperty().bind(centerYProperty().add(Bindings.add(shapeProxy.radiusProperty(), label.layoutHeightProperty())));
+
         // label.yProperty().bind(centerYProperty().add(Bindings.add(
         // shapeProxy.radiusProperty(), LABEL_Y_OFFSET)));
     }
@@ -493,7 +494,8 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
             isDragging = false;
 
             // ! AGGIUNTO IO -----------------
-            MainPane.selectedVertexNode = underlyingVertex;
+            MainPane mainPane = SceneReference.getMainPane();
+            mainPane.setSelectedVertexNode(this);
             // ! -----------------------------
             mouseEvent.consume();
         });

@@ -5,16 +5,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-import com.brunomnsilva.smartgraph.containers.ContentZoomScrollPane;
-import com.brunomnsilva.smartgraph.graph.Graph;
-import com.brunomnsilva.smartgraph.graph.GraphEdgeList;
-import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 
 import atlantafx.base.theme.NordDark;
 import atlantafx.base.theme.NordLight;
 import it.univr.ui.MainPane;
 import it.univr.utils.Constants;
+import it.univr.utils.SceneReference;
 
 /**
  * JavaFX App
@@ -25,6 +22,7 @@ public class App extends Application {
     private Scene scene;
     private boolean isDarkMode = true;
     private MainPane mainPane;
+    SmartGraphPanel graphView;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -34,6 +32,7 @@ public class App extends Application {
         Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
 
         mainPane = new MainPane(this);
+        SceneReference.setMainPane(mainPane);
 
         this.scene = new Scene(mainPane, Constants.WIDTH, Constants.HEIGHT);
         this.stage.setScene(scene);
@@ -48,11 +47,13 @@ public class App extends Application {
     }
 
     public void changeTheme() {
+        graphView = SceneReference.getGrapView();
         if (isDarkMode) {
             Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
         } else {
             Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
         }
+        graphView.changeGraphTheme();
         isDarkMode = !isDarkMode;
     }
 

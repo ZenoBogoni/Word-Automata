@@ -71,12 +71,13 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
     private SmartArrow attachedArrow = null;
 
     private double randomAngleFactor;
-    
+
     /* Styling proxy */
     private final SmartStyleProxy styleProxy;
 
     /**
-     * Constructs a SmartGraphEdgeCurve representing a curved edge between two SmartGraphVertexNodes.
+     * Constructs a SmartGraphEdgeCurve representing a curved edge between two
+     * SmartGraphVertexNodes.
      *
      * @param edge     the edge associated with this curve
      * @param inbound  the inbound SmartGraphVertexNode
@@ -87,14 +88,16 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
     }
 
     /**
-     * Constructs a SmartGraphEdgeCurve representing an edge curve between two SmartGraphVertexNodes.
+     * Constructs a SmartGraphEdgeCurve representing an edge curve between two
+     * SmartGraphVertexNodes.
      *
-     * @param edge     the edge associated with this curve
-     * @param inbound  the inbound SmartGraphVertexNode
-     * @param outbound the outbound SmartGraphVertexNode
+     * @param edge      the edge associated with this curve
+     * @param inbound   the inbound SmartGraphVertexNode
+     * @param outbound  the outbound SmartGraphVertexNode
      * @param edgeIndex the edge index (>=0)
      */
-    public SmartGraphEdgeCurve(Edge<E, V> edge, SmartGraphVertexNode<V> inbound, SmartGraphVertexNode<V> outbound, int edgeIndex) {
+    public SmartGraphEdgeCurve(Edge<E, V> edge, SmartGraphVertexNode<V> inbound, SmartGraphVertexNode<V> outbound,
+            int edgeIndex) {
         this.inbound = inbound;
         this.outbound = outbound;
 
@@ -103,16 +106,16 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
         styleProxy = new SmartStyleProxy(this);
         styleProxy.addStyleClass("edge");
 
-        //bind start and end positions to vertices centers through properties
+        // bind start and end positions to vertices centers through properties
         this.startXProperty().bind(outbound.centerXProperty());
         this.startYProperty().bind(outbound.centerYProperty());
         this.endXProperty().bind(inbound.centerXProperty());
         this.endYProperty().bind(inbound.centerYProperty());
 
-        //TODO: improve this solution taking into account even indices, etc.
-        randomAngleFactor = edgeIndex == 0 ? 0 : 1.0 / edgeIndex; //Math.random();
+        // TODO: improve this solution taking into account even indices, etc.
+        randomAngleFactor = edgeIndex == 0 ? 0 : 1.0 / edgeIndex; // Math.random();
 
-        //update();
+        // update();
         enableListeners();
 
         propagateHoverEffectToArrow();
@@ -120,7 +123,7 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
 
     public void setStyleInline(String css) {
         styleProxy.setStyleInline(css);
-        if(attachedArrow != null) {
+        if (attachedArrow != null) {
             attachedArrow.setStyleInline(css);
         }
     }
@@ -128,7 +131,7 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
     @Override
     public void setStyleClass(String cssClass) {
         styleProxy.setStyleClass(cssClass);
-        if(attachedArrow != null) {
+        if (attachedArrow != null) {
             attachedArrow.setStyleClass(cssClass);
         }
     }
@@ -136,7 +139,7 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
     @Override
     public void addStyleClass(String cssClass) {
         styleProxy.addStyleClass(cssClass);
-        if(attachedArrow != null) {
+        if (attachedArrow != null) {
             attachedArrow.addStyleClass(cssClass);
         }
     }
@@ -144,31 +147,34 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
     @Override
     public boolean removeStyleClass(String cssClass) {
         boolean result = styleProxy.removeStyleClass(cssClass);
-        if(attachedArrow != null) {
+        if (attachedArrow != null) {
             attachedArrow.removeStyleClass(cssClass);
         }
         return result;
     }
-    
-    private void update() {                
+
+    private void update() {
         if (inbound == outbound) {
             /* Make a loop using the control points proportional to the vertex radius */
-            
-            //TODO: take into account several "self-loops" with randomAngleFactor
+
+            // TODO: take into account several "self-loops" with randomAngleFactor
             double midpointX1 = outbound.getCenterX() - inbound.getRadius() * LOOP_RADIUS_FACTOR;
             double midpointY1 = outbound.getCenterY() - inbound.getRadius() * LOOP_RADIUS_FACTOR;
-            
+
             double midpointX2 = outbound.getCenterX() + inbound.getRadius() * LOOP_RADIUS_FACTOR;
             double midpointY2 = outbound.getCenterY() - inbound.getRadius() * LOOP_RADIUS_FACTOR;
-            
+
             setControlX1(midpointX1);
             setControlY1(midpointY1);
             setControlX2(midpointX2);
             setControlY2(midpointY2);
-            
-        } else {          
-            /* Make a curved edge. The curvature is bounded and proportional to the distance;
-                higher curvature for closer vertices  */
+
+        } else {
+            /*
+             * Make a curved edge. The curvature is bounded and proportional to the
+             * distance;
+             * higher curvature for closer vertices
+             */
 
             Point2D startpoint = new Point2D(inbound.getCenterX(), inbound.getCenterY());
             Point2D endpoint = new Point2D(outbound.getCenterX(), outbound.getCenterY());
@@ -189,25 +195,31 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
 
     /**
      * Provides the decreasing linear function decay.
-     * @param initialValue initial value
-     * @param finalValue maximum value
-     * @param distance current distance
-     * @param distanceThreshold distance threshold (maximum distance -> maximum value)
+     * 
+     * @param initialValue      initial value
+     * @param finalValue        maximum value
+     * @param distance          current distance
+     * @param distanceThreshold distance threshold (maximum distance -> maximum
+     *                          value)
      * @return the decay function value for <code>distance</code>
      */
-    private static double linearDecay(double initialValue, double finalValue, double distance, double distanceThreshold) {
-        //Args.requireNonNegative(distance, "distance");
-        //Args.requireNonNegative(distanceThreshold, "distanceThreshold");
-        // Parameters are internally guaranteed to be positive. We avoid two method calls.
+    private static double linearDecay(double initialValue, double finalValue, double distance,
+            double distanceThreshold) {
+        // Args.requireNonNegative(distance, "distance");
+        // Args.requireNonNegative(distanceThreshold, "distanceThreshold");
+        // Parameters are internally guaranteed to be positive. We avoid two method
+        // calls.
 
-        if(distance >= distanceThreshold) return finalValue;
+        if (distance >= distanceThreshold)
+            return finalValue;
 
         return initialValue + (finalValue - initialValue) * distance / distanceThreshold;
     }
 
     private void enableListeners() {
         // With a curved edge we need to continuously update the control points.
-        // TODO: Maybe we can achieve this solely with bindings? Maybe there's no performance gain in doing so.
+        // TODO: Maybe we can achieve this solely with bindings? Maybe there's no
+        // performance gain in doing so.
 
         this.startXProperty().addListener((ov, oldValue, newValue) -> {
             update();
@@ -227,8 +239,10 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
     public void attachLabel(SmartLabel label) {
         this.attachedLabel = label;
 
-        label.xProperty().bind(controlX1Property().add(controlX2Property()).divide(2).subtract(Bindings.divide(label.layoutWidthProperty(),2)));
-        label.yProperty().bind(controlY1Property().add(controlY2Property()).divide(2).add(Bindings.divide(label.layoutHeightProperty(), 2)));
+        label.xProperty().bind(controlX1Property().add(controlX2Property()).divide(2)
+                .subtract(Bindings.divide(label.layoutWidthProperty(), 2)));
+        label.yProperty().bind(controlY1Property().add(controlY2Property()).divide(2)
+                .add(Bindings.divide(label.layoutHeightProperty(), 2)));
     }
 
     @Override
@@ -255,15 +269,14 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
         rotation.pivotYProperty().bind(translateYProperty());
         rotation.angleProperty().bind(UtilitiesBindings.toDegrees(
                 UtilitiesBindings.atan2(endYProperty().subtract(controlY2Property()),
-                        endXProperty().subtract(controlX2Property()))
-        ));
+                        endXProperty().subtract(controlX2Property()))));
 
         arrow.getTransforms().add(rotation);
 
         /* add translation transform to put the arrow touching the circle's bounds */
         Translate t = new Translate(0, 0);
-        t.xProperty().bind( inbound.radiusProperty().negate() );
-        
+        t.xProperty().bind(inbound.radiusProperty().negate());
+
         arrow.getTransforms().add(t);
     }
 
@@ -271,7 +284,7 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
     public SmartArrow getAttachedArrow() {
         return this.attachedArrow;
     }
-    
+
     @Override
     public SmartStylableNode getStylableArrow() {
         return this.attachedArrow;
@@ -284,13 +297,15 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
 
     private void propagateHoverEffectToArrow() {
         this.hoverProperty().addListener((observable, oldValue, newValue) -> {
-            if(attachedArrow != null && newValue) {
+            if (attachedArrow != null && newValue) {
 
-                attachedArrow.fireEvent(new MouseEvent(MouseEvent.MOUSE_ENTERED, 0, 0, 0, 0, MouseButton.NONE, 0, true, true, true, true, true, true, true, true, true, true, null));
+                attachedArrow.fireEvent(new MouseEvent(MouseEvent.MOUSE_ENTERED, 0, 0, 0, 0, MouseButton.NONE, 0, true,
+                        true, true, true, true, true, true, true, true, true, null));
 
-            } else if(attachedArrow != null) { //newValue is false, hover ended
+            } else if (attachedArrow != null) { // newValue is false, hover ended
 
-                attachedArrow.fireEvent(new MouseEvent(MouseEvent.MOUSE_EXITED, 0, 0, 0, 0, MouseButton.NONE, 0, true, true, true, true, true, true, true, true, true, true, null));
+                attachedArrow.fireEvent(new MouseEvent(MouseEvent.MOUSE_EXITED, 0, 0, 0, 0, MouseButton.NONE, 0, true,
+                        true, true, true, true, true, true, true, true, true, null));
 
             }
         });

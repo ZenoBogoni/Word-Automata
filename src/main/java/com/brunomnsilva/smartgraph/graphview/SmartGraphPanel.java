@@ -27,6 +27,8 @@ import com.brunomnsilva.smartgraph.graph.Digraph;
 import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
+
+import it.univr.utils.Constants;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
@@ -85,7 +87,7 @@ public class SmartGraphPanel<V, E> extends Pane {
      */
     private final SmartGraphProperties graphProperties;
 
-    private static final String DEFAULT_CSS_FILE = "smartgraph.css";
+    private static String DEFAULT_CSS_FILE = "smartgraph-dark.css";
     /*
      * INTERNAL DATA STRUCTURE
      */
@@ -1404,6 +1406,25 @@ public class SmartGraphPanel<V, E> extends Pane {
                 return false;
             }
             return Objects.equals(this.second, other.second);
+        }
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /* //! //ANCHOR - Change theme */
+    /* -------------------------------------------------------------------------- */
+
+    public void changeGraphTheme() {
+        String lightMode;
+        try {
+            lightMode = new File(Constants.GRAPH_LIGHT).toURI().toURL().toExternalForm();
+            if (getStylesheets().contains(lightMode)) {
+                getStylesheets().remove(lightMode);
+            } else {
+                getStylesheets().add(lightMode);
+            }
+        } catch (MalformedURLException ex) {
+            String msg = String.format("Error loading stylesheet from URI = %s", Constants.GRAPH_LIGHT);
+            Logger.getLogger(SmartGraphPanel.class.getName()).log(Level.SEVERE, msg, ex);
         }
     }
 

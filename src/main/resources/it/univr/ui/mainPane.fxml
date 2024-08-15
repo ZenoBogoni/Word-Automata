@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -11,13 +12,16 @@
       <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER" />
    </top>
    <left>
-      <HBox fx:id="sideMenu" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: green;" BorderPane.alignment="CENTER">
+      <HBox fx:id="sideMenu" prefHeight="400.0" prefWidth="300.0" style="-fx-opacity: green;" BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="sideMenuStatic" fillWidth="false" prefHeight="400.0" prefWidth="50.0" style="-fx-background-color: black;" HBox.hgrow="NEVER" />
-            <VBox fx:id="sideMenuHidedable" prefHeight="400.0" prefWidth="95.0" style="-fx-background-color: gray;" HBox.hgrow="ALWAYS">
+            <VBox fx:id="sideMenuStatic" fillWidth="false" prefHeight="400.0" prefWidth="50.0" style="-fx-background-color: #00000032;" HBox.hgrow="NEVER" />
+            <VBox fx:id="sideMenuHidedable" prefHeight="400.0" prefWidth="95.0" style="-fx-background-color: #00000019;" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
-               </HBox.margin></VBox>
+               </HBox.margin>
+               <children>
+                  <Label fx:id="nodeNameLabel" prefHeight="23.0" prefWidth="253.0" VBox.vgrow="ALWAYS" />
+               </children></VBox>
          </children>
          <BorderPane.margin>
             <Insets />
