@@ -15,9 +15,13 @@
          <children>
             <VBox fx:id="sideMenuStatic" fillWidth="false" prefHeight="400.0" prefWidth="50.0" style="-fx-background-color: black;" HBox.hgrow="NEVER" />
             <VBox fx:id="sideMenuHidedable" prefHeight="400.0" prefWidth="95.0" style="-fx-background-color: gray;" HBox.hgrow="ALWAYS">
-               </VBox>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></VBox>
          </children>
-         
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </HBox>
    </left>
 </fx:root>
