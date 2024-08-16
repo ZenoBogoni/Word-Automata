@@ -3,10 +3,12 @@ package it.univr.utils;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 
 import it.univr.ui.MainPane;
+import javafx.stage.Stage;
 
 public class SceneReference {
     private static MainPane mainPane;
     private static SmartGraphPanel grapView;
+    private static Stage stage;
 
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Getters */
@@ -19,6 +21,10 @@ public class SceneReference {
         return grapView;
     }
 
+    public static Stage getStage() {
+        return stage;
+    }
+
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Setters */
     /* -------------------------------------------------------------------------- */
@@ -29,5 +35,9 @@ public class SceneReference {
 
     public static void setGrapView(SmartGraphPanel grapView) {
         SceneReference.grapView = grapView;
+    }
+
+    public static void setStage(Stage stage) {
+        SceneReference.stage = stage;
     }
 }

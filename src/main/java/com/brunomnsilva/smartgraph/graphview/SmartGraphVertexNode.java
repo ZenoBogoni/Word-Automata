@@ -482,6 +482,12 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
 
                 isDragging = true;
 
+                /* -------------------------------------------------------------------------- */
+                /* //! Aggiunto io */
+                MainPane mainPane = SceneReference.getMainPane();
+                mainPane.setVertexPressed(true);
+                /* -------------------------------------------------------------------------- */
+
                 mouseEvent.consume();
             }
         });
@@ -496,6 +502,7 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
             // ! AGGIUNTO IO -----------------
             MainPane mainPane = SceneReference.getMainPane();
             mainPane.setSelectedVertexNode(this);
+            mainPane.setVertexPressed(false);
             // ! -----------------------------
             mouseEvent.consume();
         });

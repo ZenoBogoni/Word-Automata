@@ -27,6 +27,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;
+        SceneReference.setStage(stage);
 
         // ATLANTA
         Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
