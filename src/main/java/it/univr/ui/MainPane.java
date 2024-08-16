@@ -188,16 +188,6 @@ public class MainPane extends BorderPane {
             if (!isVertexPressed) {
                 deselectVertex();
             }
-            // TODO - da rimuovere, obsoleto
-            if (isLinkingPhase) {
-                if (countSelected == 0) {
-                    fromVertex = selectedVertex;
-                    toVertex = selectedVertex;
-                    countSelected++;
-                } else {
-                    toVertex = selectedVertex;
-                }
-            }
         });
 
         addVertex.setOnAction(e -> {
@@ -296,10 +286,13 @@ public class MainPane extends BorderPane {
 
     public void setSelectedVertexNode(SmartGraphVertexNode vertex) {
         if (selectedVertexNode != null) {
-            selectedVertexNode.setStyleClass("vertex");
             if (isLinkingPhase) {
                 popupEdgeName(selectedVertexNode, vertex);
                 isLinkingPhase = false;
+            } else {
+                selectedVertexNode.setStyleClass("vertex");
+                selectedVertexNode = vertex;
+                selectedVertexNode.setStyleClass("selectedVertex");
             }
         } else {
             selectedVertexNode = vertex;
