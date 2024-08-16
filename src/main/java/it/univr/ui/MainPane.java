@@ -29,19 +29,23 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class MainPane extends BorderPane {
 
+    // ANCHOR - Java variables
     private static int count = 0;
     private static int countSelected = 0;
-    private static boolean isLinkingPhase = false;
-    private boolean isSideHidden = false;
-    private boolean isVertexPressed = false;
-    private boolean isFinalVertex = false, isInitialVertex = false;
+    private static boolean isLinkingPhase = false; // are we trying to link vertices?
+    private boolean isSideHidden = false; // is the side panel hidden?
+    private boolean isVertexPressed = false; // is a vertex being pressed?
+    private boolean isFinalVertex = false; // is this the final vertex?
+    private boolean isInitialVertex = false; // is this the starting vertex?
 
+    // ANCHOR - JavaFX variables
     private App app;
     private DigraphEdgeList<String, String> graph = new DigraphEdgeList<>();
     private SmartPlacementStrategy initialPlacement = new SmartCircularSortedPlacementStrategy();
@@ -50,7 +54,7 @@ public class MainPane extends BorderPane {
 
     // Button
     private Button addVertex = new Button("Add Vertex");
-    private Button linkVertices = new Button("Link Verteces");
+    private Button linkVertices = new Button("Link Vertices"); // TODO - da rimuovere, obsoleto
     private Button finalVertex = new Button("Final Vertex");
     private Button initialVertex = new Button("Initial Vertex");
 
@@ -64,6 +68,7 @@ public class MainPane extends BorderPane {
     private Vertex selectedVertex; // backend component
     private Vertex finalNode, initialNode; // Algoritm Component
 
+    // ANCHOR - FXML elements
     @FXML
     private MenuBar menuBar;
     @FXML
@@ -129,6 +134,7 @@ public class MainPane extends BorderPane {
     }
 
     private void initGraph() {
+        SceneReference.setGraph(graph);
         SceneReference.setGrapView(graphView);
         this.setCenter(graphPane);
         graphPane.setPadding(new Insets(10));
@@ -182,6 +188,7 @@ public class MainPane extends BorderPane {
             if (!isVertexPressed) {
                 deselectVertex();
             }
+            // TODO - da rimuovere, obsoleto
             if (isLinkingPhase) {
                 if (countSelected == 0) {
                     fromVertex = selectedVertex;
@@ -225,22 +232,26 @@ public class MainPane extends BorderPane {
     /* //ANCHOR - Popup Edge name */
     /* -------------------------------------------------------------------------- */
 
-    private void popupEdgeName() {
+    private void popupEdgeName(SmartGraphVertexNode from, SmartGraphVertexNode to) {
         Stage stage = new Stage();
-        EdgePopup pane = new EdgePopup(stage);
-        pane.getChildren().add(new Label("Hello"));
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Hello Modal");
-        stage.setScene(new Scene(pane, 300, 200));
-        stage.sizeToScene();
+        EdgePopup pane = new EdgePopup(stage, from, to);
+        Scene edgeScene = new Scene(pane, 300, 160);
 
+        // Scene Style
+        stage.initStyle(StageStyle.TRANSPARENT);
+        edgeScene.setFill(Color.TRANSPARENT);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(edgeScene);
+        stage.sizeToScene();
+        stage.setResizable(false);
+
+        // put this window in the middle of the primary window
         Stage primaryStage = SceneReference.getStage();
         double centerX = primaryStage.getX() + (primaryStage.getWidth() - 300) / 2;
-        double centerY = primaryStage.getY() + (primaryStage.getHeight() - 200) / 2;
+        double centerY = primaryStage.getY() + (primaryStage.getHeight() - 160) / 2;
         stage.setX(centerX);
         stage.setY(centerY);
-        stage.setResizable(false);
+
         stage.show();
 
     }
@@ -248,6 +259,11 @@ public class MainPane extends BorderPane {
     private void deselectVertex() {
         selectedVertexNode.setStyleClass("vertex");
         selectedVertexNode = null;
+    }
+
+    public void addEdge(SmartGraphVertexNode from, SmartGraphVertexNode to) {
+        graph.insertEdge(from.getUnderlyingVertex(), to.getUnderlyingVertex(), edgeName);
+        graphView.update();
     }
 
     /* -------------------------------------------------------------------------- */
@@ -282,23 +298,25 @@ public class MainPane extends BorderPane {
         if (selectedVertexNode != null) {
             selectedVertexNode.setStyleClass("vertex");
             if (isLinkingPhase) {
-                popupEdgeName();
-                // graph.insertEdge(selectedVertex, vertex.getUnderlyingVertex(), count + "");
-                // graphView.update();
+                popupEdgeName(selectedVertexNode, vertex);
                 isLinkingPhase = false;
-                // count++;
             }
-
+        } else {
+            selectedVertexNode = vertex;
+            selectedVertex = vertex.getUnderlyingVertex();
+            nodeNameLabel.textProperty().bind(selectedVertexNode.getAttachedLabel().textProperty());
+            nodeNameLabel.setVisible(true);
+            selectedVertexNode.setStyleClass("selectedVertex");
         }
-        selectedVertexNode = vertex;
-        selectedVertex = vertex.getUnderlyingVertex();
-        nodeNameLabel.textProperty().bind(selectedVertexNode.getAttachedLabel().textProperty());
-        nodeNameLabel.setVisible(true);
 
-        selectedVertexNode.setStyleClass("selectedVertex");
     }
 
     public void setVertexPressed(boolean isVertexPressed) {
         this.isVertexPressed = isVertexPressed;
     }
+
+    public void setEdgeName(String edgeName) {
+        this.edgeName = edgeName;
+    }
+
 }

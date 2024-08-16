@@ -1,5 +1,6 @@
 package it.univr.utils;
 
+import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 
 import it.univr.ui.MainPane;
@@ -8,6 +9,8 @@ import javafx.stage.Stage;
 public class SceneReference {
     private static MainPane mainPane;
     private static SmartGraphPanel grapView;
+    private static DigraphEdgeList<String, String> graph;
+
     private static Stage stage;
 
     /* -------------------------------------------------------------------------- */
@@ -25,6 +28,10 @@ public class SceneReference {
         return stage;
     }
 
+    public static DigraphEdgeList<String, String> getGraph() {
+        return graph;
+    }
+
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Setters */
     /* -------------------------------------------------------------------------- */
@@ -39,5 +46,9 @@ public class SceneReference {
 
     public static void setStage(Stage stage) {
         SceneReference.stage = stage;
+    }
+
+    public static void setGraph(DigraphEdgeList<String, String> graph) {
+        SceneReference.graph = graph;
     }
 }
