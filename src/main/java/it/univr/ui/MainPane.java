@@ -40,19 +40,29 @@ public class MainPane extends BorderPane {
     private static boolean isLinkingPhase = false;
     private boolean isSideHidden = false;
     private boolean isVertexPressed = false;
+    private boolean isFinalVertex = false, isInitialVertex = false;
 
     private App app;
-    private Digraph<String, String> graph = new DigraphEdgeList<>();
+    private DigraphEdgeList<String, String> graph = new DigraphEdgeList<>();
     private SmartPlacementStrategy initialPlacement = new SmartCircularSortedPlacementStrategy();
     private SmartGraphPanel<String, String> graphView = new SmartGraphPanel<>(graph, initialPlacement);
     private ContentZoomScrollPane graphPane = new ContentZoomScrollPane(graphView);
+
+    // Button
     private Button addVertex = new Button("Add Vertex");
     private Button linkVertices = new Button("Link Verteces");
+    private Button finalVertex = new Button("Final Vertex");
+    private Button initialVertex = new Button("Initial Vertex");
+
+    // Text
     private TextField TextField = new TextField();
     private String nodeName, edgeName;
+
+    // Vertex
     private Vertex fromVertex, toVertex;
     private SmartGraphVertexNode selectedVertexNode; // ui component
     private Vertex selectedVertex; // backend component
+    private Vertex finalNode, initialNode; // Algoritm Component
 
     @FXML
     private MenuBar menuBar;
@@ -130,6 +140,8 @@ public class MainPane extends BorderPane {
     private void initSideMenu() {
         sideMenuHidedable.getChildren().addAll(addVertex);
         sideMenuHidedable.getChildren().addAll(linkVertices);
+        sideMenuHidedable.getChildren().addAll(finalVertex);
+        sideMenuHidedable.getChildren().addAll(initialVertex);
         sideMenuHidedable.getChildren().addAll(TextField);
 
         nodeNameLabel.setVisible(false);
@@ -156,6 +168,16 @@ public class MainPane extends BorderPane {
             isLinkingPhase = !isLinkingPhase;
         });
 
+        finalVertex.setOnAction(e -> {
+            isFinalVertex = !isFinalVertex;
+            isInitialVertex = false;
+        });
+
+        initialVertex.setOnAction(e -> {
+            isInitialVertex = !isInitialVertex;
+            isFinalVertex = false;
+        });
+
         graphPane.setOnMousePressed(e -> {
             if (!isVertexPressed) {
                 deselectVertex();
@@ -172,8 +194,16 @@ public class MainPane extends BorderPane {
         });
 
         addVertex.setOnAction(e -> {
+
             nodeName = TextField.getText();
             graph.insertVertex(nodeName);
+
+            if (isInitialVertex) {
+                initialNode = graph.vertexOf(nodeName);
+            } else if (isFinalVertex) {
+                finalNode = graph.vertexOf(nodeName);
+            }
+
             graphView.update();
             count++;
         });
@@ -230,6 +260,18 @@ public class MainPane extends BorderPane {
 
     public boolean isVertexPressed() {
         return isVertexPressed;
+    }
+
+    public DigraphEdgeList getGraph() {
+        return graph;
+    }
+
+    public SmartGraphVertexNode getInitialNode() {
+        return initialNode;
+    }
+
+    public SmartGraphVertexNode getFinalNode() {
+        return finalNode;
     }
 
     /* -------------------------------------------------------------------------- */
