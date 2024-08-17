@@ -54,7 +54,6 @@ public class MainPane extends BorderPane {
 
     // Button
     private Button addVertex = new Button("Add Vertex");
-    private Button linkVertices = new Button("Link Vertices"); // TODO - da rimuovere, obsoleto
     private Button finalVertex = new Button("Final Vertex");
     private Button initialVertex = new Button("Initial Vertex");
 
@@ -145,7 +144,6 @@ public class MainPane extends BorderPane {
 
     private void initSideMenu() {
         sideMenuHidedable.getChildren().addAll(addVertex);
-        sideMenuHidedable.getChildren().addAll(linkVertices);
         sideMenuHidedable.getChildren().addAll(finalVertex);
         sideMenuHidedable.getChildren().addAll(initialVertex);
         sideMenuHidedable.getChildren().addAll(TextField);
@@ -163,15 +161,6 @@ public class MainPane extends BorderPane {
             if (key.getCode() == KeyCode.CONTROL) {
                 isLinkingPhase = false;
             }
-        });
-
-        linkVertices.setOnAction(e -> {
-            if (isLinkingPhase) {
-                edgeName = TextField.getText();
-                graph.insertEdge(fromVertex, toVertex, edgeName);
-                graphView.update();
-            }
-            isLinkingPhase = !isLinkingPhase;
         });
 
         finalVertex.setOnAction(e -> {
@@ -257,6 +246,33 @@ public class MainPane extends BorderPane {
     }
 
     /* -------------------------------------------------------------------------- */
+    /* //ANCHOR - Error Pupup */
+    /* -------------------------------------------------------------------------- */
+
+    private void showErrorPopup(String erorrMsg) {
+        Stage stage = new Stage();
+        ErrorPopup pane = new ErrorPopup(stage, erorrMsg);
+        Scene edgeScene = new Scene(pane, 300, 160);
+
+        // Scene Style
+        stage.initStyle(StageStyle.TRANSPARENT);
+        edgeScene.setFill(Color.TRANSPARENT);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(edgeScene);
+        stage.sizeToScene();
+        stage.setResizable(false);
+
+        // put this window in the middle of the primary window
+        Stage primaryStage = SceneReference.getStage();
+        double centerX = primaryStage.getX() + (primaryStage.getWidth() - 300) / 2;
+        double centerY = primaryStage.getY() + (primaryStage.getHeight() - 160) / 2;
+        stage.setX(centerX);
+        stage.setY(centerY);
+
+        stage.show();
+    }
+
+    /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Getters */
     /* -------------------------------------------------------------------------- */
 
@@ -273,11 +289,11 @@ public class MainPane extends BorderPane {
     }
 
     public SmartGraphVertexNode getInitialNode() {
-        return initialNode;
+        return (SmartGraphVertexNode) initialNode;
     }
 
     public SmartGraphVertexNode getFinalNode() {
-        return finalNode;
+        return (SmartGraphVertexNode) finalNode;
     }
 
     /* -------------------------------------------------------------------------- */
@@ -287,8 +303,13 @@ public class MainPane extends BorderPane {
     public void setSelectedVertexNode(SmartGraphVertexNode vertex) {
         if (selectedVertexNode != null) {
             if (isLinkingPhase) {
-                popupEdgeName(selectedVertexNode, vertex);
-                isLinkingPhase = false;
+                if (graph.areAdjacent(selectedVertexNode.getUnderlyingVertex(), vertex.getUnderlyingVertex())) {
+                    showErrorPopup("An edge from vertex " + selectedVertexNode.getAttachedLabel().getText() + " to vertex " + vertex.getAttachedLabel().getText()
+                            + " already exists, please modify the existing one instead of creating a new one");
+                } else {
+                    popupEdgeName(selectedVertexNode, vertex);
+                    isLinkingPhase = false;
+                }
             } else {
                 selectedVertexNode.setStyleClass("vertex");
                 selectedVertexNode = vertex;

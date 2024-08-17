@@ -19,6 +19,7 @@ public class EdgePopup extends AnchorPane {
     private MainPane mainPane = SceneReference.getMainPane();
     private SmartGraphVertexNode from;
     private SmartGraphVertexNode to;
+    private DigraphEdgeList<String, String> graph = SceneReference.getGraph();
 
     @FXML
     private Button cancelButton, submitButton;
