@@ -28,7 +28,9 @@ import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 
+import it.univr.ui.MainPane;
 import it.univr.utils.Constants;
+import it.univr.utils.SceneReference;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
@@ -761,8 +763,12 @@ public class SmartGraphPanel<V, E> extends Pane {
         List<SmartGraphVertexNode<V>> newVertices = null;
 
         Bounds bounds = getPlotBounds();
-        double mx = bounds.getMinX() + bounds.getWidth() / 2.0;
-        double my = bounds.getMinY() + bounds.getHeight() / 2.0;
+        // double mx = bounds.getMinX() + bounds.getWidth() / 2.0;
+        // double my = bounds.getMinY() + bounds.getHeight() / 2.0;
+        // ANCHOR - new vertex position
+        MainPane mainPane = SceneReference.getMainPane();
+        double mx = mainPane.getMouseX();
+        double my = mainPane.getMouseY();
 
         if (!unplottedVertices.isEmpty()) {
 

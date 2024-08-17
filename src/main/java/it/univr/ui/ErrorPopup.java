@@ -22,8 +22,7 @@ public class ErrorPopup extends BorderPane {
     @FXML
     private Button closeButton;
 
-    public ErrorPopup(Stage stage, String errorMsg) {
-        this.stage = stage;
+    public ErrorPopup(String errorMsg) {
         this.errorMsg = errorMsg;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("errorPopup.fxml"));
         fxmlLoader.setRoot(this);
@@ -38,6 +37,7 @@ public class ErrorPopup extends BorderPane {
 
     public void initialize() {
         closeButton.setOnAction(e -> {
+            this.stage = (Stage) getScene().getWindow();
             stage.close();
         });
         errorText.setText(errorMsg);

@@ -11,10 +11,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class EdgePopup extends AnchorPane {
+public class VertexPopup extends AnchorPane {
     private Stage stage;
     private MainPane mainPane = SceneReference.getMainPane();
     private SmartGraphVertexNode from;
@@ -24,12 +23,11 @@ public class EdgePopup extends AnchorPane {
     @FXML
     private Button cancelButton, submitButton;
     @FXML
-    private TextField edgeNameField;
+    private TextField vertexNameField;
 
-    public EdgePopup(SmartGraphVertexNode from, SmartGraphVertexNode to) {
-        this.from = from;
-        this.to = to;
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("edgePopup.fxml"));
+    public VertexPopup() {
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("vertexPopup.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
@@ -41,14 +39,14 @@ public class EdgePopup extends AnchorPane {
     }
 
     private void checkName() {
-
-        String edgeName = edgeNameField.getText();
-        if (edgeName.equals("")) {
-            edgeNameField.setPromptText("Enter a valid edge name");
-            edgeNameField.setText("");
+        DigraphEdgeList graph = SceneReference.getGraph();
+        String vertexName = vertexNameField.getText();
+        if (vertexName.equals("")) {
+            vertexNameField.setPromptText("Enter a valid vertex name");
+            vertexNameField.setText("");
         } else {
-            mainPane.setEdgeName(edgeName); // TODO - controllare che sia possibile creare questo edge
-            mainPane.addEdge(from, to);
+            graph.insertVertex(vertexName);
+            SceneReference.getGrapView().update();
             stage.close();
         }
     }
@@ -60,7 +58,7 @@ public class EdgePopup extends AnchorPane {
             checkName();
         });
 
-        edgeNameField.setOnAction(e -> {
+        vertexNameField.setOnAction(e -> {
             this.stage = (Stage) getScene().getWindow();
             checkName();
         });
