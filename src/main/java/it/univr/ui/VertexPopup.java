@@ -3,6 +3,7 @@ package it.univr.ui;
 import java.io.IOException;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.utils.SceneReference;
@@ -50,7 +51,9 @@ public class VertexPopup extends AnchorPane {
                 vertexNameField.setPromptText("Vertex name already taken");
             } else {
                 graph.insertVertex(vertexName);
-                SceneReference.getGrapView().update();
+                SmartGraphPanel graphView = SceneReference.getGrapView();
+                graphView.update();
+                System.out.println(graphView.getVertexByName(vertexName));
                 stage.close();
             }
         }

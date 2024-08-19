@@ -26,6 +26,7 @@ package com.brunomnsilva.smartgraph.graphview;
 import com.brunomnsilva.smartgraph.graph.Digraph;
 import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Graph;
+import com.brunomnsilva.smartgraph.graph.MyVertexV2;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 
 import it.univr.ui.MainPane;
@@ -1432,6 +1433,14 @@ public class SmartGraphPanel<V, E> extends Pane {
             String msg = String.format("Error loading stylesheet from URI = %s", Constants.GRAPH_LIGHT);
             Logger.getLogger(SmartGraphPanel.class.getName()).log(Level.SEVERE, msg, ex);
         }
+    }
+
+    public SmartGraphVertexNode getVertexByName(String name) {
+        MyVertexV2<String> vertex = new MyVertexV2<>(name);
+        if (vertexNodes.containsKey(vertex)) {
+            return vertexNodes.get(vertex);
+        }
+        return null;
     }
 
 }

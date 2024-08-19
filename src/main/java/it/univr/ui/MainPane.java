@@ -154,7 +154,7 @@ public class MainPane extends BorderPane {
         sideMenuHidedable.getChildren().addAll(finalVertex);
         sideMenuHidedable.getChildren().addAll(initialVertex);
 
-        nodeNameLabel.setVisible(false);
+        nodeNameLabel.visibleProperty().bind(isVertexSelectedProperty);
         // nodeNameLabel.textProperty().bind(selectedVertexNode.getAttachedLabel().textProperty());
 
         this.setOnKeyPressed(key -> {
@@ -336,7 +336,6 @@ public class MainPane extends BorderPane {
             selectedVertexNode = vertex;
             setIsVertexSelected(true);
             nodeNameLabel.textProperty().bind(selectedVertexNode.getAttachedLabel().textProperty());
-            nodeNameLabel.setVisible(true);
             selectedVertexNode.setStyleClass("selectedVertex");
         }
 

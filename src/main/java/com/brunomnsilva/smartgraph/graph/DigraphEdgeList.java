@@ -43,7 +43,8 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
      * inner classes are defined at the end of the class, so are the auxiliary methods
      */
     private final Map<V, Vertex<V>> vertices;
-    private final Map<E, Edge<E, V>> edges;
+    private final Map<Integer, Edge<E, V>> edges;
+    private static int id = 0;
 
     /**
      * Default constructor that initializes an empty digraph.
@@ -105,10 +106,10 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         MyVertex outVertex = checkVertex(outbound);
         MyVertex inVertex = checkVertex(inbound);
 
-        MyEdge newEdge = new MyEdge(edgeElement, outVertex, inVertex);
+        MyEdge newEdge = new MyEdge(id, edgeElement, outVertex, inVertex);
 
-        edges.put(edgeElement, newEdge);
-
+        edges.put(id, newEdge);
+        id++;
         return newEdge;
     }
 
@@ -128,10 +129,10 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         MyVertex outVertex = vertexOf(outboundElement);
         MyVertex inVertex = vertexOf(inboundElement);
 
-        MyEdge newEdge = new MyEdge(edgeElement, outVertex, inVertex);
-
-        edges.put(edgeElement, newEdge);
-
+        MyEdge newEdge = new MyEdge(id, edgeElement, outVertex, inVertex);
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        edges.put(id, newEdge);
+        id++;
         return newEdge;
     }
 
@@ -209,7 +210,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         checkEdge(e);
 
         E element = e.element();
-        edges.remove(e.element());
+        edges.remove(e.getId());
 
         return element;
     }
@@ -297,11 +298,13 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
 
     private class MyEdge implements Edge<E, V> {
 
+        int id;
         E element;
         Vertex<V> vertexOutbound;
         Vertex<V> vertexInbound;
 
-        public MyEdge(E element, Vertex<V> vertexOutbound, Vertex<V> vertexInbound) {
+        public MyEdge(int id, E element, Vertex<V> vertexOutbound, Vertex<V> vertexInbound) {
+            this.id = id;
             this.element = element;
             this.vertexOutbound = vertexOutbound;
             this.vertexInbound = vertexInbound;
@@ -310,6 +313,11 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         @Override
         public E element() {
             return this.element;
+        }
+
+        @Override
+        public int getId() {
+            return this.id;
         }
 
         public boolean contains(Vertex<V> v) {

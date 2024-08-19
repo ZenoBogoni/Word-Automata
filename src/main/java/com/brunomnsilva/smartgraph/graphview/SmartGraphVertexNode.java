@@ -608,4 +608,5 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
             this.y = y;
         }
     }
+
 }

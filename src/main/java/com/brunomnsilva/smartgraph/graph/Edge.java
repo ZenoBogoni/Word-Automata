@@ -36,14 +36,16 @@ package com.brunomnsilva.smartgraph.graph;
  * @see Digraph
  */
 public interface Edge<E, V> {
-    
+
     /**
      * Returns the element stored in the edge.
      * 
-     * @return      stored element
+     * @return stored element
      */
     E element();
-    
+
+    int getId();
+
     /**
      * Returns and array of size 2, with references for both vertices at the ends
      * of an edge.
@@ -52,9 +54,8 @@ public interface Edge<E, V> {
      * of the <i>outbound vertex</i> and at {@code vertices()[1]} that of the <i>inbound</i>
      * vertex.
      * 
-     * @return      an array of length 2, containing the vertices at both ends.
+     * @return an array of length 2, containing the vertices at both ends.
      */
     Vertex<V>[] vertices();
-    
-    
+
 }
