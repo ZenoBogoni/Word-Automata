@@ -277,7 +277,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         return sb.toString();
     }
 
-    private class MyVertex implements Vertex<V> {
+    public class MyVertex implements Vertex<V> {
 
         V element;
 
@@ -390,5 +390,4 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
 
         return edge;
     }
-
 }

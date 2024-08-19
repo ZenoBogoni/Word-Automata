@@ -24,10 +24,11 @@
 package com.brunomnsilva.smartgraph.graphview;
 
 import com.brunomnsilva.smartgraph.graph.Digraph;
+import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Graph;
-import com.brunomnsilva.smartgraph.graph.MyVertexV2;
 import com.brunomnsilva.smartgraph.graph.Vertex;
+import com.brunomnsilva.smartgraph.graph.DigraphEdgeList.MyVertex;
 
 import it.univr.ui.MainPane;
 import it.univr.utils.Constants;
@@ -1435,10 +1436,9 @@ public class SmartGraphPanel<V, E> extends Pane {
         }
     }
 
-    public SmartGraphVertexNode getVertexByName(String name) {
-        MyVertexV2<String> vertex = new MyVertexV2<>(name);
-        if (vertexNodes.containsKey(vertex)) {
-            return vertexNodes.get(vertex);
+    public SmartGraphVertexNode getVertexByName(Vertex<V> name) {
+        if (vertexNodes.containsKey(name)) {
+            return vertexNodes.get(name);
         }
         return null;
     }
