@@ -252,7 +252,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         return null;
     }
 
-    private boolean existsVertexWith(V vElement) {
+    public boolean existsVertexWith(V vElement) {
         return vertices.containsKey(vElement);
     }
 

@@ -53,7 +53,7 @@ This should help you understand which styles you can apply.
 }
 
 .edge-label {
-    -fx-font: bold 14pt "arial";
+    -fx-font: normal 14pt "arial";
     -fx-font-smoothing-type: lcd;
     -fx-fill: black;
     -fx-effect: dropshadow( gaussian , white , 1 , 1 , 0 , 0 );

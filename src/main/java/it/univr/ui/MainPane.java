@@ -14,6 +14,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartPlacementStrategy;
 
 import it.univr.App;
 import it.univr.utils.SceneReference;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -46,6 +47,7 @@ public class MainPane extends BorderPane {
     private boolean isVertexPressed = false; // is a vertex being pressed?
     private boolean isFinalVertex = false; // is this the final vertex?
     private boolean isInitialVertex = false; // is this the starting vertex?
+    private String edgeName;
     private double mouseX;
     private double mouseY;
 
@@ -56,19 +58,17 @@ public class MainPane extends BorderPane {
     private SmartGraphPanel<String, String> graphView = new SmartGraphPanel<>(graph, initialPlacement);
     private ContentZoomScrollPane graphPane = new ContentZoomScrollPane(graphView);
 
-    // Button
-    private Button addVertex = new Button("Add Vertex");
+    // ANCHOR - Properties
+    private SimpleBooleanProperty isVertexSelectedProperty = new SimpleBooleanProperty(false);
+
+    // Buttons
     private Button finalVertex = new Button("Final Vertex");
     private Button initialVertex = new Button("Initial Vertex");
 
     // Text
-    private TextField vertexNameField = new TextField();
-    private String vertexName, edgeName;
 
     // Vertex
-    private Vertex fromVertex, toVertex;
-    private SmartGraphVertexNode selectedVertexNode; // ui component
-    private Vertex selectedVertex; // backend component
+    private SmartGraphVertexNode selectedVertexNode; // selected UI vertex
     private Vertex finalNode, initialNode; // Algoritm Component
 
     // ANCHOR - FXML elements
@@ -142,22 +142,17 @@ public class MainPane extends BorderPane {
         this.setCenter(graphPane);
         graphPane.setPadding(new Insets(10));
         graphView.setOnMouseClicked(e -> {
-            if (e.getButton().equals(MouseButton.PRIMARY) && e.getClickCount() == 2) {
+            if (e.getButton().equals(MouseButton.PRIMARY) && e.getClickCount() == 2 && selectedVertexNode == null) {
                 mouseX = e.getX();
                 mouseY = e.getY();
                 vertexNamePopup();
             }
         });
-        // graphView.setVertexDoubleClickAction(graphVertex -> {
-        // System.out.println("Vertex contains element: " + graphVertex.getUnderlyingVertex().element());
-        // });
     }
 
     private void initSideMenu() {
-        sideMenuHidedable.getChildren().addAll(addVertex);
         sideMenuHidedable.getChildren().addAll(finalVertex);
         sideMenuHidedable.getChildren().addAll(initialVertex);
-        sideMenuHidedable.getChildren().addAll(vertexNameField);
 
         nodeNameLabel.setVisible(false);
         // nodeNameLabel.textProperty().bind(selectedVertexNode.getAttachedLabel().textProperty());
@@ -188,21 +183,6 @@ public class MainPane extends BorderPane {
             if (!isVertexPressed) {
                 deselectVertex();
             }
-        });
-
-        addVertex.setOnAction(e -> {
-
-            vertexName = vertexNameField.getText();
-            graph.insertVertex(vertexName);
-
-            if (isInitialVertex) {
-                initialNode = graph.vertexOf(vertexName);
-            } else if (isFinalVertex) {
-                finalNode = graph.vertexOf(vertexName);
-            }
-
-            graphView.update();
-            count++;
         });
 
         sideMenuStatic.setOnMouseClicked(e -> {
@@ -265,6 +245,7 @@ public class MainPane extends BorderPane {
 
     private void deselectVertex() {
         if (selectedVertexNode != null) {
+            setIsVertexSelected(false);
             selectedVertexNode.setStyleClass("vertex");
             selectedVertexNode = null;
         }
@@ -328,6 +309,10 @@ public class MainPane extends BorderPane {
         return mouseY;
     }
 
+    public boolean getIsVertexSelected() {
+        return isVertexSelectedProperty.get();
+    }
+
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Setters */
     /* -------------------------------------------------------------------------- */
@@ -349,7 +334,7 @@ public class MainPane extends BorderPane {
             }
         } else {
             selectedVertexNode = vertex;
-            selectedVertex = vertex.getUnderlyingVertex();
+            setIsVertexSelected(true);
             nodeNameLabel.textProperty().bind(selectedVertexNode.getAttachedLabel().textProperty());
             nodeNameLabel.setVisible(true);
             selectedVertexNode.setStyleClass("selectedVertex");
@@ -365,8 +350,8 @@ public class MainPane extends BorderPane {
         this.edgeName = edgeName;
     }
 
-    public void setVertexname(String vertexName) {
-        this.vertexName = vertexName;
+    public void setIsVertexSelected(boolean bool) {
+        isVertexSelectedProperty.set(bool);
     }
 
 }

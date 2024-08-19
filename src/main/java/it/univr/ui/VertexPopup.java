@@ -45,9 +45,14 @@ public class VertexPopup extends AnchorPane {
             vertexNameField.setPromptText("Enter a valid vertex name");
             vertexNameField.setText("");
         } else {
-            graph.insertVertex(vertexName);
-            SceneReference.getGrapView().update();
-            stage.close();
+            if (graph.existsVertexWith(vertexName)) {
+                vertexNameField.setText("");
+                vertexNameField.setPromptText("Vertex name already taken");
+            } else {
+                graph.insertVertex(vertexName);
+                SceneReference.getGrapView().update();
+                stage.close();
+            }
         }
     }
 
