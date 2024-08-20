@@ -66,8 +66,9 @@ public class MainPane extends BorderPane {
     // ANCHOR - Properties
     private SimpleBooleanProperty isVertexSelectedProperty = new SimpleBooleanProperty(false);
 
-    // Icons
-    FontIcon magicLayoutIcon = new FontIcon("eli-magic");
+    // ANCHOR - Icons
+    IconButton magicIcon;
+    IconButton nodeIcon;
 
     // Buttons
     private Button finalVertex = new Button("Final Vertex");
@@ -117,7 +118,6 @@ public class MainPane extends BorderPane {
         initMenuBar();
         initSideMenu();
         graphView.init();
-        // graphView.setStyle("-fx-background-color: transparent");
         graphView.update();
     }
 
@@ -158,18 +158,11 @@ public class MainPane extends BorderPane {
     }
 
     private void initSideMenu() {
-        // magiclayoutButton.getStyleClass().clear();
-        // magiclayoutButton.setAlignment(Pos.CENTER);
-        // magicLayoutIcon.setScaleX(1.6);
-        // magicLayoutIcon.setScaleY(1.6);
-        // magiclayoutButton.setGraphic(magicLayoutIcon);
-        // magiclayoutButton.setPrefWidth(50);
-        // magiclayoutButton.setPrefHeight(50);
-        // sideMenuStatic.getChildren().addAll(magiclayoutButton);
-        IconButton magicIcon = new IconButton("ci-magic-wand-filled");
-        IconButton nodeIcon = new IconButton("ci-text-creation");
 
-        sideMenuStatic.getChildren().addAll(magicIcon, nodeIcon);
+        magicIcon = new IconButton("ci-magic-wand-filled");
+        nodeIcon = new IconButton("ci-text-creation");
+        nodeIcon.setSelectedtab();
+        sideMenuStatic.getChildren().addAll(nodeIcon, magicIcon);
         sideMenuHidedable.getChildren().addAll(finalVertex);
         sideMenuHidedable.getChildren().addAll(initialVertex);
 
@@ -205,16 +198,23 @@ public class MainPane extends BorderPane {
         });
 
         sideMenuStatic.setOnMouseClicked(e -> {
-            if (isSideHidden) {
-                sideMenu.getChildren().add(sideMenuHidedable);
-                sideMenu.setPrefWidth(300);
-            } else {
-                sideMenu.getChildren().remove(sideMenuHidedable);
-                sideMenu.setPrefWidth(sideMenuStatic.getWidth());
-            }
-            isSideHidden = !isSideHidden;
+            hideSidePanel();
         });
 
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /* //ANCHOR - Methods */
+    /* -------------------------------------------------------------------------- */
+    public void hideSidePanel() {
+        if (isSideHidden) {
+            sideMenu.getChildren().add(sideMenuHidedable);
+            sideMenu.setPrefWidth(300);
+        } else {
+            sideMenu.getChildren().remove(sideMenuHidedable);
+            sideMenu.setPrefWidth(sideMenuStatic.getWidth());
+        }
+        isSideHidden = !isSideHidden;
     }
 
     /* -------------------------------------------------------------------------- */

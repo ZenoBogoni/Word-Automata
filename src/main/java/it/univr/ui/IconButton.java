@@ -3,8 +3,11 @@ package it.univr.ui;
 import java.io.IOException;
 import java.nio.channels.SelectableChannel;
 
+import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
+
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import it.univr.utils.SceneReference;
 import javafx.css.converter.InsetsConverter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +19,8 @@ import javafx.scene.paint.Color;
 
 public class IconButton extends Button {
 
-    private static IconButton selectedIconButton;
+    private static IconButton selectedTab;
+    private MainPane mainPane;
 
     private FontIcon icon;
 
@@ -36,32 +40,42 @@ public class IconButton extends Button {
 
     @FXML
     void initialize() {
-        this.getStyleClass().clear();
-        setPrefSize(50.0, 50.0);
-        // icon.setStyle("-fx-border-width: 0 0 0 2; -fx-border-color: red; -fx-border-style: solid;");
-        icon.getStyleClass().add("icon");
-        setPadding(Insets.EMPTY);
+        mainPane = SceneReference.getMainPane();
+
+        this.getStyleClass().clear(); // clear default button style
+        setPrefSize(50.0, 50.0); // set button size
+        icon.getStyleClass().add("icon"); // style icon
+        setPadding(Insets.EMPTY); // remove padding
         setGraphic(icon);
 
         setOnMouseClicked(e -> {
-            if (selectedIconButton != null && !selectedIconButton.equals(this)) {
-                selectedIconButton.getStyleClass().removeAll("selected-tab");
-                selectedIconButton.getStyleClass().add("tab");
-                selectedIconButton.getIcon().getStyleClass().removeAll("selected-icon");
-                selectedIconButton.getIcon().getStyleClass().add("icon");
-                selectedIconButton = this;
-                selectedIconButton.getStyleClass().add("selected-tab");
-                selectedIconButton.getStyleClass().removeAll("tab");
-                selectedIconButton.getIcon().getStyleClass().add("selected-icon");
-                selectedIconButton.getIcon().getStyleClass().removeAll("icon");
+            if (selectedTab != null && !selectedTab.equals(this)) {
+                removeTabSelection();
+                setSelectedtab();
+            } else if (selectedTab == null) {
+                setSelectedtab();
+                mainPane.hideSidePanel();
             } else {
-                selectedIconButton = this;
-                selectedIconButton.getStyleClass().add("selected-tab");
-                selectedIconButton.getStyleClass().removeAll("tab");
-                selectedIconButton.getIcon().getStyleClass().add("selected-icon");
-                selectedIconButton.getIcon().getStyleClass().removeAll("icon");
+                mainPane.hideSidePanel();
+                removeTabSelection();
+                selectedTab = null;
             }
         });
+    }
+
+    void setSelectedtab() {
+        selectedTab = this;
+        selectedTab.getStyleClass().add("selected-tab");
+        selectedTab.getStyleClass().removeAll("tab");
+        selectedTab.getIcon().getStyleClass().add("selected-icon");
+        selectedTab.getIcon().getStyleClass().removeAll("icon");
+    }
+
+    void removeTabSelection() {
+        selectedTab.getStyleClass().removeAll("selected-tab");
+        selectedTab.getStyleClass().add("tab");
+        selectedTab.getIcon().getStyleClass().removeAll("selected-icon");
+        selectedTab.getIcon().getStyleClass().add("icon");
     }
 
     FontIcon getIcon() {
