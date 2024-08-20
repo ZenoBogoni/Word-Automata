@@ -2,6 +2,8 @@ package it.univr.ui;
 
 import java.io.IOException;
 
+import org.kordamp.ikonli.javafx.FontIcon;
+
 import com.brunomnsilva.smartgraph.containers.ContentZoomScrollPane;
 import com.brunomnsilva.smartgraph.graph.Digraph;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
@@ -18,6 +20,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,11 +31,13 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -61,11 +66,13 @@ public class MainPane extends BorderPane {
     // ANCHOR - Properties
     private SimpleBooleanProperty isVertexSelectedProperty = new SimpleBooleanProperty(false);
 
+    // Icons
+    FontIcon magicLayoutIcon = new FontIcon("eli-magic");
+
     // Buttons
     private Button finalVertex = new Button("Final Vertex");
     private Button initialVertex = new Button("Initial Vertex");
-
-    // Text
+    private Button magiclayoutButton = new Button();
 
     // Vertex
     private SmartGraphVertexNode selectedVertexNode; // selected UI vertex
@@ -151,6 +158,18 @@ public class MainPane extends BorderPane {
     }
 
     private void initSideMenu() {
+        // magiclayoutButton.getStyleClass().clear();
+        // magiclayoutButton.setAlignment(Pos.CENTER);
+        // magicLayoutIcon.setScaleX(1.6);
+        // magicLayoutIcon.setScaleY(1.6);
+        // magiclayoutButton.setGraphic(magicLayoutIcon);
+        // magiclayoutButton.setPrefWidth(50);
+        // magiclayoutButton.setPrefHeight(50);
+        // sideMenuStatic.getChildren().addAll(magiclayoutButton);
+        IconButton magicIcon = new IconButton("ci-magic-wand-filled");
+        IconButton nodeIcon = new IconButton("ci-text-creation");
+
+        sideMenuStatic.getChildren().addAll(magicIcon, nodeIcon);
         sideMenuHidedable.getChildren().addAll(finalVertex);
         sideMenuHidedable.getChildren().addAll(initialVertex);
 

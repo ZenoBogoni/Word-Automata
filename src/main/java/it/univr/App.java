@@ -36,6 +36,8 @@ public class App extends Application {
         SceneReference.setMainPane(mainPane);
 
         this.scene = new Scene(mainPane, Constants.WIDTH, Constants.HEIGHT);
+        String css = getClass().getResource("stylesheets/mainPane.css").toExternalForm();
+        this.scene.getStylesheets().add(css);
         this.stage.setScene(scene);
         this.stage.setTitle("Word Automata");
         this.stage.setMinHeight(Constants.HEIGHT);
