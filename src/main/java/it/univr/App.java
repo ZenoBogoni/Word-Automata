@@ -36,7 +36,7 @@ public class App extends Application {
         SceneReference.setMainPane(mainPane);
 
         this.scene = new Scene(mainPane, Constants.WIDTH, Constants.HEIGHT);
-        String css = getClass().getResource("stylesheets/mainPane.css").toExternalForm();
+        String css = getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm();
         this.scene.getStylesheets().add(css);
         this.stage.setScene(scene);
         this.stage.setTitle("Word Automata");
@@ -53,8 +53,12 @@ public class App extends Application {
         graphView = SceneReference.getGrapView();
         if (isDarkMode) {
             Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
+            scene.getStylesheets().add(getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());
+            scene.getStylesheets().removeAll(getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
         } else {
             Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
+            scene.getStylesheets().add(getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
+            scene.getStylesheets().removeAll(getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());
         }
         graphView.changeGraphTheme();
         isDarkMode = !isDarkMode;

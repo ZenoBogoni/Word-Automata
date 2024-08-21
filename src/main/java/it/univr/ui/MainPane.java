@@ -2,10 +2,7 @@ package it.univr.ui;
 
 import java.io.IOException;
 
-import org.kordamp.ikonli.javafx.FontIcon;
-
 import com.brunomnsilva.smartgraph.containers.ContentZoomScrollPane;
-import com.brunomnsilva.smartgraph.graph.Digraph;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.ForceDirectedSpringGravityLayoutStrategy;
@@ -15,12 +12,12 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 import com.brunomnsilva.smartgraph.graphview.SmartPlacementStrategy;
 
 import it.univr.App;
+import it.univr.ui.sidePanes.MagicLayoutSidePane;
 import it.univr.utils.SceneReference;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,16 +25,13 @@ import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -45,8 +39,6 @@ import javafx.stage.StageStyle;
 public class MainPane extends BorderPane {
 
     // ANCHOR - Java variables
-    private static int count = 0;
-    private static int countSelected = 0;
     private static boolean isLinkingPhase = false; // are we trying to link vertices?
     private boolean isSideHidden = false; // is the side panel hidden?
     private boolean isVertexPressed = false; // is a vertex being pressed?
@@ -70,28 +62,26 @@ public class MainPane extends BorderPane {
     IconButton magicIcon;
     IconButton nodeIcon;
 
-    // Buttons
-    private Button finalVertex = new Button("Final Vertex");
-    private Button initialVertex = new Button("Initial Vertex");
-    private Button magiclayoutButton = new Button();
+    // ANCHOR - Side Panes
+    MagicLayoutSidePane magicLayoutSidePane = new MagicLayoutSidePane();
 
     // Vertex
+    @SuppressWarnings("rawtypes")
     private SmartGraphVertexNode selectedVertexNode; // selected UI vertex
-    private Vertex finalNode, initialNode; // Algoritm Component
 
     // ANCHOR - FXML elements
     @FXML
     private MenuBar menuBar;
     @FXML
-    private VBox sideMenuHidedable, sideMenuStatic;
+    private VBox sideMenuStatic;
+    @FXML
+    private ScrollPane sideMenuHidable;
     @FXML
     private HBox sideMenu;
     @FXML
     private Menu file = new Menu("File"), view = new Menu("View"), help = new Menu("Help");
     @FXML
     private CheckMenuItem theme = new CheckMenuItem("Dark Mode"), autoLayout = new CheckMenuItem("Automatic Layout");
-    @FXML
-    private Label nodeNameLabel;
 
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Constructor */
@@ -136,7 +126,7 @@ public class MainPane extends BorderPane {
 
         // Auto Layout
         autoLayout.setOnAction(e -> {
-            graphView.setAutomaticLayoutStrategy(new ForceDirectedSpringGravityLayoutStrategy(50.0, 0.5, 5.0, 0.5, 0.01));
+            graphView.setAutomaticLayoutStrategy(magicLayoutSidePane.getMagicLayout());
             graphView.setAutomaticLayout(autoLayout.isSelected());
             graphView.update();
         });
@@ -161,12 +151,14 @@ public class MainPane extends BorderPane {
 
         magicIcon = new IconButton("ci-magic-wand-filled");
         nodeIcon = new IconButton("ci-text-creation");
-        nodeIcon.setSelectedtab();
+        magicIcon.setSelectedtab();
         sideMenuStatic.getChildren().addAll(nodeIcon, magicIcon);
-        sideMenuHidedable.getChildren().addAll(finalVertex);
-        sideMenuHidedable.getChildren().addAll(initialVertex);
+        magicLayoutSidePane.setPrefHeight(sideMenuHidable.USE_COMPUTED_SIZE);
+        magicLayoutSidePane.setPrefWidth(sideMenu.USE_COMPUTED_SIZE);
+        sideMenuHidable.setFitToWidth(true); // remove space for scrollbar
+        sideMenuHidable.setFitToHeight(true); // remove space for scrollbar
+        sideMenuHidable.setContent(magicLayoutSidePane);
 
-        nodeNameLabel.visibleProperty().bind(isVertexSelectedProperty);
         // nodeNameLabel.textProperty().bind(selectedVertexNode.getAttachedLabel().textProperty());
 
         this.setOnKeyPressed(key -> {
@@ -179,16 +171,6 @@ public class MainPane extends BorderPane {
             if (key.getCode() == KeyCode.CONTROL) {
                 isLinkingPhase = false;
             }
-        });
-
-        finalVertex.setOnAction(e -> {
-            isFinalVertex = !isFinalVertex;
-            isInitialVertex = false;
-        });
-
-        initialVertex.setOnAction(e -> {
-            isInitialVertex = !isInitialVertex;
-            isFinalVertex = false;
         });
 
         graphPane.setOnMousePressed(e -> {
@@ -208,10 +190,10 @@ public class MainPane extends BorderPane {
     /* -------------------------------------------------------------------------- */
     public void hideSidePanel() {
         if (isSideHidden) {
-            sideMenu.getChildren().add(sideMenuHidedable);
-            sideMenu.setPrefWidth(300);
+            sideMenu.getChildren().add(sideMenuHidable);
+            sideMenu.setPrefWidth(350);
         } else {
-            sideMenu.getChildren().remove(sideMenuHidedable);
+            sideMenu.getChildren().remove(sideMenuHidable);
             sideMenu.setPrefWidth(sideMenuStatic.getWidth());
         }
         isSideHidden = !isSideHidden;
@@ -312,14 +294,6 @@ public class MainPane extends BorderPane {
         return graph;
     }
 
-    public SmartGraphVertexNode getInitialNode() {
-        return (SmartGraphVertexNode) initialNode;
-    }
-
-    public SmartGraphVertexNode getFinalNode() {
-        return (SmartGraphVertexNode) finalNode;
-    }
-
     public double getMouseX() {
         return mouseX;
     }
@@ -354,7 +328,6 @@ public class MainPane extends BorderPane {
         } else {
             selectedVertexNode = vertex;
             setIsVertexSelected(true);
-            nodeNameLabel.textProperty().bind(selectedVertexNode.getAttachedLabel().textProperty());
             selectedVertexNode.setStyleClass("selectedVertex");
         }
 

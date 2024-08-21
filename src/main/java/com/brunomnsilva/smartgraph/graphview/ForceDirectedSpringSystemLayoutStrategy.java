@@ -48,10 +48,10 @@ import javafx.geometry.Point2D;
  */
 public class ForceDirectedSpringSystemLayoutStrategy<V> extends ForceDirectedLayoutStrategy<V> {
 
-    private final double repulsiveForce;
-    private final double attractionForce;
-    private final double attractionScale;
-    private final double acceleration;
+    private double repulsiveForce;
+    private double attractionForce;
+    private double attractionScale;
+    private double acceleration;
 
     /* just a scaling factor so all parameters are, at most, two-digit numbers. */
     private static final double A_THOUSAND = 1000;
@@ -71,12 +71,25 @@ public class ForceDirectedSpringSystemLayoutStrategy<V> extends ForceDirectedLay
     /**
      * Constructs a new instance of ForceDirectedSpringGravityLayoutStrategy with the specified parameters.
      *
-     * @param repulsiveForce The strength of the repulsive force between nodes. Higher values result in greater repulsion.
+     * @param repulsiveForce  The strength of the repulsive force between nodes. Higher values result in greater repulsion.
      * @param attractionForce The strength of the attractive force between connected nodes. Higher values result in stronger attraction.
      * @param attractionScale The scale factor for attraction. It determines the effectiveness of the attraction force based on the distance between connected nodes.
-     * @param acceleration The acceleration factor applied to node movements. Higher values result in faster movements.
+     * @param acceleration    The acceleration factor applied to node movements. Higher values result in faster movements.
      */
     public ForceDirectedSpringSystemLayoutStrategy(double repulsiveForce, double attractionForce, double attractionScale, double acceleration) {
+        Args.requireGreaterThan(repulsiveForce, "repulsiveForce", 0);
+        Args.requireGreaterThan(attractionForce, "attractionForce", 0);
+        Args.requireGreaterThan(attractionScale, "attractionScale", 0);
+        Args.requireGreaterThan(acceleration, "acceleration", 0);
+        Args.requireInRange(acceleration, "acceleration", 0, 1);
+
+        this.repulsiveForce = repulsiveForce;
+        this.attractionForce = attractionForce;
+        this.attractionScale = attractionScale;
+        this.acceleration = acceleration;
+    }
+
+    public void updateForces(double repulsiveForce, double attractionForce, double attractionScale, double acceleration) {
         Args.requireGreaterThan(repulsiveForce, "repulsiveForce", 0);
         Args.requireGreaterThan(attractionForce, "attractionForce", 0);
         Args.requireGreaterThan(attractionScale, "attractionScale", 0);
@@ -106,11 +119,11 @@ public class ForceDirectedSpringSystemLayoutStrategy<V> extends ForceDirectedLay
 
         // attractive force
         Point2D attraction;
-        if(v.isAdjacentTo(w)) {
+        if (v.isAdjacentTo(w)) {
             double attraction_factor = attractionForce * Math.log(distance / attractionScale);
             attraction = forceDirection.multiply(attraction_factor);
         } else {
-            attraction = new Point2D(0,0);
+            attraction = new Point2D(0, 0);
         }
 
         // repelling force

@@ -1,6 +1,10 @@
+* {
+    -fx-accent: red;
+}
+
 .selected-tab {
     -fx-border-width: 0 0 0 2; 
-    -fx-border-color: red; 
+    -fx-border-color: -fx-accent; 
     -fx-border-style: solid;
 }
 
@@ -11,11 +15,11 @@
 }
 
 .selected-icon {
-    -fx-icon-color: rgb(255, 255, 255);
+    -fx-icon-color: rgb(0, 0, 0);
     -fx-icon-size: 36px;
 }
 
 .icon {
-    -fx-icon-color: rgb(150, 150, 150);
+    -fx-icon-color: rgb(80, 80, 80);
     -fx-icon-size: 36px;
 }
