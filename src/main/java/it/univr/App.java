@@ -33,7 +33,7 @@ public class App extends Application {
         Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
 
         mainPane = new MainPane(this);
-        SceneReference.setMainPane(mainPane);
+        mainPane.initSceneReference();
 
         this.scene = new Scene(mainPane, Constants.WIDTH, Constants.HEIGHT);
         String css = getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm();

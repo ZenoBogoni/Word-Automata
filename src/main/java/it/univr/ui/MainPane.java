@@ -57,13 +57,16 @@ public class MainPane extends BorderPane {
 
     // ANCHOR - Properties
     private SimpleBooleanProperty isVertexSelectedProperty = new SimpleBooleanProperty(false);
+    private SimpleBooleanProperty confirmToApplyProperty = new SimpleBooleanProperty(false);
+    private SimpleBooleanProperty autoLayoutProperty = new SimpleBooleanProperty(false);
+    private SimpleBooleanProperty clearTextOnClickProperty = new SimpleBooleanProperty(true);
 
     // ANCHOR - Icons
     IconButton magicIcon;
     IconButton nodeIcon;
 
     // ANCHOR - Side Panes
-    MagicLayoutSidePane magicLayoutSidePane = new MagicLayoutSidePane();
+    MagicLayoutSidePane magicLayoutSidePane;
 
     // Vertex
     @SuppressWarnings("rawtypes")
@@ -79,9 +82,11 @@ public class MainPane extends BorderPane {
     @FXML
     private HBox sideMenu;
     @FXML
-    private Menu file = new Menu("File"), view = new Menu("View"), help = new Menu("Help");
+    private Menu file = new Menu("File"), options = new Menu("Options"), help = new Menu("Help");
     @FXML
-    private CheckMenuItem theme = new CheckMenuItem("Dark Mode"), autoLayout = new CheckMenuItem("Automatic Layout");
+    private CheckMenuItem theme = new CheckMenuItem("Dark Mode"), autoLayout = new CheckMenuItem("Automatic Layout"), confirmToApply = new CheckMenuItem("Confirm to apply");
+    @FXML
+    private CheckMenuItem clearTextOnClick = new CheckMenuItem("Clear text on input");
 
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Constructor */
@@ -104,19 +109,30 @@ public class MainPane extends BorderPane {
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Inititalization */
     /* -------------------------------------------------------------------------- */
+    public void initSceneReference() {
+        SceneReference.setMainPane(this);
+        SceneReference.setAutoLayoutProperty(autoLayoutProperty);
+        SceneReference.setConfirmToApplyProperty(confirmToApplyProperty);
+        SceneReference.setClearTextOnClickProperty(clearTextOnClickProperty);
+        SceneReference.setGraph(graph);
+        SceneReference.setGrapView(graphView);
+    }
+
     public void initMainPane() {
+        magicLayoutSidePane = new MagicLayoutSidePane();
         initMenuBar();
         initSideMenu();
         graphView.init();
+        graphView.setAutomaticLayoutStrategy(magicLayoutSidePane.getMagicLayout());
         graphView.update();
     }
 
     private void initMenuBar() {
         // MenuBar
-        menuBar.getMenus().addAll(file, view, help);
+        menuBar.getMenus().addAll(file, options, help);
 
         // View
-        view.getItems().addAll(theme, autoLayout);
+        options.getItems().addAll(theme, autoLayout, confirmToApply, clearTextOnClick);
 
         // DarkMode
         theme.setSelected(true);
@@ -125,17 +141,18 @@ public class MainPane extends BorderPane {
         });
 
         // Auto Layout
-        autoLayout.setOnAction(e -> {
-            graphView.setAutomaticLayoutStrategy(magicLayoutSidePane.getMagicLayout());
-            graphView.setAutomaticLayout(autoLayout.isSelected());
-            graphView.update();
-        });
+        autoLayout.selectedProperty().bindBidirectional(autoLayoutProperty);
+        graphView.automaticLayoutProperty().bindBidirectional(autoLayoutProperty);
+
+        // Confirm to apply
+        confirmToApply.selectedProperty().bindBidirectional(confirmToApplyProperty);
+
+        // Clear text on click/input
+        clearTextOnClick.selectedProperty().bindBidirectional(clearTextOnClickProperty);
 
     }
 
     private void initGraph() {
-        SceneReference.setGraph(graph);
-        SceneReference.setGrapView(graphView);
         this.setCenter(graphPane);
         graphPane.setPadding(new Insets(10));
         graphView.setOnMouseClicked(e -> {
@@ -343,6 +360,10 @@ public class MainPane extends BorderPane {
 
     public void setIsVertexSelected(boolean bool) {
         isVertexSelectedProperty.set(bool);
+    }
+
+    public void setIsLinkingPhase(boolean bool) {
+        isLinkingPhase = bool;
     }
 
 }

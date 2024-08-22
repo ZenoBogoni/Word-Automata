@@ -4,12 +4,17 @@ import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 
 import it.univr.ui.MainPane;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.stage.Stage;
 
 public class SceneReference {
     private static MainPane mainPane;
     private static SmartGraphPanel grapView;
     private static DigraphEdgeList<String, String> graph;
+    private static SimpleBooleanProperty confirmToApplyProperty;
+    private static SimpleBooleanProperty autoLayoutProperty;
+
+    private static SimpleBooleanProperty clearTextOnClickProperty;
 
     private static Stage stage;
 
@@ -32,6 +37,18 @@ public class SceneReference {
         return graph;
     }
 
+    public static SimpleBooleanProperty getConfirmToApplyProperty() {
+        return confirmToApplyProperty;
+    }
+
+    public static SimpleBooleanProperty getClearTextOnClickProperty() {
+        return clearTextOnClickProperty;
+    }
+
+    public static SimpleBooleanProperty getAutoLayoutProperty() {
+        return autoLayoutProperty;
+    }
+
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Setters */
     /* -------------------------------------------------------------------------- */
@@ -50,5 +67,17 @@ public class SceneReference {
 
     public static void setGraph(DigraphEdgeList<String, String> graph) {
         SceneReference.graph = graph;
+    }
+
+    public static void setConfirmToApplyProperty(SimpleBooleanProperty confirmToApplyProperty) {
+        SceneReference.confirmToApplyProperty = confirmToApplyProperty;
+    }
+
+    public static void setClearTextOnClickProperty(SimpleBooleanProperty clearTextOnClickProperty) {
+        SceneReference.clearTextOnClickProperty = clearTextOnClickProperty;
+    }
+
+    public static void setAutoLayoutProperty(SimpleBooleanProperty autoLayoutProperty) {
+        SceneReference.autoLayoutProperty = autoLayoutProperty;
     }
 }

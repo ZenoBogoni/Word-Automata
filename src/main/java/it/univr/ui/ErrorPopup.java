@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
+import it.univr.utils.SceneReference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -38,6 +39,7 @@ public class ErrorPopup extends BorderPane {
     public void initialize() {
         closeButton.setOnAction(e -> {
             this.stage = (Stage) getScene().getWindow();
+            SceneReference.getMainPane().setIsLinkingPhase(false);
             stage.close();
         });
         errorText.setText(errorMsg);
