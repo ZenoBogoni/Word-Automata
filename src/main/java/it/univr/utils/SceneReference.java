@@ -8,15 +8,18 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.stage.Stage;
 
 public class SceneReference {
+
+    // Components
+    private static Stage stage;
     private static MainPane mainPane;
     private static SmartGraphPanel grapView;
     private static DigraphEdgeList<String, String> graph;
+
+    // Properties
+    private static SimpleBooleanProperty isVertexSelectedProperty;
     private static SimpleBooleanProperty confirmToApplyProperty;
     private static SimpleBooleanProperty autoLayoutProperty;
-
     private static SimpleBooleanProperty clearTextOnClickProperty;
-
-    private static Stage stage;
 
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Getters */
@@ -49,6 +52,10 @@ public class SceneReference {
         return autoLayoutProperty;
     }
 
+    public static SimpleBooleanProperty getIsVertexSelectedProperty() {
+        return isVertexSelectedProperty;
+    }
+
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Setters */
     /* -------------------------------------------------------------------------- */
@@ -79,5 +86,9 @@ public class SceneReference {
 
     public static void setAutoLayoutProperty(SimpleBooleanProperty autoLayoutProperty) {
         SceneReference.autoLayoutProperty = autoLayoutProperty;
+    }
+
+    public static void setIsVertexSelectedProperty(SimpleBooleanProperty isVertexSelectedProperty) {
+        SceneReference.isVertexSelectedProperty = isVertexSelectedProperty;
     }
 }

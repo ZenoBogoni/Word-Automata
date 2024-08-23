@@ -15,17 +15,20 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class IconButton extends Button {
 
     private static IconButton selectedTab;
     private MainPane mainPane;
+    private VBox sidePane;
 
     private FontIcon icon;
 
-    public IconButton(String iconName) {
+    public IconButton(String iconName, VBox sidePane) {
         icon = new FontIcon(iconName);
+        this.sidePane = sidePane;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("iconButton.fxml"));
         fxmlLoader.setRoot(this);
@@ -49,14 +52,15 @@ public class IconButton extends Button {
         setGraphic(icon);
 
         setOnMouseClicked(e -> {
-            if (selectedTab != null && !selectedTab.equals(this)) {
+            if (selectedTab != null && !selectedTab.equals(this)) { // switch to this tab
                 removeTabSelection();
                 setSelectedtab();
-            } else if (selectedTab == null) {
+                mainPane.setSidePane(sidePane);
+            } else if (selectedTab == null) { // open side pane
                 setSelectedtab();
-                mainPane.hideSidePanel();
-            } else {
-                mainPane.hideSidePanel();
+                mainPane.hideSidePane(sidePane);
+            } else { // close side pane
+                mainPane.hideSidePane(sidePane);
                 removeTabSelection();
                 selectedTab = null;
             }

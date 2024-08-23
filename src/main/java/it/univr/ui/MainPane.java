@@ -12,6 +12,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 import com.brunomnsilva.smartgraph.graphview.SmartPlacementStrategy;
 
 import it.univr.App;
+import it.univr.ui.sidePanes.GraphSidePane;
 import it.univr.ui.sidePanes.MagicLayoutSidePane;
 import it.univr.utils.SceneReference;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -67,6 +68,7 @@ public class MainPane extends BorderPane {
 
     // ANCHOR - Side Panes
     MagicLayoutSidePane magicLayoutSidePane;
+    GraphSidePane graphSidePane;
 
     // Vertex
     @SuppressWarnings("rawtypes")
@@ -116,10 +118,12 @@ public class MainPane extends BorderPane {
         SceneReference.setClearTextOnClickProperty(clearTextOnClickProperty);
         SceneReference.setGraph(graph);
         SceneReference.setGrapView(graphView);
+        SceneReference.setIsVertexSelectedProperty(isVertexSelectedProperty);
     }
 
     public void initMainPane() {
         magicLayoutSidePane = new MagicLayoutSidePane();
+        graphSidePane = new GraphSidePane();
         initMenuBar();
         initSideMenu();
         graphView.init();
@@ -166,17 +170,22 @@ public class MainPane extends BorderPane {
 
     private void initSideMenu() {
 
-        magicIcon = new IconButton("ci-magic-wand-filled");
-        nodeIcon = new IconButton("ci-text-creation");
-        magicIcon.setSelectedtab();
+        // icons
+        magicIcon = new IconButton("ci-magic-wand-filled", magicLayoutSidePane);
+        nodeIcon = new IconButton("ci-text-creation", graphSidePane);
         sideMenuStatic.getChildren().addAll(nodeIcon, magicIcon);
+
+        // layout
         magicLayoutSidePane.setPrefHeight(sideMenuHidable.USE_COMPUTED_SIZE);
         magicLayoutSidePane.setPrefWidth(sideMenu.USE_COMPUTED_SIZE);
+        graphSidePane.setPrefHeight(sideMenuHidable.USE_COMPUTED_SIZE);
+        graphSidePane.setPrefWidth(sideMenu.USE_COMPUTED_SIZE);
         sideMenuHidable.setFitToWidth(true); // remove space for scrollbar
         sideMenuHidable.setFitToHeight(true); // remove space for scrollbar
-        sideMenuHidable.setContent(magicLayoutSidePane);
 
-        // nodeNameLabel.textProperty().bind(selectedVertexNode.getAttachedLabel().textProperty());
+        // initial state
+        magicIcon.setSelectedtab();
+        sideMenuHidable.setContent(magicLayoutSidePane);
 
         this.setOnKeyPressed(key -> {
             if (key.getCode() == KeyCode.CONTROL) {
@@ -196,17 +205,14 @@ public class MainPane extends BorderPane {
             }
         });
 
-        sideMenuStatic.setOnMouseClicked(e -> {
-            hideSidePanel();
-        });
-
     }
 
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Methods */
     /* -------------------------------------------------------------------------- */
-    public void hideSidePanel() {
+    public void hideSidePane(VBox sidePane) {
         if (isSideHidden) {
+            setSidePane(sidePane);
             sideMenu.getChildren().add(sideMenuHidable);
             sideMenu.setPrefWidth(350);
         } else {
@@ -214,6 +220,10 @@ public class MainPane extends BorderPane {
             sideMenu.setPrefWidth(sideMenuStatic.getWidth());
         }
         isSideHidden = !isSideHidden;
+    }
+
+    public void setSidePane(VBox sidePane) {
+        sideMenuHidable.setContent(sidePane);
     }
 
     /* -------------------------------------------------------------------------- */

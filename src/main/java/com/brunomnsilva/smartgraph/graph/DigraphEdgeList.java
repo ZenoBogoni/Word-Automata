@@ -197,7 +197,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         inOutEdges.addAll(outboundEdges(v));
 
         for (Edge<E, V> edge : inOutEdges) {
-            edges.remove(edge.element());
+            edges.remove(edge.getId());
         }
 
         vertices.remove(v.element());
@@ -229,6 +229,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         return oldElement;
     }
 
+    // ! questa non puo' esistere
     @Override
     public E replace(Edge<E, V> e, E newElement) throws InvalidEdgeException {
         if (existsEdgeWith(newElement)) {
@@ -257,6 +258,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         return vertices.containsKey(vElement);
     }
 
+    // ! questa non e' corretta
     private boolean existsEdgeWith(E edgeElement) {
         return edges.containsKey(edgeElement);
     }
@@ -384,7 +386,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
             throw new InvalidVertexException("Not an adge.");
         }
 
-        if (!edges.containsKey(edge.element)) {
+        if (!edges.containsKey(edge.getId())) {
             throw new InvalidEdgeException("Edge does not belong to this graph.");
         }
 

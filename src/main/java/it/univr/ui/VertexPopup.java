@@ -55,7 +55,7 @@ public class VertexPopup extends AnchorPane {
 
                 SmartGraphPanel graphView = SceneReference.getGrapView();
                 graphView.updateAndWait();
-                System.out.println(graphView.getVertexByName(v));
+                System.out.println(graph.toString());
                 stage.close();
             }
         }
