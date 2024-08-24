@@ -1442,8 +1442,7 @@ public class SmartGraphPanel<V, E> extends Pane {
         }
     }
 
-    @SuppressWarnings("rawtypes")
-    public SmartGraphVertexNode getVertexByName(Vertex<V> name) {
+    public SmartGraphVertexNode<V> getVertexByName(Vertex<V> name) {
         if (vertexNodes.containsKey(name)) {
             return vertexNodes.get(name);
         }
