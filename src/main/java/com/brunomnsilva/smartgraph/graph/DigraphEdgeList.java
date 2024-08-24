@@ -24,7 +24,11 @@
 
 package com.brunomnsilva.smartgraph.graph;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of a digraph that adheres to the {@link Digraph} interface.
@@ -292,6 +296,10 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
             return this.element;
         }
 
+        public void setElement(V element) {
+            this.element = element;
+        }
+
         @Override
         public String toString() {
             return "Vertex{" + element + '}';
@@ -348,6 +356,14 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         public Vertex<V> getInbound() {
             return vertexInbound;
         }
+
+        public void setInbound(Vertex<V> inbound) {
+            this.vertexInbound = inbound;
+        }
+
+        public void setOutbound(Vertex<V> outbound) {
+            this.vertexOutbound = outbound;
+        }
     }
 
     /**
@@ -391,5 +407,28 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         }
 
         return edge;
+    }
+
+    // ! Aggiunto io
+    public Vertex<V> updateLabelFor(Vertex<V> vertex, V label) {
+        if (vertices.containsKey(label)) {
+            return null; // TODO - aggiungere feedback per utente
+        }
+        Vertex<V> newVertex = new MyVertex(label);
+        newVertex.setElement(label);
+        System.out.println("Vertex: " + vertex.toString());
+        // update incident edges
+        Collection<Edge<E, V>> inboundEdges = incidentEdges(vertex);
+        inboundEdges.forEach(edge -> {
+            ((MyEdge) edge).setInbound(newVertex);
+        });
+        // update outbound edges
+        Collection<Edge<E, V>> outboundEdges = outboundEdges(vertex);
+        outboundEdges.forEach(edge -> {
+            ((MyEdge) edge).setOutbound(newVertex);
+        });
+        vertices.remove(vertex.element());
+        vertices.put(label, newVertex);
+        return newVertex;
     }
 }

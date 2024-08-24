@@ -4,15 +4,11 @@ import java.io.IOException;
 
 import com.brunomnsilva.smartgraph.graphview.ForceDirectedLayoutStrategy;
 import com.brunomnsilva.smartgraph.graphview.ForceDirectedSpringGravityLayoutStrategy;
-import com.brunomnsilva.smartgraph.graphview.ForceDirectedSpringSystemLayoutStrategy;
 
 import it.univr.utils.SceneReference;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
-import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,13 +21,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.VBox;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.util.StringConverter;
-import javafx.util.converter.DoubleStringConverter;
-
-import java.text.DecimalFormat;
 
 public class MagicLayoutSidePane extends VBox {
     // FXML variables
@@ -58,7 +48,7 @@ public class MagicLayoutSidePane extends VBox {
 
     // JavaFX variables
     private Label applyLabel = new Label("Apply");
-    private ForceDirectedSpringGravityLayoutStrategy springLayout = new ForceDirectedSpringGravityLayoutStrategy<>(repulsiveForce.get(), attractiveForce.get(), attractionScale.get(), accelleration.get(), 0.005);
+    private ForceDirectedSpringGravityLayoutStrategy<String> springLayout = new ForceDirectedSpringGravityLayoutStrategy<>(repulsiveForce.get(), attractiveForce.get(), attractionScale.get(), accelleration.get(), 0.005);
 
     public MagicLayoutSidePane() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("magicLayoutSidePane.fxml"));
@@ -189,7 +179,7 @@ public class MagicLayoutSidePane extends VBox {
         springLayout.updateForces(defaultRepulsiveForce, defaultAttractiveForce, defaultAttractionScale, defaultAccelleration);
     }
 
-    public ForceDirectedLayoutStrategy getMagicLayout() {
+    public ForceDirectedLayoutStrategy<String> getMagicLayout() {
         return springLayout;
     }
 }

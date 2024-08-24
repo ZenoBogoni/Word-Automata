@@ -1,13 +1,11 @@
 package it.univr.ui;
 
+import it.univr.utils.SceneReference;
+
 import java.io.IOException;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
-import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
-
-import it.univr.utils.SceneReference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -17,10 +15,6 @@ import javafx.stage.Stage;
 
 public class VertexPopup extends AnchorPane {
     private Stage stage;
-    private MainPane mainPane = SceneReference.getMainPane();
-    private SmartGraphVertexNode from;
-    private SmartGraphVertexNode to;
-    private DigraphEdgeList<String, String> graph = SceneReference.getGraph();
 
     @FXML
     private Button cancelButton, submitButton;
@@ -41,7 +35,7 @@ public class VertexPopup extends AnchorPane {
     }
 
     private void checkName() {
-        DigraphEdgeList graph = SceneReference.getGraph();
+        DigraphEdgeList<String, String> graph = SceneReference.getGraph();
         String vertexName = vertexNameField.getText();
         if (vertexName.equals("")) {
             vertexNameField.setPromptText("Enter a valid vertex name");
@@ -51,9 +45,8 @@ public class VertexPopup extends AnchorPane {
                 vertexNameField.setText("");
                 vertexNameField.setPromptText("Vertex name already taken");
             } else {
-                Vertex<String> v = graph.insertVertex(vertexName);
-
-                SmartGraphPanel graphView = SceneReference.getGrapView();
+                graph.insertVertex(vertexName);
+                SmartGraphPanel<String, String> graphView = SceneReference.getGrapView();
                 graphView.updateAndWait();
                 System.out.println(graph.toString());
                 stage.close();

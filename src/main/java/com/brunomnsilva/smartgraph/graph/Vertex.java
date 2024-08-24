@@ -33,11 +33,13 @@ package com.brunomnsilva.smartgraph.graph;
  * @see Digraph
  */
 public interface Vertex<V> {
-    
+
     /**
      * Returns the element stored in the vertex.
      * 
-     * @return      stored element
+     * @return stored element
      */
     V element();
+
+    void setElement(V element);
 }

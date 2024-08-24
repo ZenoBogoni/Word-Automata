@@ -23,6 +23,10 @@
  */
 package com.brunomnsilva.smartgraph.graphview;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.brunomnsilva.smartgraph.graph.Vertex;
 
 import it.univr.ui.MainPane;
@@ -36,10 +40,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Internal implementation of a graph vertex for the {@link SmartGraphPanel}
@@ -471,6 +471,7 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
     /**
      * Make a node movable by dragging it around with the mouse primary button.
      */
+    @SuppressWarnings("unchecked")
     private void enableDrag() {
         final PointVector dragDelta = new PointVector(0, 0);
 
@@ -501,8 +502,9 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
 
             // ! AGGIUNTO IO -----------------
             MainPane mainPane = SceneReference.getMainPane();
-            mainPane.setSelectedVertexNode(this);
+            mainPane.setSelectedVertexNode((SmartGraphVertexNode<String>) this);
             mainPane.setVertexPressed(false);
+
             // ! -----------------------------
             mouseEvent.consume();
         });

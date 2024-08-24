@@ -22,7 +22,7 @@ public class App extends Application {
     private Scene scene;
     private boolean isDarkMode = true;
     private MainPane mainPane;
-    SmartGraphPanel graphView;
+    SmartGraphPanel<String, String> graphView;
 
     @Override
     public void start(Stage stage) throws IOException {

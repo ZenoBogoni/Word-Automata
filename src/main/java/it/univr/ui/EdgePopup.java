@@ -2,7 +2,6 @@ package it.univr.ui;
 
 import java.io.IOException;
 
-import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.utils.SceneReference;
@@ -11,22 +10,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class EdgePopup extends AnchorPane {
     private Stage stage;
     private MainPane mainPane = SceneReference.getMainPane();
-    private SmartGraphVertexNode from;
-    private SmartGraphVertexNode to;
-    private DigraphEdgeList<String, String> graph = SceneReference.getGraph();
+    private SmartGraphVertexNode<String> from;
+    private SmartGraphVertexNode<String> to;
 
     @FXML
     private Button cancelButton, submitButton;
     @FXML
     private TextField edgeNameField;
 
-    public EdgePopup(SmartGraphVertexNode from, SmartGraphVertexNode to) {
+    public EdgePopup(SmartGraphVertexNode<String> from, SmartGraphVertexNode<String> to) {
         this.from = from;
         this.to = to;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("edgePopup.fxml"));

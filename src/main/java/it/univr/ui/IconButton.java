@@ -1,22 +1,15 @@
 package it.univr.ui;
 
 import java.io.IOException;
-import java.nio.channels.SelectableChannel;
-
-import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
 
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import it.univr.utils.SceneReference;
-import javafx.css.converter.InsetsConverter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 public class IconButton extends Button {
 

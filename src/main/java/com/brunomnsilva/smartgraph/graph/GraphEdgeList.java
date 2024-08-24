@@ -23,7 +23,11 @@
  */
 package com.brunomnsilva.smartgraph.graph;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ADT Graph implementation that stores a collection of edges (and vertices) and
@@ -292,13 +296,15 @@ public class GraphEdgeList<V, E> implements Graph<V, E> {
 class MyEdge implements Edge<E, V> {
 
     E element;
+    int id;
     Vertex<V> vertexOutbound;
     Vertex<V> vertexInbound;
 
-    public MyEdge(E element, Vertex<V> vertexOutbound, Vertex<V> vertexInbound) {
+    public MyEdge(E element, Vertex<V> vertexOutbound, Vertex<V> vertexInbound, int id) {
         this.element = element;
         this.vertexOutbound = vertexOutbound;
         this.vertexInbound = vertexInbound;
+        this.id = id;
     }
 
     @Override
@@ -317,6 +323,11 @@ class MyEdge implements Edge<E, V> {
         vertices[1] = vertexInbound;
 
         return vertices;
+    }
+
+    @Override
+    public int getId() {
+        return this.id;
     }
 
     @Override

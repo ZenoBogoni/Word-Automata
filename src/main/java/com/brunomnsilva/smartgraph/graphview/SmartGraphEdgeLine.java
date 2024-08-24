@@ -24,6 +24,7 @@
 package com.brunomnsilva.smartgraph.graphview;
 
 import com.brunomnsilva.smartgraph.graph.Edge;
+
 import javafx.beans.binding.Bindings;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -44,7 +45,7 @@ public class SmartGraphEdgeLine<E, V> extends Line implements SmartGraphEdgeBase
     private final Edge<E, V> underlyingEdge;
 
     private final SmartGraphVertexNode<V> inbound;
-    private final SmartGraphVertexNode<V> outbound;
+    // private final SmartGraphVertexNode<V> outbound;
 
     private SmartLabel attachedLabel = null;
     private SmartArrow attachedArrow = null;
@@ -66,7 +67,7 @@ public class SmartGraphEdgeLine<E, V> extends Line implements SmartGraphEdgeBase
         }
 
         this.inbound = inbound;
-        this.outbound = outbound;
+        // this.outbound = outbound;
 
         this.underlyingEdge = edge;
 

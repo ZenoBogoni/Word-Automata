@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import com.brunomnsilva.smartgraph.containers.ContentZoomScrollPane;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
-import com.brunomnsilva.smartgraph.graph.Vertex;
-import com.brunomnsilva.smartgraph.graphview.ForceDirectedSpringGravityLayoutStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
@@ -16,14 +14,13 @@ import it.univr.ui.sidePanes.GraphSidePane;
 import it.univr.ui.sidePanes.MagicLayoutSidePane;
 import it.univr.utils.SceneReference;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
@@ -43,8 +40,6 @@ public class MainPane extends BorderPane {
     private static boolean isLinkingPhase = false; // are we trying to link vertices?
     private boolean isSideHidden = false; // is the side panel hidden?
     private boolean isVertexPressed = false; // is a vertex being pressed?
-    private boolean isFinalVertex = false; // is this the final vertex?
-    private boolean isInitialVertex = false; // is this the starting vertex?
     private String edgeName;
     private double mouseX;
     private double mouseY;
@@ -61,6 +56,7 @@ public class MainPane extends BorderPane {
     private SimpleBooleanProperty confirmToApplyProperty = new SimpleBooleanProperty(false);
     private SimpleBooleanProperty autoLayoutProperty = new SimpleBooleanProperty(false);
     private SimpleBooleanProperty clearTextOnClickProperty = new SimpleBooleanProperty(true);
+    private SimpleObjectProperty<SmartGraphVertexNode<String>> selectedVertexProperty = new SimpleObjectProperty<>(null);
 
     // ANCHOR - Icons
     IconButton magicIcon;
@@ -71,8 +67,7 @@ public class MainPane extends BorderPane {
     GraphSidePane graphSidePane;
 
     // Vertex
-    @SuppressWarnings("rawtypes")
-    private SmartGraphVertexNode selectedVertexNode; // selected UI vertex
+    private SmartGraphVertexNode<String> selectedVertexNode; // selected UI vertex
 
     // ANCHOR - FXML elements
     @FXML
@@ -118,6 +113,7 @@ public class MainPane extends BorderPane {
         SceneReference.setClearTextOnClickProperty(clearTextOnClickProperty);
         SceneReference.setGraph(graph);
         SceneReference.setGrapView(graphView);
+        SceneReference.setSelectedVertexProperty(selectedVertexProperty);
         SceneReference.setIsVertexSelectedProperty(isVertexSelectedProperty);
     }
 
@@ -176,10 +172,10 @@ public class MainPane extends BorderPane {
         sideMenuStatic.getChildren().addAll(nodeIcon, magicIcon);
 
         // layout
-        magicLayoutSidePane.setPrefHeight(sideMenuHidable.USE_COMPUTED_SIZE);
-        magicLayoutSidePane.setPrefWidth(sideMenu.USE_COMPUTED_SIZE);
-        graphSidePane.setPrefHeight(sideMenuHidable.USE_COMPUTED_SIZE);
-        graphSidePane.setPrefWidth(sideMenu.USE_COMPUTED_SIZE);
+        magicLayoutSidePane.setPrefHeight(-1);
+        magicLayoutSidePane.setPrefWidth(-1);
+        graphSidePane.setPrefHeight(-1);
+        graphSidePane.setPrefWidth(-1);
         sideMenuHidable.setFitToWidth(true); // remove space for scrollbar
         sideMenuHidable.setFitToHeight(true); // remove space for scrollbar
 
@@ -267,11 +263,11 @@ public class MainPane extends BorderPane {
      * @param from the outbound vertex
      * @param to   the inbound vertex
      */
-    private void edgeNamePopup(SmartGraphVertexNode from, SmartGraphVertexNode to) {
+    private void edgeNamePopup(SmartGraphVertexNode<String> from, SmartGraphVertexNode<String> to) {
         createModal(new EdgePopup(from, to));
     }
 
-    private void deselectVertex() {
+    public void deselectVertex() {
         if (selectedVertexNode != null) {
             setIsVertexSelected(false);
             selectedVertexNode.setStyleClass("vertex");
@@ -279,7 +275,7 @@ public class MainPane extends BorderPane {
         }
     }
 
-    public void addEdge(SmartGraphVertexNode from, SmartGraphVertexNode to) {
+    public void addEdge(SmartGraphVertexNode<String> from, SmartGraphVertexNode<String> to) {
         graph.insertEdge(from.getUnderlyingVertex(), to.getUnderlyingVertex(), edgeName);
         graphView.update();
     }
@@ -309,7 +305,7 @@ public class MainPane extends BorderPane {
     /* //ANCHOR - Getters */
     /* -------------------------------------------------------------------------- */
 
-    public SmartGraphVertexNode getSelectedVertexNode() {
+    public SmartGraphVertexNode<String> getSelectedVertexNode() {
         return selectedVertexNode;
     }
 
@@ -317,7 +313,7 @@ public class MainPane extends BorderPane {
         return isVertexPressed;
     }
 
-    public DigraphEdgeList getGraph() {
+    public DigraphEdgeList<String, String> getGraph() {
         return graph;
     }
 
@@ -337,7 +333,7 @@ public class MainPane extends BorderPane {
     /* //ANCHOR - Setters */
     /* -------------------------------------------------------------------------- */
 
-    public void setSelectedVertexNode(SmartGraphVertexNode vertex) {
+    public void setSelectedVertexNode(SmartGraphVertexNode<String> vertex) {
         if (selectedVertexNode != null) {
             if (isLinkingPhase) {
                 if (graph.areAdjacent(selectedVertexNode.getUnderlyingVertex(), vertex.getUnderlyingVertex())) {

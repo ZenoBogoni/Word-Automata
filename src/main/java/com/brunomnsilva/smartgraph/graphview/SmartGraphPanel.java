@@ -23,12 +23,32 @@
  */
 package com.brunomnsilva.smartgraph.graphview;
 
+import static com.brunomnsilva.smartgraph.graphview.UtilitiesJavaFX.pick;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.brunomnsilva.smartgraph.graph.Digraph;
-import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
-import com.brunomnsilva.smartgraph.graph.DigraphEdgeList.MyVertex;
 
 import it.univr.ui.MainPane;
 import it.univr.utils.Constants;
@@ -48,22 +68,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.brunomnsilva.smartgraph.graphview.UtilitiesJavaFX.pick;
 
 /**
  * JavaFX {@link Pane} that is capable of plotting a {@link Graph} or
@@ -764,7 +768,7 @@ public class SmartGraphPanel<V, E> extends Pane {
 
         List<SmartGraphVertexNode<V>> newVertices = null;
 
-        Bounds bounds = getPlotBounds();
+        // Bounds bounds = getPlotBounds();
         // double mx = bounds.getMinX() + bounds.getWidth() / 2.0;
         // double my = bounds.getMinY() + bounds.getHeight() / 2.0;
         // ANCHOR - new vertex position
@@ -1060,6 +1064,7 @@ public class SmartGraphPanel<V, E> extends Pane {
      *
      * @return bounding box
      */
+    @SuppressWarnings("unused")
     private Bounds getPlotBounds() {
         double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE,
                 maxX = Double.MIN_VALUE, maxY = Double.MIN_VALUE;
@@ -1082,6 +1087,7 @@ public class SmartGraphPanel<V, E> extends Pane {
         automaticLayoutStrategy.computeForces(vertexNodes.values(), getWidth(), getHeight());
     }
 
+    @SuppressWarnings("unused")
     private boolean areAdjacent(SmartGraphVertexNode<V> v, SmartGraphVertexNode<V> u) {
         return v.isAdjacentTo(u);
     }
@@ -1436,6 +1442,7 @@ public class SmartGraphPanel<V, E> extends Pane {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public SmartGraphVertexNode getVertexByName(Vertex<V> name) {
         if (vertexNodes.containsKey(name)) {
             return vertexNodes.get(name);

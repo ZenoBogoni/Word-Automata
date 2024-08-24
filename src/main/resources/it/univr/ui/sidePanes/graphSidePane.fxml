@@ -27,7 +27,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button mnemonicParsing="false" style="-fx-background-color: #ff2929bb;" text="DELETE VERTEX">
+            <Button fx:id="deleteVertexButton" mnemonicParsing="false" style="-fx-background-color: #ff2929bb;" text="DELETE VERTEX">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

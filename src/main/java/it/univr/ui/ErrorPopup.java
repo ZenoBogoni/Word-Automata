@@ -2,16 +2,11 @@ package it.univr.ui;
 
 import java.io.IOException;
 
-import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
-
 import it.univr.utils.SceneReference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 

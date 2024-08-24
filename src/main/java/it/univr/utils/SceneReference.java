@@ -2,9 +2,11 @@ package it.univr.utils;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.ui.MainPane;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.Stage;
 
 public class SceneReference {
@@ -12,7 +14,7 @@ public class SceneReference {
     // Components
     private static Stage stage;
     private static MainPane mainPane;
-    private static SmartGraphPanel grapView;
+    private static SmartGraphPanel<String, String> grapView;
     private static DigraphEdgeList<String, String> graph;
 
     // Properties
@@ -20,6 +22,7 @@ public class SceneReference {
     private static SimpleBooleanProperty confirmToApplyProperty;
     private static SimpleBooleanProperty autoLayoutProperty;
     private static SimpleBooleanProperty clearTextOnClickProperty;
+    private static SimpleObjectProperty<SmartGraphVertexNode<String>> selectedVertexProperty;
 
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Getters */
@@ -28,7 +31,7 @@ public class SceneReference {
         return mainPane;
     }
 
-    public static SmartGraphPanel getGrapView() {
+    public static SmartGraphPanel<String, String> getGrapView() {
         return grapView;
     }
 
@@ -56,6 +59,10 @@ public class SceneReference {
         return isVertexSelectedProperty;
     }
 
+    public static SimpleObjectProperty<SmartGraphVertexNode<String>> getSelectedVertexProperty() {
+        return selectedVertexProperty;
+    }
+
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Setters */
     /* -------------------------------------------------------------------------- */
@@ -64,7 +71,7 @@ public class SceneReference {
         mainPane = pane;
     }
 
-    public static void setGrapView(SmartGraphPanel grapView) {
+    public static void setGrapView(SmartGraphPanel<String, String> grapView) {
         SceneReference.grapView = grapView;
     }
 
@@ -90,5 +97,9 @@ public class SceneReference {
 
     public static void setIsVertexSelectedProperty(SimpleBooleanProperty isVertexSelectedProperty) {
         SceneReference.isVertexSelectedProperty = isVertexSelectedProperty;
+    }
+
+    public static void setSelectedVertexProperty(SimpleObjectProperty<SmartGraphVertexNode<String>> selectedVertexProperty) {
+        SceneReference.selectedVertexProperty = selectedVertexProperty;
     }
 }
