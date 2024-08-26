@@ -19,7 +19,7 @@ public class SceneReference {
     private static SmartGraphPanel<String, String> grapView;
     private static DigraphEdgeList<String, String> graph;
     private static SmartGraphVertexNode<String> initialVertexNode;
-    private static List<SmartGraphVertexNode<String>> finalVerteciesNodes;
+    private static List<SmartGraphVertexNode<String>> finalVerticesNodes;
 
     // Properties
     private static SimpleBooleanProperty isVertexSelectedProperty;
@@ -43,8 +43,8 @@ public class SceneReference {
         return initialVertexNode;
     }
 
-    public static List<SmartGraphVertexNode<String>> getFinalVerteciesNodes() {
-        return finalVerteciesNodes;
+    public static List<SmartGraphVertexNode<String>> getFinalVerticesNodes() {
+        return finalVerticesNodes;
     }
 
     public static Stage getStage() {
@@ -87,8 +87,8 @@ public class SceneReference {
         SceneReference.initialVertexNode = initialVertexNode;
     }
 
-    public static void setFinalVerteciesNodes(List<SmartGraphVertexNode<String>> finalVerteciesNodes) {
-        SceneReference.finalVerteciesNodes = finalVerteciesNodes;
+    public static void setFinalVerticesNodes(List<SmartGraphVertexNode<String>> finalVerticesNodes) {
+        SceneReference.finalVerticesNodes = finalVerticesNodes;
     }
 
     public static void setGrapView(SmartGraphPanel<String, String> grapView) {

@@ -24,9 +24,11 @@ public class VertexPopup extends AnchorPane {
     private static SmartGraphPanel<String, String> graphView = SceneReference.getGrapView();
     private static SmartGraphVertexNode<String> initialVertexNode = SceneReference.getInitialVertexNode();
 
-    private static List<SmartGraphVertexNode<String>> finalVerteciesNodes = SceneReference.getFinalVerteciesNodes();
+    private static List<SmartGraphVertexNode<String>> finalVerticesNodes = SceneReference.getFinalVerticesNodes();
     private static SmartGraphVertexNode<String> candidateVertex;
     private static boolean isThereAnInitialVertex = false;
+
+    private static String vertexName;
 
     @FXML
     private Button cancelButton, submitButton;
@@ -49,14 +51,15 @@ public class VertexPopup extends AnchorPane {
     }
 
     private void checkName() {
-        String vertexName = vertexNameField.getText();
+
+        vertexName = vertexNameField.getText();
 
         if (vertexName.equals("")) {
-            eventResetNameFieldWithErrorMessage("Enter a valid vertex name");
+            resetNameFieldWithErrorMessage("Enter a valid vertex name");
         } else {
 
             if (graph.existsVertexWith(vertexName)) {
-                eventResetNameFieldWithErrorMessage("Vertex name already taken");
+                resetNameFieldWithErrorMessage("Vertex name already taken");
             } else {
                 graph.insertVertex(vertexName);
                 graphView.updateAndWait();
@@ -76,7 +79,7 @@ public class VertexPopup extends AnchorPane {
         candidateVertex = graphView.getVertexByName(graph.vertexOf(candidateVertexName));
 
         if (checkBoxFinalVertex.isSelected())
-            finalVerteciesNodes.add(candidateVertex);
+            finalVerticesNodes.add(candidateVertex);
 
         if (checkBoxInitialVertex.isSelected() && !isThereAnInitialVertex) {
             initialVertexNode = candidateVertex;
@@ -84,7 +87,7 @@ public class VertexPopup extends AnchorPane {
         }
     }
 
-    private void eventResetNameFieldWithErrorMessage(String error) {
+    private void resetNameFieldWithErrorMessage(String error) {
         vertexNameField.setText("");
         vertexNameField.setPromptText(error);
     }
@@ -104,13 +107,13 @@ public class VertexPopup extends AnchorPane {
         checkBoxInitialVertex.setOnAction(e -> {
             this.stage = (Stage) getScene().getWindow();
 
-            eventUnselectOppositeCheckBox(checkBoxFinalVertex);
+            eventDeselectOppositeCheckBox(checkBoxFinalVertex);
         });
 
         checkBoxFinalVertex.setOnAction(e -> {
             this.stage = (Stage) getScene().getWindow();
 
-            eventUnselectOppositeCheckBox(checkBoxInitialVertex);
+            eventDeselectOppositeCheckBox(checkBoxInitialVertex);
         });
 
         cancelButton.setOnAction(e -> {
@@ -119,7 +122,7 @@ public class VertexPopup extends AnchorPane {
         });
     }
 
-    private void eventUnselectOppositeCheckBox(CheckBox oppositeCheckBox) {
+    private void eventDeselectOppositeCheckBox(CheckBox oppositeCheckBox) {
         if (oppositeCheckBox.isSelected())
             oppositeCheckBox.setSelected(false);
     }

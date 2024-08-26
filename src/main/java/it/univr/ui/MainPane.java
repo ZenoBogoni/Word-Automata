@@ -71,7 +71,7 @@ public class MainPane extends BorderPane {
 
     // Vertex
     private SmartGraphVertexNode<String> selectedVertexNode, initialVertexNode;
-    private List<SmartGraphVertexNode<String>> finalVerteciesNodes = new ArrayList<SmartGraphVertexNode<String>>();
+    private List<SmartGraphVertexNode<String>> finalVerticesNodes = new ArrayList<SmartGraphVertexNode<String>>();
 
     // ANCHOR - FXML elements
     @FXML
@@ -118,7 +118,7 @@ public class MainPane extends BorderPane {
         SceneReference.setGraph(graph);
         SceneReference.setGrapView(graphView);
         SceneReference.setInitialVertexNode(initialVertexNode);
-        SceneReference.setFinalVerteciesNodes(finalVerteciesNodes);
+        SceneReference.setFinalVerticesNodes(finalVerticesNodes);
         SceneReference.setSelectedVertexProperty(selectedVertexProperty);
         SceneReference.setIsVertexSelectedProperty(isVertexSelectedProperty);
     }
@@ -319,8 +319,8 @@ public class MainPane extends BorderPane {
         return initialVertexNode;
     }
 
-    public List<SmartGraphVertexNode<String>> getFinalVerteciesNodes() {
-        return finalVerteciesNodes;
+    public List<SmartGraphVertexNode<String>> getFinalVerticesNodes() {
+        return finalVerticesNodes;
     }
 
     public boolean isVertexPressed() {
