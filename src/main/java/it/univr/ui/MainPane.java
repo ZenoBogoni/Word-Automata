@@ -34,6 +34,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class MainPane extends BorderPane {
 
     // ANCHOR - Java variables
@@ -67,7 +70,8 @@ public class MainPane extends BorderPane {
     GraphSidePane graphSidePane;
 
     // Vertex
-    private SmartGraphVertexNode<String> selectedVertexNode; // selected UI vertex
+    private SmartGraphVertexNode<String> selectedVertexNode, initialVertexNode;
+    private List<SmartGraphVertexNode<String>> finalVerteciesNodes = new ArrayList<SmartGraphVertexNode<String>>();
 
     // ANCHOR - FXML elements
     @FXML
@@ -113,6 +117,8 @@ public class MainPane extends BorderPane {
         SceneReference.setClearTextOnClickProperty(clearTextOnClickProperty);
         SceneReference.setGraph(graph);
         SceneReference.setGrapView(graphView);
+        SceneReference.setInitialVertexNode(initialVertexNode);
+        SceneReference.setFinalVerteciesNodes(finalVerteciesNodes);
         SceneReference.setSelectedVertexProperty(selectedVertexProperty);
         SceneReference.setIsVertexSelectedProperty(isVertexSelectedProperty);
     }
@@ -307,6 +313,14 @@ public class MainPane extends BorderPane {
 
     public SmartGraphVertexNode<String> getSelectedVertexNode() {
         return selectedVertexNode;
+    }
+
+    public SmartGraphVertexNode<String> getInitialVertexNode() {
+        return initialVertexNode;
+    }
+
+    public List<SmartGraphVertexNode<String>> getFinalVerteciesNodes() {
+        return finalVerteciesNodes;
     }
 
     public boolean isVertexPressed() {

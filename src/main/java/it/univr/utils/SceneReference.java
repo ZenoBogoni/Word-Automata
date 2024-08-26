@@ -1,5 +1,7 @@
 package it.univr.utils;
 
+import java.util.List;
+
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
@@ -16,6 +18,8 @@ public class SceneReference {
     private static MainPane mainPane;
     private static SmartGraphPanel<String, String> grapView;
     private static DigraphEdgeList<String, String> graph;
+    private static SmartGraphVertexNode<String> initialVertexNode;
+    private static List<SmartGraphVertexNode<String>> finalVerteciesNodes;
 
     // Properties
     private static SimpleBooleanProperty isVertexSelectedProperty;
@@ -33,6 +37,14 @@ public class SceneReference {
 
     public static SmartGraphPanel<String, String> getGrapView() {
         return grapView;
+    }
+
+    public static SmartGraphVertexNode<String> getInitialVertexNode() {
+        return initialVertexNode;
+    }
+
+    public static List<SmartGraphVertexNode<String>> getFinalVerteciesNodes() {
+        return finalVerteciesNodes;
     }
 
     public static Stage getStage() {
@@ -69,6 +81,14 @@ public class SceneReference {
 
     public static void setMainPane(MainPane pane) {
         mainPane = pane;
+    }
+
+    public static void setInitialVertexNode(SmartGraphVertexNode<String> initialVertexNode) {
+        SceneReference.initialVertexNode = initialVertexNode;
+    }
+
+    public static void setFinalVerteciesNodes(List<SmartGraphVertexNode<String>> finalVerteciesNodes) {
+        SceneReference.finalVerteciesNodes = finalVerteciesNodes;
     }
 
     public static void setGrapView(SmartGraphPanel<String, String> grapView) {
