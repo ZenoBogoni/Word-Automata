@@ -1,15 +1,13 @@
 package it.univr.ui;
 
-import it.univr.utils.SceneReference;
-
 import java.io.IOException;
 import java.util.List;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
-import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
+import it.univr.utils.SceneReference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -63,12 +61,7 @@ public class VertexPopup extends AnchorPane {
             } else {
                 graph.insertVertex(vertexName);
                 graphView.updateAndWait();
-                // System.out.println(graph.toString());
-
                 checkForNewSpecialVertex(vertexName);
-
-                // System.out.println(finalVerteciesNodes);
-                // System.out.println(initialVertexNode);
                 stage.close();
             }
 

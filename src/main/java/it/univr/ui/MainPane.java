@@ -237,9 +237,9 @@ public class MainPane extends BorderPane {
      * 
      * @param root the popup component
      */
-    private void createModal(Parent root) {
+    private void createModal(Parent root, double width, double height) {
         Stage stage = new Stage();
-        Scene edgeScene = new Scene(root, 300, 160);
+        Scene edgeScene = new Scene(root, width, height);
 
         // Scene Style
         stage.initStyle(StageStyle.TRANSPARENT);
@@ -257,6 +257,10 @@ public class MainPane extends BorderPane {
         stage.setY(centerY);
 
         stage.show();
+    }
+
+    private void createModal(Parent root) {
+        createModal(root, 300, 160);
     }
 
     /* -------------------------------------------------------------------------- */
@@ -304,7 +308,7 @@ public class MainPane extends BorderPane {
     /* -------------------------------------------------------------------------- */
 
     private void vertexNamePopup() {
-        createModal(new VertexPopup());
+        createModal(new VertexPopup(), 300, 200);
     }
 
     /* -------------------------------------------------------------------------- */
