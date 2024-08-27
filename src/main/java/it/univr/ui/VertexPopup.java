@@ -118,5 +118,4 @@ public class VertexPopup extends AnchorPane {
             stage.close();
         });
     }
-
 }
