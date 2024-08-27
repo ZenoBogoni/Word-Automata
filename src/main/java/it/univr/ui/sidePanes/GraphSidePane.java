@@ -79,7 +79,9 @@ public class GraphSidePane extends VBox {
         // delete vertex button
         deleteVertexButton.setOnAction(e -> {
             if (selectedVertexNode != null) {
-                // DigraphEdgeList<String, String> graph = SceneReference.getGraph();
+                if (selectedVertexNode.equals(SceneReference.getInitialVertexNode())) {
+                    SceneReference.setInitialVertexNode(null);
+                }
                 graph.removeVertex(selectedVertexNode.getUnderlyingVertex());
                 System.out.println(graph.toString());
                 graphView.update();

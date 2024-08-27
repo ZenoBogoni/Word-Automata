@@ -8,7 +8,6 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.ui.MainPane;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.Stage;
 
 public class SceneReference {
@@ -26,7 +25,7 @@ public class SceneReference {
     private static SimpleBooleanProperty confirmToApplyProperty;
     private static SimpleBooleanProperty autoLayoutProperty;
     private static SimpleBooleanProperty clearTextOnClickProperty;
-    private static SimpleObjectProperty<SmartGraphVertexNode<String>> selectedVertexProperty;
+    private static SimpleBooleanProperty initialVertexSetProperty;
 
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Getters */
@@ -71,8 +70,8 @@ public class SceneReference {
         return isVertexSelectedProperty;
     }
 
-    public static SimpleObjectProperty<SmartGraphVertexNode<String>> getSelectedVertexProperty() {
-        return selectedVertexProperty;
+    public static SimpleBooleanProperty getnitialVertexSetProperty() {
+        return initialVertexSetProperty;
     }
 
     /* -------------------------------------------------------------------------- */
@@ -84,7 +83,13 @@ public class SceneReference {
     }
 
     public static void setInitialVertexNode(SmartGraphVertexNode<String> initialVertexNode) {
-        SceneReference.initialVertexNode = initialVertexNode;
+        if (initialVertexNode == null) {
+            SceneReference.initialVertexSetProperty.set(false);
+            SceneReference.initialVertexNode = initialVertexNode;
+        } else {
+            SceneReference.initialVertexSetProperty.set(true);
+            SceneReference.initialVertexNode = initialVertexNode;
+        }
     }
 
     public static void setFinalVerticesNodes(List<SmartGraphVertexNode<String>> finalVerticesNodes) {
@@ -119,7 +124,7 @@ public class SceneReference {
         SceneReference.isVertexSelectedProperty = isVertexSelectedProperty;
     }
 
-    public static void setSelectedVertexProperty(SimpleObjectProperty<SmartGraphVertexNode<String>> selectedVertexProperty) {
-        SceneReference.selectedVertexProperty = selectedVertexProperty;
+    public static void setInitialVertexSetProperty(SimpleBooleanProperty initialVertexSetProperty) {
+        SceneReference.initialVertexSetProperty = initialVertexSetProperty;
     }
 }

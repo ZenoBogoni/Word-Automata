@@ -32,11 +32,11 @@
             </TextField>
             <HBox alignment="CENTER" prefHeight="10.0" prefWidth="200.0">
                <children>
-                  <CheckBox fx:id="checkBoxInitialVertex" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="Initial Vertex" textAlignment="CENTER">
+                  <CheckBox fx:id="initialVertexCheckBox" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="Initial Vertex" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin></CheckBox>
-                  <CheckBox fx:id="checkBoxFinalVertex" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="Final Vertex" textAlignment="CENTER">
+                  <CheckBox fx:id="finalVertexCheckBox" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="Final Vertex" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin></CheckBox>

@@ -1,6 +1,8 @@
 package it.univr.ui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.brunomnsilva.smartgraph.containers.ContentZoomScrollPane;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
@@ -14,7 +16,6 @@ import it.univr.ui.sidePanes.GraphSidePane;
 import it.univr.ui.sidePanes.MagicLayoutSidePane;
 import it.univr.utils.SceneReference;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -33,9 +34,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import java.util.List;
-import java.util.ArrayList;
 
 public class MainPane extends BorderPane {
 
@@ -59,11 +57,11 @@ public class MainPane extends BorderPane {
     private SimpleBooleanProperty confirmToApplyProperty = new SimpleBooleanProperty(false);
     private SimpleBooleanProperty autoLayoutProperty = new SimpleBooleanProperty(false);
     private SimpleBooleanProperty clearTextOnClickProperty = new SimpleBooleanProperty(true);
-    private SimpleObjectProperty<SmartGraphVertexNode<String>> selectedVertexProperty = new SimpleObjectProperty<>(null);
+    private SimpleBooleanProperty initialVertexSetProperty = new SimpleBooleanProperty(false);
 
     // ANCHOR - Icons
-    IconButton magicIcon;
     IconButton nodeIcon;
+    IconButton magicIcon;
 
     // ANCHOR - Side Panes
     MagicLayoutSidePane magicLayoutSidePane;
@@ -117,9 +115,9 @@ public class MainPane extends BorderPane {
         SceneReference.setClearTextOnClickProperty(clearTextOnClickProperty);
         SceneReference.setGraph(graph);
         SceneReference.setGrapView(graphView);
+        SceneReference.setInitialVertexSetProperty(initialVertexSetProperty);
         SceneReference.setInitialVertexNode(initialVertexNode);
         SceneReference.setFinalVerticesNodes(finalVerticesNodes);
-        SceneReference.setSelectedVertexProperty(selectedVertexProperty);
         SceneReference.setIsVertexSelectedProperty(isVertexSelectedProperty);
     }
 
