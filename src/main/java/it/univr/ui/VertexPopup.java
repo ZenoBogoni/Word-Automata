@@ -23,10 +23,10 @@ public class VertexPopup extends AnchorPane {
     private static SmartGraphVertexNode<String> initialVertexNode = SceneReference.getInitialVertexNode();
 
     private static List<SmartGraphVertexNode<String>> finalVerticesNodes = SceneReference.getFinalVerticesNodes();
-    private static SmartGraphVertexNode<String> candidateVertex;
+    private SmartGraphVertexNode<String> candidateVertex;
     private static boolean isThereAnInitialVertex = false;
 
-    private static String vertexName;
+    private String vertexName;
 
     @FXML
     private Button cancelButton, submitButton;
