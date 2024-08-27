@@ -71,8 +71,9 @@ public class VertexPopup extends AnchorPane {
     private void checkForNewSpecialVertex(String candidateVertexName) {
         candidateVertex = graphView.getVertexByName(graph.vertexOf(candidateVertexName));
 
-        if (checkBoxFinalVertex.isSelected())
+        if (checkBoxFinalVertex.isSelected()) {
             finalVerticesNodes.add(candidateVertex);
+        }
 
         if (checkBoxInitialVertex.isSelected() && !isThereAnInitialVertex) {
             initialVertexNode = candidateVertex;
@@ -116,8 +117,9 @@ public class VertexPopup extends AnchorPane {
     }
 
     private void eventDeselectOppositeCheckBox(CheckBox oppositeCheckBox) {
-        if (oppositeCheckBox.isSelected())
+        if (oppositeCheckBox.isSelected()) {
             oppositeCheckBox.setSelected(false);
+        }
     }
 
 }
