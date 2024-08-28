@@ -62,19 +62,18 @@ public class VertexPopup extends AnchorPane {
             } else {
                 Vertex<String> newVertex = graph.insertVertex(vertexName);
                 graphView.updateAndWait();
-                updateSpecialVertices(newVertex);
-                SceneReference.getMainPane().setSelectedVertexNode(graphView.getVertexByName(newVertex));
+                SmartGraphVertexNode<String> newVertexNode = graphView.getVertexByName(newVertex);
+                updateSpecialVertices(newVertexNode);
+                SceneReference.getMainPane().setSelectedVertexNode(newVertexNode);
                 stage.close();
             }
         }
     }
 
-    private void updateSpecialVertices(Vertex<String> newVertex) {
-        SmartGraphVertexNode<String> newVertexNode = graphView.getVertexByName(newVertex);
+    private void updateSpecialVertices(SmartGraphVertexNode<String> newVertexNode) {
         if (finalVertexCheckBox.isSelected()) {
             SceneReference.addFinalvertex(newVertexNode);
-        }
-        if (initialVertexCheckBox.isSelected()) {
+        } else if (initialVertexCheckBox.isSelected()) {
             SceneReference.setInitialVertexNode(newVertexNode);
         }
     }

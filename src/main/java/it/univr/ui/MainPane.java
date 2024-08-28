@@ -165,6 +165,7 @@ public class MainPane extends BorderPane {
                 vertexNamePopup();
             }
         });
+
     }
 
     private void initSideMenu() {
@@ -277,7 +278,7 @@ public class MainPane extends BorderPane {
     public void deselectVertex() {
         if (selectedVertexNode != null) {
             setIsVertexSelected(false);
-            selectedVertexNode.setStyleClass("vertex");
+            selectedVertexNode.removeStyleClass("selectedVertex");
             selectedVertexNode = null;
         }
     }
@@ -363,16 +364,17 @@ public class MainPane extends BorderPane {
                     isLinkingPhase = false;
                 }
             } else {
-                selectedVertexNode.setStyleClass("vertex");
+                selectedVertexNode.removeStyleClass("selectedVertex");
                 isVertexSelectedProperty.set(false);
                 selectedVertexNode = vertex;
                 isVertexSelectedProperty.set(true);
-                selectedVertexNode.setStyleClass("selectedVertex");
+                selectedVertexNode.addStyleClassLast("selectedVertex");
             }
         } else {
             selectedVertexNode = vertex;
             setIsVertexSelected(true);
-            selectedVertexNode.setStyleClass("selectedVertex");
+            selectedVertexNode.addStyleClassLast("selectedVertex");
+            ;
         }
 
     }

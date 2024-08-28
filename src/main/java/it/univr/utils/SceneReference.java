@@ -3,6 +3,8 @@ package it.univr.utils;
 import java.util.HashSet;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
+import com.brunomnsilva.smartgraph.graph.Vertex;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeCurve;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
@@ -19,6 +21,7 @@ public class SceneReference {
     private static DigraphEdgeList<String, String> graph;
     private static SmartGraphVertexNode<String> initialVertexNode;
     private static HashSet<SmartGraphVertexNode<String>> finalVerticesNodes;
+    private static SmartGraphEdgeCurve<String, Vertex<String>> selectedEdge;
 
     // Properties
     private static SimpleBooleanProperty isVertexSelectedProperty;
@@ -74,6 +77,10 @@ public class SceneReference {
         return initialVertexSetProperty;
     }
 
+    public static SmartGraphEdgeCurve<String, Vertex<String>> getSelectedEdge() {
+        return selectedEdge;
+    }
+
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Setters */
     /* -------------------------------------------------------------------------- */
@@ -86,12 +93,14 @@ public class SceneReference {
         if (initialVertexNode == null) {
             SceneReference.initialVertexSetProperty.set(false);
             if (SceneReference.initialVertexNode != null) {
+                SceneReference.initialVertexNode.removeStyleClass("initialVertex");
                 SceneReference.initialVertexNode.getUnderlyingVertex().setInitial(false);
             }
             SceneReference.initialVertexNode = initialVertexNode;
         } else {
             SceneReference.initialVertexSetProperty.set(true);
             SceneReference.initialVertexNode = initialVertexNode;
+            SceneReference.initialVertexNode.addStyleClass("initialVertex");
             initialVertexNode.getUnderlyingVertex().setInitial(true);
         }
     }
@@ -132,6 +141,10 @@ public class SceneReference {
         SceneReference.initialVertexSetProperty = initialVertexSetProperty;
     }
 
+    public static void setSelectedEdge(SmartGraphEdgeCurve<String, Vertex<String>> selectedEdge) {
+        SceneReference.selectedEdge = selectedEdge;
+    }
+
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Methods */
     /* -------------------------------------------------------------------------- */
@@ -139,6 +152,7 @@ public class SceneReference {
     public static boolean addFinalvertex(SmartGraphVertexNode<String> vertexNode) {
         boolean didSomething = SceneReference.finalVerticesNodes.add(vertexNode);
         if (didSomething) {
+            vertexNode.addStyleClass("finalVertex");
             vertexNode.getUnderlyingVertex().setFinal(true);
         }
         return didSomething;
@@ -147,6 +161,7 @@ public class SceneReference {
     public static boolean removeFinalVertex(SmartGraphVertexNode<String> vertexNode) {
         boolean didSomething = SceneReference.finalVerticesNodes.remove(vertexNode);
         if (didSomething) {
+            vertexNode.removeStyleClass("finalVertex");
             vertexNode.getUnderlyingVertex().setFinal(false);
         }
         return didSomething;

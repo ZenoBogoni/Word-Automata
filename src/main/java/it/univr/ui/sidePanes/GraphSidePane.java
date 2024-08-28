@@ -30,7 +30,7 @@ public class GraphSidePane extends VBox {
     // properties
     private SimpleBooleanProperty isVertexSelectedProperty = SceneReference.getIsVertexSelectedProperty();
     private SimpleBooleanProperty confirmToApplyProperty = SceneReference.getConfirmToApplyProperty();
-    private SimpleBooleanProperty initialvertexSetPropety = SceneReference.getnitialVertexSetProperty();
+    private SimpleBooleanProperty initialvertexSetProperty = SceneReference.getnitialVertexSetProperty();
 
     // java variables
     private String textFieldVertexName;
@@ -64,19 +64,18 @@ public class GraphSidePane extends VBox {
         // radio buttons
         isVertexSelectedProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                if (initialvertexSetPropety.get() && !selectedVertexNode.getUnderlyingVertex().isInitial()) {
-                    initialNodeRadioButton.setSelected(false);
-                    initialNodeRadioButton.setDisable(true);
-                } else {
-                    initialNodeRadioButton.setDisable(false);
-                    initialNodeRadioButton.setSelected(selectedVertexNode.getUnderlyingVertex().isInitial());
-                }
-                finalNodeRadioButton.setSelected(selectedVertexNode.getUnderlyingVertex().isFinal());
+                updateRadioButtons();
+            } else {
+                initialNodeRadioButton.setDisable(true);
             }
         });
 
         initialNodeRadioButton.setOnAction(e -> {
             if (initialNodeRadioButton.isSelected()) {
+                if (selectedVertexNode.getUnderlyingVertex().isFinal()) {
+                    finalNodeRadioButton.setSelected(false);
+                    SceneReference.removeFinalVertex(selectedVertexNode);
+                }
                 SceneReference.setInitialVertexNode(selectedVertexNode);
             } else {
                 SceneReference.setInitialVertexNode(null);
@@ -85,6 +84,10 @@ public class GraphSidePane extends VBox {
 
         finalNodeRadioButton.setOnAction(e -> {
             if (finalNodeRadioButton.isSelected()) {
+                if (selectedVertexNode.getUnderlyingVertex().isInitial()) {
+                    initialNodeRadioButton.setSelected(false);
+                    SceneReference.setInitialVertexNode(null);
+                }
                 SceneReference.addFinalvertex(selectedVertexNode);
             } else {
                 SceneReference.removeFinalVertex(selectedVertexNode);
@@ -136,6 +139,17 @@ public class GraphSidePane extends VBox {
             }
 
         });
+    }
+
+    private void updateRadioButtons() {
+        if (initialvertexSetProperty.get() && !selectedVertexNode.getUnderlyingVertex().isInitial()) {
+            initialNodeRadioButton.setSelected(false);
+            initialNodeRadioButton.setDisable(true);
+        } else {
+            initialNodeRadioButton.setDisable(false);
+            initialNodeRadioButton.setSelected(selectedVertexNode.getUnderlyingVertex().isInitial());
+        }
+        finalNodeRadioButton.setSelected(selectedVertexNode.getUnderlyingVertex().isFinal());
     }
 
     private void updateVertexName() {

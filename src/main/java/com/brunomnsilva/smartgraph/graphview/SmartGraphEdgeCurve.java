@@ -24,6 +24,9 @@
 package com.brunomnsilva.smartgraph.graphview;
 
 import com.brunomnsilva.smartgraph.graph.Edge;
+import com.brunomnsilva.smartgraph.graph.Vertex;
+
+import it.univr.utils.SceneReference;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseButton;
@@ -54,7 +57,7 @@ import javafx.scene.transform.Translate;
 public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphEdgeBase<E, V> {
 
     private static final double MAX_EDGE_CURVE_ANGLE = 45;
-    private static final double MIN_EDGE_CURVE_ANGLE = 3;
+    private static final double MIN_EDGE_CURVE_ANGLE = 5;
 
     /** Distance (in pixels) that establishes the maximum curve threshold */
     public static final int DISTANCE_THRESHOLD = 400;
@@ -243,6 +246,8 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
                 .subtract(Bindings.divide(label.layoutWidthProperty(), 2)));
         label.yProperty().bind(controlY1Property().add(controlY2Property()).divide(2)
                 .add(Bindings.divide(label.layoutHeightProperty(), 2)));
+        this.outbound.setCenterX(outbound.getCenterX() + 0.01);
+        handleClicks();
     }
 
     @Override
@@ -308,6 +313,18 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
                         true, true, true, true, true, true, true, true, true, null));
 
             }
+        });
+    }
+
+    private void handleClicks() {
+        this.setOnMouseClicked(e -> {
+            SceneReference.setSelectedEdge((SmartGraphEdgeCurve<String, Vertex<String>>) this);
+            System.out.println(SceneReference.getSelectedEdge());
+        });
+
+        attachedLabel.setOnMouseClicked(e -> {
+            SceneReference.setSelectedEdge((SmartGraphEdgeCurve<String, Vertex<String>>) this);
+            System.out.println(SceneReference.getSelectedEdge());
         });
     }
 }

@@ -715,7 +715,9 @@ public class SmartGraphPanel<V, E> extends Pane {
                 || graphVertexInbound == graphVertexOutbound) {
             graphEdge = new SmartGraphEdgeCurve<>(edge, graphVertexInbound, graphVertexOutbound, edgeIndex);
         } else {
-            graphEdge = new SmartGraphEdgeLine<>(edge, graphVertexInbound, graphVertexOutbound);
+            // graphEdge = new SmartGraphEdgeLine<>(edge, graphVertexInbound, graphVertexOutbound);
+            graphEdge = new SmartGraphEdgeCurve<>(edge, graphVertexInbound, graphVertexOutbound, edgeIndex);
+
         }
 
         placedEdges.put(new Tuple<>(graphVertexInbound, graphVertexOutbound), ++edgeIndex);

@@ -458,6 +458,26 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
         styleProxy.addStyleClass(cssClass);
     }
 
+    public void addStyleClassLast(String cssClass) {
+        styleProxy.addStyleClassLast(cssClass);
+    }
+
+    public void addStyleClassFirst(String cssClass) {
+        styleProxy.addStyleClassFirst(cssClass);
+    }
+
+    public String getStyleClassIndex(int index) {
+        return styleProxy.getStyleClassIndex(index);
+    }
+
+    public void changeStyleClassAt(int index, String cssClass) {
+        styleProxy.changeStyleClassAt(index, cssClass);
+    }
+
+    public void clearStyleClass() {
+        styleProxy.clearStyleClass();
+    }
+
     @Override
     public boolean removeStyleClass(String cssClass) {
         return styleProxy.removeStyleClass(cssClass);
