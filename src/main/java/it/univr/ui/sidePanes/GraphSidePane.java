@@ -30,6 +30,9 @@ public class GraphSidePane extends VBox {
     private SimpleBooleanProperty isVertexSelectedProperty = SceneReference.getIsVertexSelectedProperty();
     private SimpleBooleanProperty confirmToApplyProperty = SceneReference.getConfirmToApplyProperty();
 
+    // java variables
+    private String textFieldVertexName;
+
     // FXML
     @FXML
     private TextField vertexLabelTextField;
@@ -49,6 +52,7 @@ public class GraphSidePane extends VBox {
     }
 
     public void initialize() {
+
         // text field
         vertexLabelTextField.disableProperty().bind(Bindings.not(isVertexSelectedProperty));
         vertexLabelTextField.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
@@ -66,13 +70,18 @@ public class GraphSidePane extends VBox {
         });
 
         vertexLabelTextField.setOnAction(e -> {
-            // DigraphEdgeList<String, String> graph = SceneReference.getGraph();
-            updateVertexName();
+            if (!vertexLabelTextField.getText().equals(textFieldVertexName)) {
+                updateVertexName();
+            }
         });
 
         vertexLabelTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue && !confirmToApplyProperty.get()) {
-                updateVertexName();
+                if (!vertexLabelTextField.getText().equals(textFieldVertexName)) {
+                    updateVertexName();
+                }
+            } else if (newValue) {
+                textFieldVertexName = new String(vertexLabelTextField.getText());
             }
         });
 
@@ -95,10 +104,14 @@ public class GraphSidePane extends VBox {
         if (vertexLabelTextField.getText().isBlank()) {
             return;
         }
-        Vertex<String> newVertex = graph.updateLabelFor(selectedVertexNode.getUnderlyingVertex(), vertexLabelTextField.getText());
+        graph.replace(graph.vertexOf(textFieldVertexName), vertexLabelTextField.getText());
+        Vertex<String> newVertex = graph.vertexOf(vertexLabelTextField.getText());
+        if (newVertex == null) {
+            return;
+        }
         graphView.updateAndWait();
-        selectedVertexNode = graphView.getVertexByName(newVertex);
-        System.out.println(selectedVertexNode.getUnderlyingVertex().element());
+        mainPane.setSelectedVertexNode(graphView.getVertexByName(newVertex));
         System.out.println(SceneReference.getGraph().toString());
+        textFieldVertexName = new String(newVertex.element());
     }
 }

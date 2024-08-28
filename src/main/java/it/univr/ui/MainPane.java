@@ -351,6 +351,10 @@ public class MainPane extends BorderPane {
 
     public void setSelectedVertexNode(SmartGraphVertexNode<String> vertex) {
         if (selectedVertexNode != null) {
+            if (selectedVertexNode.equals(vertex)) {
+                return;
+            }
+
             if (isLinkingPhase) {
                 if (graph.areAdjacent(selectedVertexNode.getUnderlyingVertex(), vertex.getUnderlyingVertex())) {
                     showErrorPopup("An edge from vertex " + selectedVertexNode.getAttachedLabel().getText() + " to vertex " + vertex.getAttachedLabel().getText()
@@ -361,7 +365,9 @@ public class MainPane extends BorderPane {
                 }
             } else {
                 selectedVertexNode.setStyleClass("vertex");
+                isVertexSelectedProperty.set(false);
                 selectedVertexNode = vertex;
+                isVertexSelectedProperty.set(true);
                 selectedVertexNode.setStyleClass("selectedVertex");
             }
         } else {

@@ -103,10 +103,12 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
 
     @Override
     public synchronized Edge<E, V> insertEdge(Vertex<V> outbound, Vertex<V> inbound, E edgeElement) throws InvalidVertexException, InvalidEdgeException {
-        if (existsEdgeWith(edgeElement)) {
+
+        // ! non fa nulla in teoria
+        if (existsEdgeWith(id)) {
             throw new InvalidEdgeException("There's already an edge with this element.");
         }
-
+        // !========================
         MyVertex outVertex = checkVertex(outbound);
         MyVertex inVertex = checkVertex(inbound);
 
@@ -119,10 +121,11 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
 
     @Override
     public synchronized Edge<E, V> insertEdge(V outboundElement, V inboundElement, E edgeElement) throws InvalidVertexException, InvalidEdgeException {
-        if (existsEdgeWith(edgeElement)) {
+        // ! non fa nulla in teoria
+        if (existsEdgeWith(id)) {
             throw new InvalidEdgeException("There's already an edge with this element.");
         }
-
+        // !======================
         if (!existsVertexWith(outboundElement)) {
             throw new InvalidVertexException("No vertex contains " + outboundElement);
         }
@@ -229,16 +232,18 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
 
         V oldElement = vertex.element;
         vertex.element = newElement;
+        vertices.put(newElement, vertex);
+        vertices.remove(oldElement);
 
         return oldElement;
     }
 
-    // ! questa non puo' esistere
+    // ! forse l'ho fixata
     @Override
     public E replace(Edge<E, V> e, E newElement) throws InvalidEdgeException {
-        if (existsEdgeWith(newElement)) {
-            throw new InvalidEdgeException("There's already an edge with this element.");
-        }
+        // if (existsEdgeWith(e.getId())) {
+        // throw new InvalidEdgeException("There's already an edge with this element.");
+        // }
 
         MyEdge edge = checkEdge(e);
 
@@ -263,8 +268,8 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
     }
 
     // ! questa non e' corretta
-    private boolean existsEdgeWith(E edgeElement) {
-        return edges.containsKey(edgeElement);
+    private boolean existsEdgeWith(int id) {
+        return edges.containsKey(id);
     }
 
     @Override
@@ -384,7 +389,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
             throw new InvalidVertexException("Not a vertex.");
         }
 
-        if (!vertices.containsKey(vertex.element)) {
+        if (!vertices.containsKey(vertex.element())) {
             throw new InvalidVertexException("Vertex does not belong to this graph.");
         }
 
@@ -409,26 +414,27 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         return edge;
     }
 
-    // ! Aggiunto io
-    public Vertex<V> updateLabelFor(Vertex<V> vertex, V label) {
-        if (vertices.containsKey(label)) {
-            return null; // TODO - aggiungere feedback per utente
-        }
-        Vertex<V> newVertex = new MyVertex(label);
-        newVertex.setElement(label);
-        System.out.println("Vertex: " + vertex.toString());
-        // update incident edges
-        Collection<Edge<E, V>> inboundEdges = incidentEdges(vertex);
-        inboundEdges.forEach(edge -> {
-            ((MyEdge) edge).setInbound(newVertex);
-        });
-        // update outbound edges
-        Collection<Edge<E, V>> outboundEdges = outboundEdges(vertex);
-        outboundEdges.forEach(edge -> {
-            ((MyEdge) edge).setOutbound(newVertex);
-        });
-        vertices.remove(vertex.element());
-        vertices.put(label, newVertex);
-        return newVertex;
-    }
+    // // ! Aggiunto io
+    // public Vertex<V> updateLabelFor(Vertex<V> vertex, V label) {
+    // if (vertices.containsKey(label)) {
+    // return null; // TODO - aggiungere feedback per utente
+    // }
+    // Vertex<V> newVertex = new MyVertex(label);
+    // newVertex.setElement(label);
+    // System.out.println("Vertex: " + vertex.toString());
+    // // update incident edges
+    // Collection<Edge<E, V>> inboundEdges = incidentEdges(vertex);
+    // inboundEdges.forEach(edge -> {
+    // ((MyEdge) edge).setInbound(newVertex);
+    // });
+    // // update outbound edges
+    // Collection<Edge<E, V>> outboundEdges = outboundEdges(vertex);
+    // outboundEdges.forEach(edge -> {
+    // ((MyEdge) edge).setOutbound(newVertex);
+    // });
+    // vertices.remove(vertex.element());
+    // vertices.put(label, newVertex);
+    // SceneReference.getGrapView().updateAndWait();
+    // return newVertex;
+    // }
 }
