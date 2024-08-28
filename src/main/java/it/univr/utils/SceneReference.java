@@ -1,6 +1,6 @@
 package it.univr.utils;
 
-import java.util.List;
+import java.util.HashSet;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
@@ -18,7 +18,7 @@ public class SceneReference {
     private static SmartGraphPanel<String, String> grapView;
     private static DigraphEdgeList<String, String> graph;
     private static SmartGraphVertexNode<String> initialVertexNode;
-    private static List<SmartGraphVertexNode<String>> finalVerticesNodes;
+    private static HashSet<SmartGraphVertexNode<String>> finalVerticesNodes;
 
     // Properties
     private static SimpleBooleanProperty isVertexSelectedProperty;
@@ -42,7 +42,7 @@ public class SceneReference {
         return initialVertexNode;
     }
 
-    public static List<SmartGraphVertexNode<String>> getFinalVerticesNodes() {
+    public static HashSet<SmartGraphVertexNode<String>> getFinalVerticesNodes() {
         return finalVerticesNodes;
     }
 
@@ -85,14 +85,18 @@ public class SceneReference {
     public static void setInitialVertexNode(SmartGraphVertexNode<String> initialVertexNode) {
         if (initialVertexNode == null) {
             SceneReference.initialVertexSetProperty.set(false);
+            if (SceneReference.initialVertexNode != null) {
+                SceneReference.initialVertexNode.getUnderlyingVertex().setInitial(false);
+            }
             SceneReference.initialVertexNode = initialVertexNode;
         } else {
             SceneReference.initialVertexSetProperty.set(true);
             SceneReference.initialVertexNode = initialVertexNode;
+            initialVertexNode.getUnderlyingVertex().setInitial(true);
         }
     }
 
-    public static void setFinalVerticesNodes(List<SmartGraphVertexNode<String>> finalVerticesNodes) {
+    public static void setFinalVerticesNodes(HashSet<SmartGraphVertexNode<String>> finalVerticesNodes) {
         SceneReference.finalVerticesNodes = finalVerticesNodes;
     }
 
@@ -126,5 +130,25 @@ public class SceneReference {
 
     public static void setInitialVertexSetProperty(SimpleBooleanProperty initialVertexSetProperty) {
         SceneReference.initialVertexSetProperty = initialVertexSetProperty;
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /* //ANCHOR - Methods */
+    /* -------------------------------------------------------------------------- */
+
+    public static boolean addFinalvertex(SmartGraphVertexNode<String> vertexNode) {
+        boolean didSomething = SceneReference.finalVerticesNodes.add(vertexNode);
+        if (didSomething) {
+            vertexNode.getUnderlyingVertex().setFinal(true);
+        }
+        return didSomething;
+    }
+
+    public static boolean removeFinalVertex(SmartGraphVertexNode<String> vertexNode) {
+        boolean didSomething = SceneReference.finalVerticesNodes.remove(vertexNode);
+        if (didSomething) {
+            vertexNode.getUnderlyingVertex().setFinal(false);
+        }
+        return didSomething;
     }
 }

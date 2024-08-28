@@ -1,8 +1,7 @@
 package it.univr.ui;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 import com.brunomnsilva.smartgraph.containers.ContentZoomScrollPane;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
@@ -69,7 +68,7 @@ public class MainPane extends BorderPane {
 
     // Vertex
     private SmartGraphVertexNode<String> selectedVertexNode, initialVertexNode;
-    private List<SmartGraphVertexNode<String>> finalVerticesNodes = new ArrayList<SmartGraphVertexNode<String>>();
+    private HashSet<SmartGraphVertexNode<String>> finalVerticesNodes = new HashSet<SmartGraphVertexNode<String>>();
 
     // ANCHOR - FXML elements
     @FXML
@@ -184,8 +183,8 @@ public class MainPane extends BorderPane {
         sideMenuHidable.setFitToHeight(true); // remove space for scrollbar
 
         // initial state
-        magicIcon.setSelectedtab();
-        sideMenuHidable.setContent(magicLayoutSidePane);
+        nodeIcon.setSelectedtab();
+        sideMenuHidable.setContent(graphSidePane);
 
         this.setOnKeyPressed(key -> {
             if (key.getCode() == KeyCode.CONTROL) {
@@ -321,7 +320,7 @@ public class MainPane extends BorderPane {
         return initialVertexNode;
     }
 
-    public List<SmartGraphVertexNode<String>> getFinalVerticesNodes() {
+    public HashSet<SmartGraphVertexNode<String>> getFinalVerticesNodes() {
         return finalVerticesNodes;
     }
 

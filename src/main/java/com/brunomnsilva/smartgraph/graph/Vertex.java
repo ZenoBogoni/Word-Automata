@@ -41,5 +41,13 @@ public interface Vertex<V> {
      */
     V element();
 
+    void setInitial(boolean bool);
+
+    void setFinal(boolean bool);
+
+    boolean isFinal();
+
+    boolean isInitial();
+
     void setElement(V element);
 }

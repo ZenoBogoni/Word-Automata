@@ -1,7 +1,6 @@
 package it.univr.ui;
 
 import java.io.IOException;
-import java.util.List;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.Vertex;
@@ -26,7 +25,6 @@ public class VertexPopup extends AnchorPane {
     private static SmartGraphPanel<String, String> graphView = SceneReference.getGrapView();
 
     // Java variables
-    private static List<SmartGraphVertexNode<String>> finalVerticesNodes = SceneReference.getFinalVerticesNodes();
     private String vertexName;
 
     // properties
@@ -65,6 +63,7 @@ public class VertexPopup extends AnchorPane {
                 Vertex<String> newVertex = graph.insertVertex(vertexName);
                 graphView.updateAndWait();
                 updateSpecialVertices(newVertex);
+                SceneReference.getMainPane().setSelectedVertexNode(graphView.getVertexByName(newVertex));
                 stage.close();
             }
         }
@@ -73,7 +72,7 @@ public class VertexPopup extends AnchorPane {
     private void updateSpecialVertices(Vertex<String> newVertex) {
         SmartGraphVertexNode<String> newVertexNode = graphView.getVertexByName(newVertex);
         if (finalVertexCheckBox.isSelected()) {
-            finalVerticesNodes.add(newVertexNode);
+            SceneReference.addFinalvertex(newVertexNode);
         }
         if (initialVertexCheckBox.isSelected()) {
             SceneReference.setInitialVertexNode(newVertexNode);

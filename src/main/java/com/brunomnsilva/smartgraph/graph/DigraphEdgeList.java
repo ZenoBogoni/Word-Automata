@@ -291,6 +291,8 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
     public class MyVertex implements Vertex<V> {
 
         V element;
+        boolean finalNode = false;
+        boolean initialNode = false;
 
         public MyVertex(V element) {
             this.element = element;
@@ -308,6 +310,22 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         @Override
         public String toString() {
             return "Vertex{" + element + '}';
+        }
+
+        public void setFinal(boolean bool) {
+            finalNode = bool;
+        }
+
+        public void setInitial(boolean bool) {
+            initialNode = bool;
+        }
+
+        public boolean isFinal() {
+            return finalNode;
+        }
+
+        public boolean isInitial() {
+            return initialNode;
         }
     }
 

@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
@@ -29,6 +30,7 @@ public class GraphSidePane extends VBox {
     // properties
     private SimpleBooleanProperty isVertexSelectedProperty = SceneReference.getIsVertexSelectedProperty();
     private SimpleBooleanProperty confirmToApplyProperty = SceneReference.getConfirmToApplyProperty();
+    private SimpleBooleanProperty initialvertexSetPropety = SceneReference.getnitialVertexSetProperty();
 
     // java variables
     private String textFieldVertexName;
@@ -38,6 +40,8 @@ public class GraphSidePane extends VBox {
     private TextField vertexLabelTextField;
     @FXML
     private Button deleteVertexButton;
+    @FXML
+    private RadioButton initialNodeRadioButton, finalNodeRadioButton;
 
     public GraphSidePane() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("graphSidePane.fxml"));
@@ -52,6 +56,40 @@ public class GraphSidePane extends VBox {
     }
 
     public void initialize() {
+        // hide when vertex is not selected
+        deleteVertexButton.visibleProperty().bind(isVertexSelectedProperty);
+        initialNodeRadioButton.visibleProperty().bind(isVertexSelectedProperty);
+        finalNodeRadioButton.visibleProperty().bind(isVertexSelectedProperty);
+
+        // radio buttons
+        isVertexSelectedProperty.addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                if (initialvertexSetPropety.get() && !selectedVertexNode.getUnderlyingVertex().isInitial()) {
+                    initialNodeRadioButton.setSelected(false);
+                    initialNodeRadioButton.setDisable(true);
+                } else {
+                    initialNodeRadioButton.setDisable(false);
+                    initialNodeRadioButton.setSelected(selectedVertexNode.getUnderlyingVertex().isInitial());
+                }
+                finalNodeRadioButton.setSelected(selectedVertexNode.getUnderlyingVertex().isFinal());
+            }
+        });
+
+        initialNodeRadioButton.setOnAction(e -> {
+            if (initialNodeRadioButton.isSelected()) {
+                SceneReference.setInitialVertexNode(selectedVertexNode);
+            } else {
+                SceneReference.setInitialVertexNode(null);
+            }
+        });
+
+        finalNodeRadioButton.setOnAction(e -> {
+            if (finalNodeRadioButton.isSelected()) {
+                SceneReference.addFinalvertex(selectedVertexNode);
+            } else {
+                SceneReference.removeFinalVertex(selectedVertexNode);
+            }
+        });
 
         // text field
         vertexLabelTextField.disableProperty().bind(Bindings.not(isVertexSelectedProperty));

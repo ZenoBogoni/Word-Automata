@@ -32,11 +32,11 @@
       </HBox>
       <HBox alignment="CENTER_RIGHT" prefWidth="220.0" spacing="5.0" styleClass="item-container">
          <children>
-            <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Repulsive force" textAlignment="CENTER" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Text>
+            <VBox alignment="CENTER" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Repulsive force" textAlignment="CENTER" />
+               </children>
+            </VBox>
             <Slider fx:id="repulsiveForceSlider" prefWidth="100.0" />
             <TextField fx:id="repulsiveForceTextField" prefHeight="15.0" prefWidth="60.0" />
          </children>
@@ -46,11 +46,11 @@
       </HBox>
       <HBox alignment="CENTER_RIGHT" layoutX="20.0" layoutY="63.0" prefWidth="220.0" spacing="5.0" styleClass="item-container">
          <children>
-            <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Attractive force" textAlignment="CENTER" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Text>
+            <VBox alignment="CENTER" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Attractive force" textAlignment="CENTER" />
+               </children>
+            </VBox>
             <Slider fx:id="attractiveForceSlider" prefWidth="100.0" />
             <TextField fx:id="attractiveForceTextField" alignment="CENTER" prefHeight="15.0" prefWidth="60.0" />
          </children>
@@ -60,11 +60,11 @@
       </HBox>
       <HBox alignment="CENTER_RIGHT" layoutX="20.0" layoutY="63.0" prefWidth="220.0" spacing="5.0" styleClass="item-container">
          <children>
-            <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Attraction scale" textAlignment="CENTER">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Text>
+            <VBox alignment="CENTER" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Attraction scale" textAlignment="CENTER" />
+               </children>
+            </VBox>
             <Slider fx:id="attractionScaleSlider" prefWidth="100.0" />
             <TextField fx:id="attractionScaleTextField" prefHeight="15.0" prefWidth="60.0" />
          </children>
@@ -74,11 +74,11 @@
       </HBox>
       <HBox alignment="CENTER_RIGHT" layoutX="20.0" layoutY="126.0" prefWidth="220.0" spacing="5.0" styleClass="item-container">
          <children>
-            <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Accelleration" textAlignment="CENTER">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Text>
+            <VBox alignment="CENTER" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Accelleration" textAlignment="CENTER" />
+               </children>
+            </VBox>
             <Slider fx:id="accellerationSlider" prefWidth="100.0" />
             <TextField fx:id="accellerationTextField" prefHeight="15.0" prefWidth="60.0" />
          </children>

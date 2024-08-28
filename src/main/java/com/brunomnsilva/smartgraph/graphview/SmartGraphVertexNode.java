@@ -611,4 +611,11 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
         }
     }
 
+    /* -------------------------------------------------------------------------- */
+    /* //ANCHOR - hashCode */
+    /* -------------------------------------------------------------------------- */
+    public int hashCode() {
+        return getUnderlyingVertex().element().hashCode();
+    }
+
 }
