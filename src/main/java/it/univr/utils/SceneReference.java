@@ -3,8 +3,7 @@ package it.univr.utils;
 import java.util.HashSet;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
-import com.brunomnsilva.smartgraph.graph.Vertex;
-import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeCurve;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeBase;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
@@ -13,6 +12,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.stage.Stage;
 
 public class SceneReference {
+    // java variables
+    private static boolean isEdgePressed = false;
 
     // Components
     private static Stage stage;
@@ -21,7 +22,7 @@ public class SceneReference {
     private static DigraphEdgeList<String, String> graph;
     private static SmartGraphVertexNode<String> initialVertexNode;
     private static HashSet<SmartGraphVertexNode<String>> finalVerticesNodes;
-    private static SmartGraphEdgeCurve<String, Vertex<String>> selectedEdge;
+    private static SmartGraphEdgeBase<String, String> selectedEdge;
 
     // Properties
     private static SimpleBooleanProperty isVertexSelectedProperty;
@@ -29,6 +30,7 @@ public class SceneReference {
     private static SimpleBooleanProperty autoLayoutProperty;
     private static SimpleBooleanProperty clearTextOnClickProperty;
     private static SimpleBooleanProperty initialVertexSetProperty;
+    private static SimpleBooleanProperty isEdgeSelectedProperty = new SimpleBooleanProperty(false);
 
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Getters */
@@ -77,8 +79,16 @@ public class SceneReference {
         return initialVertexSetProperty;
     }
 
-    public static SmartGraphEdgeCurve<String, Vertex<String>> getSelectedEdge() {
+    public static SmartGraphEdgeBase<String, String> getSelectedEdge() {
         return selectedEdge;
+    }
+
+    public static boolean isEdgePressed() {
+        return isEdgePressed;
+    }
+
+    public static SimpleBooleanProperty getIsEdgeSelectedProperty() {
+        return isEdgeSelectedProperty;
     }
 
     /* -------------------------------------------------------------------------- */
@@ -141,8 +151,27 @@ public class SceneReference {
         SceneReference.initialVertexSetProperty = initialVertexSetProperty;
     }
 
-    public static void setSelectedEdge(SmartGraphEdgeCurve<String, Vertex<String>> selectedEdge) {
-        SceneReference.selectedEdge = selectedEdge;
+    public static void setSelectedEdge(SmartGraphEdgeBase<String, String> selectedEdge) {
+        if (SceneReference.selectedEdge != null) {
+            if (SceneReference.selectedEdge.equals(selectedEdge)) {
+                deselectEdge();
+            } else {
+                deselectEdge();
+                SceneReference.selectedEdge = selectedEdge;
+                SceneReference.selectedEdge.addStyleClass("selectedEdge");
+                isEdgeSelectedProperty.set(true);
+            }
+        } else {
+            if (selectedEdge != null) {
+                SceneReference.selectedEdge = selectedEdge;
+                SceneReference.selectedEdge.addStyleClass("selectedEdge");
+                isEdgeSelectedProperty.set(true);
+            }
+        }
+    }
+
+    public static void setEdgePressed(boolean bool) {
+        isEdgePressed = bool;
     }
 
     /* -------------------------------------------------------------------------- */
@@ -165,5 +194,17 @@ public class SceneReference {
             vertexNode.getUnderlyingVertex().setFinal(false);
         }
         return didSomething;
+    }
+
+    public static void deselectEdge() {
+        isEdgeSelectedProperty.set(false);
+        if (SceneReference.selectedEdge != null) {
+            SceneReference.selectedEdge.removeStyleClass("selectedEdge");
+        }
+        SceneReference.selectedEdge = null;
+    }
+
+    public static boolean isEdgeSelected() {
+        return isEdgeSelectedProperty.get();
     }
 }

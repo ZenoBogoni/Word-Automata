@@ -26,6 +26,7 @@ public class VertexPopup extends AnchorPane {
 
     // Java variables
     private String vertexName;
+    public static int count = 0;
 
     // properties
     private static SimpleBooleanProperty initialVertexSetProperty = SceneReference.getnitialVertexSetProperty();
@@ -62,7 +63,7 @@ public class VertexPopup extends AnchorPane {
             } else {
                 Vertex<String> newVertex = graph.insertVertex(vertexName);
                 graphView.updateAndWait();
-                SmartGraphVertexNode<String> newVertexNode = graphView.getVertexByName(newVertex);
+                SmartGraphVertexNode<String> newVertexNode = graphView.getVertexNodeOf(newVertex);
                 updateSpecialVertices(newVertexNode);
                 SceneReference.getMainPane().setSelectedVertexNode(newVertexNode);
                 stage.close();
@@ -85,7 +86,10 @@ public class VertexPopup extends AnchorPane {
 
     @FXML
     public void initialize() {
-
+        while (graph.vertexOf("vertex " + count) != null) {
+            count++;
+        }
+        vertexNameField.setText("vertex " + count);
         initialVertexCheckBox.setSelected(!initialVertexSetProperty.get()); // if an initial vertex is not set set this as initial by default
         initialVertexCheckBox.disableProperty().bind(initialVertexSetProperty); // disable checkBox if an initial Vertex is already set
 

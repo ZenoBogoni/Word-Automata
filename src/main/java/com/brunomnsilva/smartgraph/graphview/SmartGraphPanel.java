@@ -1444,9 +1444,17 @@ public class SmartGraphPanel<V, E> extends Pane {
         }
     }
 
-    public SmartGraphVertexNode<V> getVertexByName(Vertex<V> name) {
-        if (vertexNodes.containsKey(name)) {
-            return vertexNodes.get(name);
+    public SmartGraphVertexNode<V> getVertexNodeOf(Vertex<V> vertex) {
+        if (vertexNodes.containsKey(vertex)) {
+            return vertexNodes.get(vertex);
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public SmartGraphEdgeBase<String, String> getEdgeNodeOf(Edge<E, V> edge) {
+        if (edgeNodes.containsKey(edge)) {
+            return (SmartGraphEdgeBase<String, String>) edgeNodes.get(edge);
         }
         return null;
     }

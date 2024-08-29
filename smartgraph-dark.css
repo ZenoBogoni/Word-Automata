@@ -64,7 +64,7 @@ This should help you understand which styles you can apply.
 }
 
 .edge:hover {
-    -fx-stroke-width: 3;
+    -fx-stroke-width: 4;
 }
 
 .edge-label {
@@ -110,6 +110,15 @@ This should help you understand which styles you can apply.
     -fx-stroke: #FFF593;
     -fx-stroke-type: inside; /* you should keep this if using arrows */
     -fx-fill: #FFF593;
+}
+
+.selectedEdge {
+    -fx-stroke-width: 4;
+    -fx-stroke: #deff66;  
+    /* -fx-stroke-dash-array: 2 5 2 5; remove for clean lines */
+    -fx-fill: transparent; /* important to keep for curved edges */
+    -fx-stroke-line-cap: round;
+    -fx-opacity: 0.8;
 }
 
 

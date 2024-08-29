@@ -51,7 +51,16 @@
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Edge label" />
                </children>
             </VBox>
-            <TextField prefWidth="170.0" />
+            <TextField fx:id="edgeLabelTextField" alignment="CENTER" prefWidth="170.0" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="38.0" prefWidth="290.0">
+         <children>
+            <Button fx:id="deleteEdgeButton" mnemonicParsing="false" style="-fx-background-color: #ff2929bb;" text="DELETE EDGE">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Button>
          </children>
       </HBox>
    </children>

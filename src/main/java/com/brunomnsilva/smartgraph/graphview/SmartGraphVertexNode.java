@@ -38,6 +38,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 
@@ -428,6 +429,7 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
 
         label.xProperty().bind(centerXProperty().subtract(Bindings.divide(label.layoutWidthProperty(), 2.0)));
         label.yProperty().bind(centerYProperty().add(Bindings.add(shapeProxy.radiusProperty(), label.layoutHeightProperty())));
+        // label.yProperty().bind(centerYProperty().add(Bindings.divide(label.layoutHeightProperty(), 2.0)));
 
         // label.yProperty().bind(centerYProperty().add(Bindings.add(
         // shapeProxy.radiusProperty(), LABEL_Y_OFFSET)));
@@ -494,6 +496,7 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
     @SuppressWarnings("unchecked")
     private void enableDrag() {
         final PointVector dragDelta = new PointVector(0, 0);
+        MainPane mainPane = SceneReference.getMainPane();
 
         setOnMousePressed((MouseEvent mouseEvent) -> {
             if (mouseEvent.isPrimaryButtonDown()) {
@@ -505,11 +508,15 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
 
                 /* -------------------------------------------------------------------------- */
                 /* //! Aggiunto io */
-                MainPane mainPane = SceneReference.getMainPane();
+
                 mainPane.setVertexPressed(true);
+
                 /* -------------------------------------------------------------------------- */
 
                 mouseEvent.consume();
+            } else if (mouseEvent.isSecondaryButtonDown() && this.equals(mainPane.getSelectedVertexNode())) {
+                mainPane.setVertexPressed(true);
+                mainPane.deselectVertex();
             }
         });
 
@@ -521,10 +528,10 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
             isDragging = false;
 
             // ! AGGIUNTO IO -----------------
-            MainPane mainPane = SceneReference.getMainPane();
-            mainPane.setSelectedVertexNode((SmartGraphVertexNode<String>) this);
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                mainPane.setSelectedVertexNode((SmartGraphVertexNode<String>) this);
+            }
             mainPane.setVertexPressed(false);
-
             // ! -----------------------------
             mouseEvent.consume();
         });

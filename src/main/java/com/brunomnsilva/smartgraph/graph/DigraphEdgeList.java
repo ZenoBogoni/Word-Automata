@@ -455,4 +455,11 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
     // SceneReference.getGrapView().updateAndWait();
     // return newVertex;
     // }
+
+    public Edge<E, V> getEdgeById(int id) {
+        if (edges.containsKey(id)) {
+            return edges.get(id);
+        }
+        return null;
+    }
 }

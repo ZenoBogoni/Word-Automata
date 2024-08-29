@@ -31,15 +31,17 @@ public class GraphSidePane extends VBox {
     private SimpleBooleanProperty isVertexSelectedProperty = SceneReference.getIsVertexSelectedProperty();
     private SimpleBooleanProperty confirmToApplyProperty = SceneReference.getConfirmToApplyProperty();
     private SimpleBooleanProperty initialvertexSetProperty = SceneReference.getnitialVertexSetProperty();
+    private SimpleBooleanProperty isEdgeSelectedProperty = SceneReference.getIsEdgeSelectedProperty();
 
     // java variables
-    private String textFieldVertexName;
+    private String lastVertexName;
+    private int edgeId;
 
     // FXML
     @FXML
-    private TextField vertexLabelTextField;
+    private TextField vertexLabelTextField, edgeLabelTextField;
     @FXML
-    private Button deleteVertexButton;
+    private Button deleteVertexButton, deleteEdgeButton;
     @FXML
     private RadioButton initialNodeRadioButton, finalNodeRadioButton;
 
@@ -57,9 +59,9 @@ public class GraphSidePane extends VBox {
 
     public void initialize() {
         // hide when vertex is not selected
-        deleteVertexButton.visibleProperty().bind(isVertexSelectedProperty);
-        initialNodeRadioButton.visibleProperty().bind(isVertexSelectedProperty);
-        finalNodeRadioButton.visibleProperty().bind(isVertexSelectedProperty);
+        // deleteVertexButton.visibleProperty().bind(isVertexSelectedProperty);
+        initialNodeRadioButton.setDisable(true);
+        finalNodeRadioButton.disableProperty().bind(Bindings.not(isVertexSelectedProperty));
 
         // radio buttons
         isVertexSelectedProperty.addListener((observable, oldValue, newValue) -> {
@@ -67,6 +69,8 @@ public class GraphSidePane extends VBox {
                 updateRadioButtons();
             } else {
                 initialNodeRadioButton.setDisable(true);
+                initialNodeRadioButton.setSelected(false);
+                finalNodeRadioButton.setSelected(false);
             }
         });
 
@@ -94,7 +98,7 @@ public class GraphSidePane extends VBox {
             }
         });
 
-        // text field
+        // vertex text field
         vertexLabelTextField.disableProperty().bind(Bindings.not(isVertexSelectedProperty));
         vertexLabelTextField.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
         vertexLabelTextField.setAlignment(Pos.CENTER);
@@ -111,22 +115,21 @@ public class GraphSidePane extends VBox {
         });
 
         vertexLabelTextField.setOnAction(e -> {
-            if (!vertexLabelTextField.getText().equals(textFieldVertexName)) {
+            if (!vertexLabelTextField.getText().equals(lastVertexName)) {
                 updateVertexName();
             }
         });
 
         vertexLabelTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue && !confirmToApplyProperty.get()) {
-                if (!vertexLabelTextField.getText().equals(textFieldVertexName)) {
-                    updateVertexName();
-                }
-            } else if (newValue) {
-                textFieldVertexName = new String(vertexLabelTextField.getText());
+            if (newValue) {
+                lastVertexName = new String(vertexLabelTextField.getText());
+            } else if (!confirmToApplyProperty.get() && !vertexLabelTextField.getText().equals(lastVertexName)) {
+                updateVertexName();
             }
         });
 
         // delete vertex button
+        deleteVertexButton.disableProperty().bind(Bindings.not(isVertexSelectedProperty));
         deleteVertexButton.setOnAction(e -> {
             if (selectedVertexNode != null) {
                 if (selectedVertexNode.equals(SceneReference.getInitialVertexNode())) {
@@ -135,9 +138,46 @@ public class GraphSidePane extends VBox {
                 graph.removeVertex(selectedVertexNode.getUnderlyingVertex());
                 System.out.println(graph.toString());
                 graphView.update();
-                mainPane.deselectVertex();
+                mainPane.deselectNodes();
             }
 
+        });
+
+        // edge text field
+        edgeLabelTextField.disableProperty().bind(Bindings.not(isEdgeSelectedProperty));
+        edgeLabelTextField.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
+        edgeLabelTextField.setAlignment(Pos.CENTER);
+        edgeLabelTextField.setPromptText("no edge selected");
+
+        isEdgeSelectedProperty.addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                edgeLabelTextField.setText(SceneReference.getSelectedEdge().getAttachedLabel().getText());
+            } else {
+                edgeLabelTextField.setText("");
+                edgeLabelTextField.setPromptText("no edge selected");
+            }
+        });
+
+        edgeLabelTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                edgeId = SceneReference.getSelectedEdge().getUnderlyingEdge().getId();
+            } else if (!confirmToApplyProperty.get()) {
+                updateEdgeName();
+            }
+        });
+
+        edgeLabelTextField.setOnAction(e -> {
+            updateEdgeName();
+        });
+
+        // delete edge button
+        deleteEdgeButton.disableProperty().bind(Bindings.not(isEdgeSelectedProperty));
+
+        deleteEdgeButton.setOnAction(e -> {
+            graph.removeEdge(SceneReference.getSelectedEdge().getUnderlyingEdge());
+            graphView.update();
+            SceneReference.deselectEdge();
+            System.out.println(SceneReference.getGraph().toString());
         });
     }
 
@@ -156,14 +196,23 @@ public class GraphSidePane extends VBox {
         if (vertexLabelTextField.getText().isBlank()) {
             return;
         }
-        graph.replace(graph.vertexOf(textFieldVertexName), vertexLabelTextField.getText());
+        graph.replace(graph.vertexOf(lastVertexName), vertexLabelTextField.getText());
         Vertex<String> newVertex = graph.vertexOf(vertexLabelTextField.getText());
         if (newVertex == null) {
             return;
         }
         graphView.updateAndWait();
-        mainPane.setSelectedVertexNode(graphView.getVertexByName(newVertex));
+        mainPane.setSelectedVertexNode(graphView.getVertexNodeOf(newVertex));
         System.out.println(SceneReference.getGraph().toString());
-        textFieldVertexName = new String(newVertex.element());
+        lastVertexName = new String(newVertex.element());
+    }
+
+    private void updateEdgeName() {
+        if (edgeLabelTextField.getText().isBlank()) {
+            return;
+        }
+        graph.replace(graph.getEdgeById(edgeId), edgeLabelTextField.getText());
+        graphView.update();
+        System.out.println(SceneReference.getGraph().toString());
     }
 }

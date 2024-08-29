@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import com.brunomnsilva.smartgraph.containers.ContentZoomScrollPane;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
+import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
@@ -200,8 +201,10 @@ public class MainPane extends BorderPane {
         });
 
         graphPane.setOnMousePressed(e -> {
-            if (!isVertexPressed) {
-                deselectVertex();
+            if (e.getButton().equals(MouseButton.PRIMARY)) {
+                if (!isVertexPressed && !SceneReference.isEdgePressed()) {
+                    deselectNodes();
+                }
             }
         });
 
@@ -275,6 +278,13 @@ public class MainPane extends BorderPane {
         createModal(new EdgePopup(from, to));
     }
 
+    public void deselectNodes() {
+        deselectVertex();
+        if (SceneReference.isEdgeSelected()) {
+            SceneReference.deselectEdge();
+        }
+    }
+
     public void deselectVertex() {
         if (selectedVertexNode != null) {
             setIsVertexSelected(false);
@@ -284,8 +294,9 @@ public class MainPane extends BorderPane {
     }
 
     public void addEdge(SmartGraphVertexNode<String> from, SmartGraphVertexNode<String> to) {
-        graph.insertEdge(from.getUnderlyingVertex(), to.getUnderlyingVertex(), edgeName);
-        graphView.update();
+        Edge<String, String> newEgde = graph.insertEdge(from.getUnderlyingVertex(), to.getUnderlyingVertex(), edgeName);
+        graphView.updateAndWait();
+        SceneReference.setSelectedEdge(graphView.getEdgeNodeOf(newEgde));
     }
 
     /* -------------------------------------------------------------------------- */
@@ -345,15 +356,16 @@ public class MainPane extends BorderPane {
         return isVertexSelectedProperty.get();
     }
 
+    public boolean isLinkingPhase() {
+        return isLinkingPhase;
+    }
+
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Setters */
     /* -------------------------------------------------------------------------- */
 
     public void setSelectedVertexNode(SmartGraphVertexNode<String> vertex) {
         if (selectedVertexNode != null) {
-            if (selectedVertexNode.equals(vertex)) {
-                return;
-            }
 
             if (isLinkingPhase) {
                 if (graph.areAdjacent(selectedVertexNode.getUnderlyingVertex(), vertex.getUnderlyingVertex())) {
@@ -364,6 +376,9 @@ public class MainPane extends BorderPane {
                     isLinkingPhase = false;
                 }
             } else {
+                if (selectedVertexNode.equals(vertex)) {
+                    return;
+                }
                 selectedVertexNode.removeStyleClass("selectedVertex");
                 isVertexSelectedProperty.set(false);
                 selectedVertexNode = vertex;
@@ -374,7 +389,6 @@ public class MainPane extends BorderPane {
             selectedVertexNode = vertex;
             setIsVertexSelected(true);
             selectedVertexNode.addStyleClassLast("selectedVertex");
-            ;
         }
 
     }

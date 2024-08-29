@@ -24,7 +24,6 @@
 package com.brunomnsilva.smartgraph.graphview;
 
 import com.brunomnsilva.smartgraph.graph.Edge;
-import com.brunomnsilva.smartgraph.graph.Vertex;
 
 import it.univr.utils.SceneReference;
 import javafx.beans.binding.Bindings;
@@ -56,7 +55,7 @@ import javafx.scene.transform.Translate;
  */
 public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphEdgeBase<E, V> {
 
-    private static final double MAX_EDGE_CURVE_ANGLE = 45;
+    private static final double MAX_EDGE_CURVE_ANGLE = 30;
     private static final double MIN_EDGE_CURVE_ANGLE = 5;
 
     /** Distance (in pixels) that establishes the maximum curve threshold */
@@ -116,7 +115,8 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
         this.endYProperty().bind(inbound.centerYProperty());
 
         // TODO: improve this solution taking into account even indices, etc.
-        randomAngleFactor = edgeIndex == 0 ? 0 : 1.0 / edgeIndex; // Math.random();
+        // randomAngleFactor = edgeIndex == 0 ? 0 : 1.0 / edgeIndex; // Math.random();
+        randomAngleFactor = 0;
 
         // update();
         enableListeners();
@@ -317,14 +317,23 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
     }
 
     private void handleClicks() {
-        this.setOnMouseClicked(e -> {
-            SceneReference.setSelectedEdge((SmartGraphEdgeCurve<String, Vertex<String>>) this);
-            System.out.println(SceneReference.getSelectedEdge());
+        this.setOnMousePressed(e -> {
+            SceneReference.setEdgePressed(true);
         });
 
-        attachedLabel.setOnMouseClicked(e -> {
-            SceneReference.setSelectedEdge((SmartGraphEdgeCurve<String, Vertex<String>>) this);
-            System.out.println(SceneReference.getSelectedEdge());
+        this.setOnMouseReleased(e -> {
+            SceneReference.setSelectedEdge((SmartGraphEdgeCurve<String, String>) this);
+            SceneReference.setEdgePressed(false);
         });
+
+        attachedLabel.setOnMousePressed(e -> {
+            SceneReference.setEdgePressed(true);
+        });
+
+        attachedLabel.setOnMouseReleased(e -> {
+            SceneReference.setSelectedEdge((SmartGraphEdgeCurve<String, String>) this);
+            SceneReference.setEdgePressed(false);
+        });
+
     }
 }
