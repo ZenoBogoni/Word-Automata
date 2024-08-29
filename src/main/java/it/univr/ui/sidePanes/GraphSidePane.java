@@ -111,6 +111,7 @@ public class GraphSidePane extends VBox {
             } else {
                 selectedVertexNode = mainPane.getSelectedVertexNode();
                 vertexLabelTextField.setText(selectedVertexNode.getAttachedLabel().getText());
+                lastVertexName = (lastVertexName == null) ? new String(vertexLabelTextField.getText()) : vertexLabelTextField.getText();
             }
         });
 
@@ -121,9 +122,7 @@ public class GraphSidePane extends VBox {
         });
 
         vertexLabelTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                lastVertexName = new String(vertexLabelTextField.getText());
-            } else if (!confirmToApplyProperty.get() && !vertexLabelTextField.getText().equals(lastVertexName)) {
+            if (!newValue && !confirmToApplyProperty.get() && !vertexLabelTextField.getText().equals(lastVertexName)) {
                 updateVertexName();
             }
         });
