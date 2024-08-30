@@ -1,8 +1,5 @@
 package it.univr;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import java.io.IOException;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
@@ -12,6 +9,10 @@ import atlantafx.base.theme.NordLight;
 import it.univr.ui.MainPane;
 import it.univr.utils.Constants;
 import it.univr.utils.SceneReference;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
 
 /**
  * JavaFX App
@@ -36,6 +37,11 @@ public class App extends Application {
         mainPane.initSceneReference();
 
         this.scene = new Scene(mainPane, Constants.WIDTH, Constants.HEIGHT);
+        this.scene.setOnKeyPressed(key -> {
+            if (key.getCode() == KeyCode.F11 || key.isAltDown() && key.getCode() == KeyCode.ENTER) {
+                this.stage.setFullScreen(!this.stage.isFullScreen());
+            }
+        });
         String css = getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm();
         this.scene.getStylesheets().add(css);
         this.stage.setScene(scene);

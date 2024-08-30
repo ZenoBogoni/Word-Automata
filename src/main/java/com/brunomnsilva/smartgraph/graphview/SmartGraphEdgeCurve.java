@@ -24,6 +24,7 @@
 package com.brunomnsilva.smartgraph.graphview;
 
 import com.brunomnsilva.smartgraph.graph.Edge;
+import com.brunomnsilva.smartgraph.graph.Vertex;
 
 import it.univr.utils.SceneReference;
 import javafx.beans.binding.Bindings;
@@ -156,6 +157,7 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     private void update() {
         if (inbound == outbound) {
             /* Make a loop using the control points proportional to the vertex radius */
@@ -172,6 +174,16 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
             setControlX2(midpointX2);
             setControlY2(midpointY2);
 
+        } else if (SceneReference.getGrapView().getTotalEdgesBetween((Vertex<String>) outbound.getUnderlyingVertex(), (Vertex<String>) inbound.getUnderlyingVertex()) == 1) {
+            /*
+             * Make the edge a straight line if it's the only edge between two vertices
+             */
+            Point2D midpoint = new Point2D((outbound.getCenterX() + inbound.getCenterX()) / 2, (outbound.getCenterY() + inbound.getCenterY()) / 2);
+
+            setControlX1(midpoint.getX());
+            setControlY1(midpoint.getY());
+            setControlX2(midpoint.getX());
+            setControlY2(midpoint.getY());
         } else {
             /*
              * Make a curved edge. The curvature is bounded and proportional to the

@@ -1106,7 +1106,8 @@ public class SmartGraphPanel<V, E> extends Pane {
         vertexNodes.values().forEach((v) -> v.resetForces());
     }
 
-    private int getTotalEdgesBetween(Vertex<V> v, Vertex<V> u) {
+    // ! resa public per utilizzo in edge
+    public int getTotalEdgesBetween(Vertex<V> v, Vertex<V> u) {
         int count = 0;
         for (Edge<E, V> edge : theGraph.edges()) {
             if (edge.vertices()[0] == v && edge.vertices()[1] == u
