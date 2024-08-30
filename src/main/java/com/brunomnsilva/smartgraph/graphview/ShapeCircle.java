@@ -39,8 +39,9 @@ public class ShapeCircle implements ShapeWithRadius<Circle> {
 
     /**
      * Creates a circle shape.
-     * @param x the x-center coordinate
-     * @param y the y-center coordinate
+     * 
+     * @param x      the x-center coordinate
+     * @param y      the y-center coordinate
      * @param radius the radius of the circle
      */
     public ShapeCircle(double x, double y, double radius) {
@@ -81,7 +82,7 @@ public class ShapeCircle implements ShapeWithRadius<Circle> {
         Args.requireNonNegative(radius, "radius");
 
         // Only update if different
-        if(Double.compare(this.getRadius(), radius) != 0) {
+        if (Double.compare(this.getRadius(), radius) != 0) {
             surrogate.setRadius(radius);
         }
     }

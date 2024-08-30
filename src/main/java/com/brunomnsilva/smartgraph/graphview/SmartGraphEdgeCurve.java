@@ -72,7 +72,7 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
     private SmartLabel attachedLabel = null;
     private SmartArrow attachedArrow = null;
 
-    private double randomAngleFactor;
+    // private double randomAngleFactor;
 
     /* Styling proxy */
     private final SmartStyleProxy styleProxy;
@@ -116,7 +116,7 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
 
         // TODO: improve this solution taking into account even indices, etc.
         // randomAngleFactor = edgeIndex == 0 ? 0 : 1.0 / edgeIndex; // Math.random();
-        randomAngleFactor = 0;
+        // randomAngleFactor = 0;
 
         // update();
         enableListeners();
@@ -186,8 +186,7 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
 
             double angle = linearDecay(MAX_EDGE_CURVE_ANGLE, MIN_EDGE_CURVE_ANGLE, distance, DISTANCE_THRESHOLD);
 
-            Point2D midpoint = UtilitiesPoint2D.calculateTriangleBetween(startpoint, endpoint,
-                    (-angle) + randomAngleFactor * 2 * angle);
+            Point2D midpoint = UtilitiesPoint2D.calculateTriangleBetween(startpoint, endpoint, angle);
 
             setControlX1(midpoint.getX());
             setControlY1(midpoint.getY());
