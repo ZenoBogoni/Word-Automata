@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class GraphSidePane extends VBox {
     // components
@@ -44,6 +45,8 @@ public class GraphSidePane extends VBox {
     private Button deleteVertexButton, deleteEdgeButton;
     @FXML
     private RadioButton initialNodeRadioButton, finalNodeRadioButton;
+    @FXML
+    private Text vertexLabel, edgeLabel;
 
     public GraphSidePane() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("graphSidePane.fxml"));
@@ -103,14 +106,18 @@ public class GraphSidePane extends VBox {
         vertexLabelTextField.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
         vertexLabelTextField.setAlignment(Pos.CENTER);
         vertexLabelTextField.setPromptText("no vertex selected");
+        vertexLabel.setStyle("-fx-fill: gray");
 
         vertexLabelTextField.disableProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 vertexLabelTextField.setText("");
                 vertexLabelTextField.setPromptText("no vertex selected");
+                vertexLabel.setStyle("-fx-fill: gray");
             } else {
                 selectedVertexNode = mainPane.getSelectedVertexNode();
                 vertexLabelTextField.setText(selectedVertexNode.getAttachedLabel().getText());
+                vertexLabel.setStyle(null);
+
             }
         });
 
@@ -148,13 +155,16 @@ public class GraphSidePane extends VBox {
         edgeLabelTextField.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
         edgeLabelTextField.setAlignment(Pos.CENTER);
         edgeLabelTextField.setPromptText("no edge selected");
+        edgeLabel.setStyle("-fx-fill: gray");
 
         isEdgeSelectedProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 edgeLabelTextField.setText(SceneReference.getSelectedEdge().getAttachedLabel().getText());
+                edgeLabel.setStyle(null);
             } else {
                 edgeLabelTextField.setText("");
                 edgeLabelTextField.setPromptText("no edge selected");
+                edgeLabel.setStyle("-fx-fill: gray");
             }
         });
 

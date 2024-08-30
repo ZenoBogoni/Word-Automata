@@ -8,11 +8,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="290.0" spacing="10.0" type="VBox" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="290.0" spacing="15.0" type="VBox" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER" prefHeight="55.0" prefWidth="300.0" styleClass="sidePane-title-container">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sidePane-title" text="GRAPH CONTROL">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sidePane-title" text="VERTEX CONTROL">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
@@ -23,7 +23,7 @@
          <children>
             <VBox alignment="CENTER" prefHeight="24.0" prefWidth="63.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Vertex label" />
+                  <Text fx:id="vertexLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Vertex label" />
                </children>
             </VBox>
             <TextField fx:id="vertexLabelTextField" prefWidth="170.0" />
@@ -37,18 +37,27 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="38.0" prefWidth="290.0">
          <children>
-            <Button fx:id="deleteVertexButton" mnemonicParsing="false" style="-fx-background-color: #ff2929bb;" text="DELETE VERTEX">
+            <Button fx:id="deleteVertexButton" mnemonicParsing="false" prefHeight="24.0" style="-fx-background-color: #ff2929bb;" text="DELETE VERTEX" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Button>
          </children>
       </HBox>
+      <HBox alignment="CENTER" prefHeight="55.0" prefWidth="300.0" styleClass="sidePane-title-container">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sidePane-title" text="EDGE CONTROL">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
       <HBox prefWidth="200.0" styleClass="item-container">
          <children>
             <VBox alignment="CENTER" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Edge label" />
+                  <Text fx:id="edgeLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Edge label" />
                </children>
             </VBox>
             <TextField fx:id="edgeLabelTextField" alignment="CENTER" prefWidth="170.0" />
