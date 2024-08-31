@@ -21,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -77,6 +78,8 @@ public class MainPane extends BorderPane {
     @FXML
     private VBox sideMenuStatic;
     @FXML
+    private Button testGraphButton;
+    @FXML
     private ScrollPane sideMenuHidable;
     @FXML
     private HBox sideMenu;
@@ -127,8 +130,15 @@ public class MainPane extends BorderPane {
         initMenuBar();
         initSideMenu();
         graphView.init();
+        initBottomMenu();
         graphView.setAutomaticLayoutStrategy(magicLayoutSidePane.getMagicLayout());
         graphView.update();
+    }
+
+    private void initBottomMenu() {
+        testGraphButton.setOnAction(e -> {
+            testGraphPopup();
+        });
     }
 
     private void initMenuBar() {
@@ -318,6 +328,14 @@ public class MainPane extends BorderPane {
 
     private void vertexNamePopup() {
         createModal(new VertexPopup(), 300, 200);
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /* /// ANCHOR - Test Graph popup */
+    /* -------------------------------------------------------------------------- */
+
+    private void testGraphPopup() {
+        createModal(new TestGraphPopup(), 300, 200);
     }
 
     /* -------------------------------------------------------------------------- */

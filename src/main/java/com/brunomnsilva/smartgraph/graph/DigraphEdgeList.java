@@ -48,6 +48,9 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
      */
     private final Map<V, Vertex<V>> vertices;
     private final Map<Integer, Edge<E, V>> edges;
+    // !FATTA io
+    private Map<V, Integer> numbers = new HashMap<>();
+    private Map<Integer, Vertex<V>> verticesUnique = new HashMap<>();
     private static int id = 0;
 
     /**
@@ -193,6 +196,22 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         return newVertex;
     }
 
+    public synchronized Vertex<V> insertVertexUnique(V vElement) throws InvalidVertexException {
+        if (existsVertexWith(vElement)) {
+            throw new InvalidVertexException("There's already a vertex with this element.");
+        }
+
+        MyVertexUnique newVertex = new MyVertexUnique(vElement);
+
+        String s = "";
+        s = s + newVertex.counter();
+        vertices.put(s, newVertex);
+        // verticesUnique.put(newVertex.counter(), newVertex);
+        // numbers.put(vElement, newVertex.counter());
+
+        return newVertex;
+    }
+
     @Override
     public synchronized V removeVertex(Vertex<V> v) throws InvalidVertexException {
         checkVertex(v);
@@ -286,6 +305,53 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
             sb.append("\t").append(e.toString()).append("\n");
         }
         return sb.toString();
+    }
+
+    public class MyVertexUnique implements Vertex<V> {
+
+        V element;
+        static int counter = 0;
+        boolean finalNode = false;
+        boolean initialNode = false;
+
+        public MyVertexUnique(V element) {
+            this.element = element;
+            counter++;
+        }
+
+        @Override
+        public V element() {
+            return this.element;
+        }
+
+        public int counter() {
+            return counter;
+        }
+
+        public void setElement(V element) {
+            this.element = element;
+        }
+
+        @Override
+        public String toString() {
+            return "Vertex{" + element + '}';
+        }
+
+        public void setFinal(boolean bool) {
+            finalNode = bool;
+        }
+
+        public void setInitial(boolean bool) {
+            initialNode = bool;
+        }
+
+        public boolean isFinal() {
+            return finalNode;
+        }
+
+        public boolean isInitial() {
+            return initialNode;
+        }
     }
 
     public class MyVertex implements Vertex<V> {
