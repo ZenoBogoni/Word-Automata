@@ -62,11 +62,12 @@ public class TestGraphPopup extends AnchorPane {
 
             firstUniqueVertex.setRealVertex(initialVertex);
 
-            boolean path;
-            testGraphWithWord(firstUniqueVertex, 0);
-            // if (path) {
-            // supportGraph.removeVertex(firstUniqueVertex);
-            // }
+            boolean path = testGraphWithWord(firstUniqueVertex, 0);
+
+            if (!path) {
+                supportGraph.removeVertex(firstUniqueVertex);
+            }
+
             System.out.println(supportGraph);
 
             // removeWrongPaths();
@@ -98,50 +99,72 @@ public class TestGraphPopup extends AnchorPane {
         });
     }
 
-    private void testGraphWithWord(MyVertexUnique vertex, int pointerSubString) {
+    private boolean testGraphWithWord(MyVertexUnique vertex, int pointerSubString) {
 
-        // boolean atLeastOnePathIsGood = false;
+        boolean atLeastOnePathIsGood = false;
 
-        for (Edge<String, String> edge : graph.outboundEdges((Vertex<String>) vertex.getRealVertex())) {
-            pointer = 0;
+        System.out.println("new root is -> " + vertex);
 
-            Vertex<String> nextVertex = ((MyEdge) edge).getInbound();
+        if (!graph.outboundEdges((Vertex<String>) vertex.getRealVertex()).isEmpty()) {
+            for (Edge<String, String> edge : graph.outboundEdges((Vertex<String>) vertex.getRealVertex())) {
+                pointer = 0;
 
-            if (testWord.substring(pointerSubString) != null) {
-                pointer = compare(edge.element(), testWord.substring(pointerSubString));
-                System.out.println(pointer);
-            } else {
-                // if (vertex.getRealVertex().isFinal()) {
-                // return true;
-                // } else {
-                // return false;
-                // }
+                System.out.println("We are in edge -> " + edge + " with the vertex " + vertex + " as root");
+
+                Vertex<String> nextVertex = ((MyEdge) edge).getInbound();
+
+                if (testWord.substring(pointerSubString).length() != 0) {
+                    System.out.println("word -> " + testWord.substring(pointerSubString));
+                    pointer = compare(edge.element(), testWord.substring(pointerSubString));
+                    System.out.println("Chars of the edge -> " + edge.element() + " compatible with the word -> " + pointer);
+
+                } else {
+                    System.out.println(vertex.getRealVertex() + "is final? ->" + vertex.getRealVertex().isFinal());
+
+                    if (vertex.getRealVertex().isFinal()) {
+                        atLeastOnePathIsGood = true;
+                    }
+                }
+
+                if (pointer == edge.element().length()) {
+                    MyVertexUnique uniqueVertex = supportGraph.insertVertex(numberOfVertices + "");
+                    numberOfVertices++;
+
+                    uniqueVertex.setRealVertex(nextVertex);
+                    System.out.println("Added vertex -> " + uniqueVertex);
+
+                    MyEdgeUnique edgeUnique = supportGraph.insertEdge(vertex, uniqueVertex, edge.element());
+                    System.out.println("Adding edge -> " + edgeUnique);
+
+                    boolean isThisPathGood = false;
+
+                    isThisPathGood = testGraphWithWord(uniqueVertex, pointer + pointerSubString);
+
+                    if (isThisPathGood) {
+                        atLeastOnePathIsGood = true;
+                    } else {
+                        System.out.println("Removing edge -> " + edgeUnique);
+                        supportGraph.removeEdge(edgeUnique);
+                        System.out.println("Removing vertex -> " + uniqueVertex);
+                        supportGraph.removeVertex(uniqueVertex);
+                    }
+
+                }
             }
+        } else {
 
-            if (pointer == edge.element().length()) {
-                MyVertexUnique uniqueVertex = supportGraph.insertVertex(numberOfVertices + "");
-                numberOfVertices++;
-
-                uniqueVertex.setRealVertex(nextVertex);
-
-                supportGraph.insertEdge(vertex, uniqueVertex, edge.element());
-
-                boolean isThisPathGood;
-                testGraphWithWord(uniqueVertex, pointer + pointerSubString);
-
-                // if (isThisPathGood) {
-                // atLeastOnePathIsGood = true;
-                // } else {
-                // supportGraph.removeEdge(edge);
-                // supportGraph.removeVertex(uniqueVertex);
-                // }
-
+            if (testWord.substring(pointerSubString).length() == 0) {
+                if (vertex.getRealVertex().isFinal()) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
-                // return false;
+                return false;
             }
         }
 
-        // return atLeastOnePathIsGood;
+        return atLeastOnePathIsGood;
     }
 
     private int compare(String first, String second) {

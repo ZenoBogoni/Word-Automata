@@ -101,8 +101,7 @@ public class DigraphEdgeListUnique<V, E> implements Digraph<V, E> {
         return false;
     }
 
-    @Override
-    public synchronized Edge<E, V> insertEdge(Vertex<V> outbound, Vertex<V> inbound, E edgeElement) throws InvalidVertexException, InvalidEdgeException {
+    public synchronized MyEdgeUnique insertEdge(MyVertexUnique outbound, MyVertexUnique inbound, E edgeElement) throws InvalidVertexException, InvalidEdgeException {
 
         // ! non fa nulla in teoria
         if (existsEdgeWith(id)) {
@@ -346,10 +345,10 @@ public class DigraphEdgeListUnique<V, E> implements Digraph<V, E> {
 
         int id;
         E element;
-        Vertex<V> vertexOutbound;
-        Vertex<V> vertexInbound;
+        MyVertexUnique vertexOutbound;
+        MyVertexUnique vertexInbound;
 
-        public MyEdgeUnique(int id, E element, Vertex<V> vertexOutbound, Vertex<V> vertexInbound) {
+        public MyEdgeUnique(int id, E element, MyVertexUnique vertexOutbound, MyVertexUnique vertexInbound) {
             this.id = id;
             this.element = element;
             this.vertexOutbound = vertexOutbound;
@@ -372,11 +371,8 @@ public class DigraphEdgeListUnique<V, E> implements Digraph<V, E> {
 
         @Override
         public Vertex<V>[] vertices() {
-            Vertex<V>[] vertices = new Vertex[2];
-            vertices[0] = vertexOutbound;
-            vertices[1] = vertexInbound;
-
-            return vertices;
+            Vertex<V>[] v = new Vertex[1];
+            return v;
         }
 
         @Override
@@ -401,11 +397,11 @@ public class DigraphEdgeListUnique<V, E> implements Digraph<V, E> {
             return (MyVertexUnique) vertexInbound;
         }
 
-        public void setInbound(Vertex<V> inbound) {
+        public void setInbound(MyVertexUnique inbound) {
             this.vertexInbound = inbound;
         }
 
-        public void setOutbound(Vertex<V> outbound) {
+        public void setOutbound(MyVertexUnique outbound) {
             this.vertexOutbound = outbound;
         }
     }
@@ -458,5 +454,11 @@ public class DigraphEdgeListUnique<V, E> implements Digraph<V, E> {
             return edges.get(id);
         }
         return null;
+    }
+
+    @Override
+    public Edge<E, V> insertEdge(Vertex<V> outbound, Vertex<V> inbound, E edgeElement) throws InvalidVertexException, InvalidEdgeException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'insertEdge'");
     }
 }
