@@ -63,7 +63,7 @@ public class TestGraphPopup extends AnchorPane {
             resetTestWordNameFieldWithErrorMessage("Enter a valid word");
         } else {
 
-            MyVertexUnique initialVertexUnique = creatingInitialVertexUnique(); // and adding it to the supportGraph
+            MyVertexUnique initialVertexUnique = creatingVertexUnique(SceneReference.getInitialVertexNode().getUnderlyingVertex()); // and adding it to the supportGraph
 
             isThereValidPath = createGraphOfAllPossiblePaths(initialVertexUnique, 0);
 
@@ -80,16 +80,18 @@ public class TestGraphPopup extends AnchorPane {
         }
     }
 
-    private MyVertexUnique creatingInitialVertexUnique() {
+    /*
+     * Creates a MyVertexUnique, adds it to the Support Graph
+     * and set as real Vertex the argument vertex
+     */
+    private MyVertexUnique creatingVertexUnique(Vertex<String> Vertex) {
 
-        Vertex<String> initialVertex = SceneReference.getInitialVertexNode().getUnderlyingVertex();
-
-        MyVertexUnique initialVertexUnique = supportGraph.insertVertex(numberOfVertices + "");
+        MyVertexUnique VertexUnique = supportGraph.insertVertex(numberOfVertices + "");
         numberOfVertices++;
 
-        initialVertexUnique.setRealVertex(initialVertex);
+        VertexUnique.setRealVertex(Vertex);
 
-        return initialVertexUnique;
+        return VertexUnique;
     }
 
     private void resetTestWordNameFieldWithErrorMessage(String error) {
@@ -120,31 +122,24 @@ public class TestGraphPopup extends AnchorPane {
         boolean atLeastOnePathIsGood = false;
 
         Collection<Edge<String, String>> edges = graph.outboundEdges((Vertex<String>) currentVertex.getRealVertex());
+        int testWordSubStringLength = testWord.substring(pointerSubString).length();
 
         if (!edges.isEmpty()) {
 
             for (Edge<String, String> edge : edges) {
-
                 pointer = 0;
 
                 Vertex<String> nextVertex = ((MyEdge) edge).getInbound();
 
-                if (testWord.substring(pointerSubString).length() != 0) {
-
+                if (testWordSubStringLength != 0) {
                     pointer = compareStrings(edge.element(), testWord.substring(pointerSubString));
-
                 } else {
-
-                    if (currentVertex.getRealVertex().isFinal()) {
-                        atLeastOnePathIsGood = true;
-                    }
+                    atLeastOnePathIsGood = currentVertex.getRealVertex().isFinal();
                 }
 
                 if (pointer == edge.element().length()) {
-                    MyVertexUnique nextVertexUnique = supportGraph.insertVertex(numberOfVertices + "");
-                    numberOfVertices++;
 
-                    nextVertexUnique.setRealVertex(nextVertex);
+                    MyVertexUnique nextVertexUnique = creatingVertexUnique(nextVertex);
 
                     MyEdgeUnique edgeUnique = supportGraph.insertEdge(currentVertex, nextVertexUnique, edge.element());
 
@@ -162,7 +157,7 @@ public class TestGraphPopup extends AnchorPane {
 
         } else {
 
-            if (testWord.substring(pointerSubString).length() == 0) {
+            if (testWordSubStringLength == 0) {
                 if (currentVertex.getRealVertex().isFinal()) {
                     return true;
                 } else {
