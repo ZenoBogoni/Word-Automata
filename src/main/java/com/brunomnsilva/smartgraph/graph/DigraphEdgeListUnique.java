@@ -41,7 +41,7 @@ import java.util.Map;
  * 
  * @author brunomnsilva
  */
-public class DigraphEdgeList<V, E> implements Digraph<V, E> {
+public class DigraphEdgeListUnique<V, E> implements Digraph<V, E> {
 
     /*
      * inner classes are defined at the end of the class, so are the auxiliary methods
@@ -53,7 +53,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
     /**
      * Default constructor that initializes an empty digraph.
      */
-    public DigraphEdgeList() {
+    public DigraphEdgeListUnique() {
         this.vertices = new HashMap<>();
         this.edges = new HashMap<>();
     }
@@ -65,7 +65,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         List<Edge<E, V>> incidentEdges = new ArrayList<>();
         for (Edge<E, V> edge : edges.values()) {
 
-            if (((MyEdge) edge).getInbound() == inbound) {
+            if (((MyEdgeUnique) edge).getInbound() == inbound) {
                 incidentEdges.add(edge);
             }
         }
@@ -79,7 +79,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         List<Edge<E, V>> outboundEdges = new ArrayList<>();
         for (Edge<E, V> edge : edges.values()) {
 
-            if (((MyEdge) edge).getOutbound() == outbound) {
+            if (((MyEdgeUnique) edge).getOutbound() == outbound) {
                 outboundEdges.add(edge);
             }
         }
@@ -94,7 +94,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
 
         /* find and edge that goes outbound ---> inbound */
         for (Edge<E, V> edge : edges.values()) {
-            if (((MyEdge) edge).getOutbound() == outbound && ((MyEdge) edge).getInbound() == inbound) {
+            if (((MyEdgeUnique) edge).getOutbound() == outbound && ((MyEdgeUnique) edge).getInbound() == inbound) {
                 return true;
             }
         }
@@ -109,10 +109,8 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
             throw new InvalidEdgeException("There's already an edge with this element.");
         }
         // !========================
-        MyVertex outVertex = checkVertex(outbound);
-        MyVertex inVertex = checkVertex(inbound);
 
-        MyEdge newEdge = new MyEdge(id, edgeElement, outVertex, inVertex);
+        MyEdgeUnique newEdge = new MyEdgeUnique(id, edgeElement, outbound, inbound);
 
         edges.put(id, newEdge);
         id++;
@@ -133,10 +131,10 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
             throw new InvalidVertexException("No vertex contains " + inboundElement);
         }
 
-        MyVertex outVertex = vertexOf(outboundElement);
-        MyVertex inVertex = vertexOf(inboundElement);
+        MyVertexUnique outVertex = vertexOf(outboundElement);
+        MyVertexUnique inVertex = vertexOf(inboundElement);
 
-        MyEdge newEdge = new MyEdge(id, edgeElement, outVertex, inVertex);
+        MyEdgeUnique newEdge = new MyEdgeUnique(id, edgeElement, outVertex, inVertex);
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         edges.put(id, newEdge);
         id++;
@@ -166,7 +164,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
     @Override
     public synchronized Vertex<V> opposite(Vertex<V> v, Edge<E, V> e) throws InvalidVertexException, InvalidEdgeException {
         checkVertex(v);
-        MyEdge edge = checkEdge(e);
+        MyEdgeUnique edge = checkEdge(e);
 
         if (!edge.contains(v)) {
             return null; /* this edge does not connect vertex v */
@@ -181,12 +179,12 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
     }
 
     @Override
-    public synchronized Vertex<V> insertVertex(V vElement) throws InvalidVertexException {
+    public synchronized MyVertexUnique insertVertex(V vElement) throws InvalidVertexException {
         if (existsVertexWith(vElement)) {
             throw new InvalidVertexException("There's already a vertex with this element.");
         }
 
-        MyVertex newVertex = new MyVertex(vElement);
+        MyVertexUnique newVertex = new MyVertexUnique(vElement);
 
         vertices.put(vElement, newVertex);
 
@@ -195,7 +193,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
 
     @Override
     public synchronized V removeVertex(Vertex<V> v) throws InvalidVertexException {
-        checkVertex(v);
+        // checkVertex(v);
 
         V element = v.element();
 
@@ -214,7 +212,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
 
     @Override
     public synchronized E removeEdge(Edge<E, V> e) throws InvalidEdgeException {
-        checkEdge(e);
+        // checkEdge(e);
 
         E element = e.element();
         edges.remove(e.getId());
@@ -228,7 +226,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
             throw new InvalidVertexException("There's already a vertex with this element.");
         }
 
-        MyVertex vertex = checkVertex(v);
+        MyVertexUnique vertex = checkVertex(v);
 
         V oldElement = vertex.element;
         vertex.element = newElement;
@@ -245,7 +243,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         // throw new InvalidEdgeException("There's already an edge with this element.");
         // }
 
-        MyEdge edge = checkEdge(e);
+        MyEdgeUnique edge = checkEdge(e);
 
         E oldElement = edge.element;
         edge.element = newElement;
@@ -254,10 +252,10 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
     }
 
     // ! HO CAMBIATO DA PRIVATE A PUBLIC
-    public MyVertex vertexOf(V vElement) {
+    public MyVertexUnique vertexOf(V vElement) {
         for (Vertex<V> v : vertices.values()) {
             if (v.element().equals(vElement)) {
-                return (MyVertex) v;
+                return (MyVertexUnique) v;
             }
         }
         return null;
@@ -288,13 +286,14 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         return sb.toString();
     }
 
-    public class MyVertex implements Vertex<V> {
+    public class MyVertexUnique implements Vertex<V> {
 
         V element;
         boolean finalNode = false;
         boolean initialNode = false;
+        Vertex<V> realVertex;
 
-        public MyVertex(V element) {
+        public MyVertexUnique(V element) {
             this.element = element;
         }
 
@@ -303,40 +302,54 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
             return this.element;
         }
 
+        @Override
         public void setElement(V element) {
             this.element = element;
         }
 
         @Override
         public String toString() {
-            return "Vertex{" + element + '}';
+            return "UniqueVertex{" + element + " " + realVertex + '}';
         }
 
+        @Override
         public void setFinal(boolean bool) {
             finalNode = bool;
         }
 
+        @Override
         public void setInitial(boolean bool) {
             initialNode = bool;
         }
 
+        @Override
         public boolean isFinal() {
             return finalNode;
         }
 
+        @Override
         public boolean isInitial() {
             return initialNode;
         }
+
+        public void setRealVertex(Vertex<V> vertex) {
+            this.realVertex = vertex;
+        }
+
+        public Vertex<V> getRealVertex() {
+            return realVertex;
+        }
+
     }
 
-    public class MyEdge implements Edge<E, V> {
+    public class MyEdgeUnique implements Edge<E, V> {
 
         int id;
         E element;
         Vertex<V> vertexOutbound;
         Vertex<V> vertexInbound;
 
-        public MyEdge(int id, E element, Vertex<V> vertexOutbound, Vertex<V> vertexInbound) {
+        public MyEdgeUnique(int id, E element, Vertex<V> vertexOutbound, Vertex<V> vertexInbound) {
             this.id = id;
             this.element = element;
             this.vertexOutbound = vertexOutbound;
@@ -380,6 +393,14 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
             return vertexInbound;
         }
 
+        public MyVertexUnique getOutboundUnique() {
+            return (MyVertexUnique) vertexOutbound;
+        }
+
+        public MyVertexUnique getInboundUnique() {
+            return (MyVertexUnique) vertexInbound;
+        }
+
         public void setInbound(Vertex<V> inbound) {
             this.vertexInbound = inbound;
         }
@@ -396,13 +417,13 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
      * @return the reference of the vertex, with cast to the underlying implementation of {@link Vertex}
      * @throws InvalidVertexException if the vertex is <code>null</code> or does not belong to this graph
      */
-    private MyVertex checkVertex(Vertex<V> v) throws InvalidVertexException {
+    private MyVertexUnique checkVertex(Vertex<V> v) throws InvalidVertexException {
         if (v == null)
             throw new InvalidVertexException("Null vertex.");
 
-        MyVertex vertex;
+        MyVertexUnique vertex;
         try {
-            vertex = (MyVertex) v;
+            vertex = (MyVertexUnique) v;
         } catch (ClassCastException e) {
             throw new InvalidVertexException("Not a vertex.");
         }
@@ -414,13 +435,13 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         return vertex;
     }
 
-    private MyEdge checkEdge(Edge<E, V> e) throws InvalidEdgeException {
+    private MyEdgeUnique checkEdge(Edge<E, V> e) throws InvalidEdgeException {
         if (e == null)
             throw new InvalidEdgeException("Null edge.");
 
-        MyEdge edge;
+        MyEdgeUnique edge;
         try {
-            edge = (MyEdge) e;
+            edge = (MyEdgeUnique) e;
         } catch (ClassCastException ex) {
             throw new InvalidVertexException("Not an adge.");
         }
@@ -431,30 +452,6 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
 
         return edge;
     }
-
-    // // ! Aggiunto io
-    // public Vertex<V> updateLabelFor(Vertex<V> vertex, V label) {
-    // if (vertices.containsKey(label)) {
-    // return null; // TODO - aggiungere feedback per utente
-    // }
-    // Vertex<V> newVertex = new MyVertex(label);
-    // newVertex.setElement(label);
-    // System.out.println("Vertex: " + vertex.toString());
-    // // update incident edges
-    // Collection<Edge<E, V>> inboundEdges = incidentEdges(vertex);
-    // inboundEdges.forEach(edge -> {
-    // ((MyEdge) edge).setInbound(newVertex);
-    // });
-    // // update outbound edges
-    // Collection<Edge<E, V>> outboundEdges = outboundEdges(vertex);
-    // outboundEdges.forEach(edge -> {
-    // ((MyEdge) edge).setOutbound(newVertex);
-    // });
-    // vertices.remove(vertex.element());
-    // vertices.put(label, newVertex);
-    // SceneReference.getGrapView().updateAndWait();
-    // return newVertex;
-    // }
 
     public Edge<E, V> getEdgeById(int id) {
         if (edges.containsKey(id)) {
