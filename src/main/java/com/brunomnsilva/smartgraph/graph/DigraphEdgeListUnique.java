@@ -86,6 +86,18 @@ public class DigraphEdgeListUnique<V, E> implements Digraph<V, E> {
         return outboundEdges;
     }
 
+    public synchronized Collection<Edge<E, V>> outboundEdgesUnique(MyVertexUnique outbound) throws InvalidVertexException {
+
+        List<Edge<E, V>> outboundEdges = new ArrayList<>();
+        for (Edge<E, V> edge : edges.values()) {
+
+            if (((MyEdgeUnique) edge).getOutboundUnique() == outbound) {
+                outboundEdges.add(edge);
+            }
+        }
+        return outboundEdges;
+    }
+
     @Override
     public boolean areAdjacent(Vertex<V> outbound, Vertex<V> inbound) throws InvalidVertexException {
         // we allow loops, so we do not check if outbound == inbound

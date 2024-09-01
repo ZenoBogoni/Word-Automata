@@ -2,6 +2,8 @@ package it.univr.ui;
 
 import java.io.IOException;
 import java.lang.String;
+import java.util.Collection;
+import java.util.List;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList.MyEdge;
@@ -56,24 +58,33 @@ public class TestGraphPopup extends AnchorPane {
         if (testWord.equals("")) {
             resetTestWordNameFieldWithErrorMessage("Enter a valid word");
         } else {
-            Vertex<String> initialVertex = SceneReference.getInitialVertexNode().getUnderlyingVertex();
-            MyVertexUnique firstUniqueVertex = supportGraph.insertVertex(numberOfVertices + "");
-            numberOfVertices++;
 
-            firstUniqueVertex.setRealVertex(initialVertex);
+            MyVertexUnique initialVertexUnique = creatingInitialVertexUnique();
 
-            boolean path = testGraphWithWord(firstUniqueVertex, 0);
+            boolean isThereAValidPath = testGraphWithWord(initialVertexUnique, 0);
 
-            if (!path) {
-                supportGraph.removeVertex(firstUniqueVertex);
+            if (!isThereAValidPath) {
+                supportGraph.removeVertex(initialVertexUnique);
             }
 
-            System.out.println(supportGraph);
+            // System.out.println(supportGraph);
 
-            // removeWrongPaths();
-            // greedyChoice(firstUniqueVertex);
+            greedyChoice(initialVertexUnique);
         }
         stage.close();
+    }
+
+    private MyVertexUnique creatingInitialVertexUnique() {
+
+        Vertex<String> initialVertex = SceneReference.getInitialVertexNode().getUnderlyingVertex();
+
+        MyVertexUnique initialVertexUnique = supportGraph.insertVertex(numberOfVertices + "");
+
+        numberOfVertices++;
+
+        initialVertexUnique.setRealVertex(initialVertex);
+
+        return initialVertexUnique;
     }
 
     private void resetTestWordNameFieldWithErrorMessage(String error) {
@@ -99,54 +110,46 @@ public class TestGraphPopup extends AnchorPane {
         });
     }
 
-    private boolean testGraphWithWord(MyVertexUnique vertex, int pointerSubString) {
+    private boolean testGraphWithWord(MyVertexUnique currentVertex, int pointerSubString) {
 
         boolean atLeastOnePathIsGood = false;
 
-        System.out.println("new root is -> " + vertex);
+        Collection<Edge<String, String>> edges = graph.outboundEdges((Vertex<String>) currentVertex.getRealVertex());
 
-        if (!graph.outboundEdges((Vertex<String>) vertex.getRealVertex()).isEmpty()) {
-            for (Edge<String, String> edge : graph.outboundEdges((Vertex<String>) vertex.getRealVertex())) {
+        if (!edges.isEmpty()) {
+
+            for (Edge<String, String> edge : edges) {
+
                 pointer = 0;
-
-                System.out.println("We are in edge -> " + edge + " with the vertex " + vertex + " as root");
 
                 Vertex<String> nextVertex = ((MyEdge) edge).getInbound();
 
                 if (testWord.substring(pointerSubString).length() != 0) {
-                    System.out.println("word -> " + testWord.substring(pointerSubString));
-                    pointer = compare(edge.element(), testWord.substring(pointerSubString));
-                    System.out.println("Chars of the edge -> " + edge.element() + " compatible with the word -> " + pointer);
+
+                    pointer = compareStrings(edge.element(), testWord.substring(pointerSubString));
 
                 } else {
-                    System.out.println(vertex.getRealVertex() + "is final? ->" + vertex.getRealVertex().isFinal());
 
-                    if (vertex.getRealVertex().isFinal()) {
+                    if (currentVertex.getRealVertex().isFinal()) {
                         atLeastOnePathIsGood = true;
                     }
                 }
 
                 if (pointer == edge.element().length()) {
-                    MyVertexUnique uniqueVertex = supportGraph.insertVertex(numberOfVertices + "");
+                    MyVertexUnique nextVertexUnique = supportGraph.insertVertex(numberOfVertices + "");
                     numberOfVertices++;
 
-                    uniqueVertex.setRealVertex(nextVertex);
-                    System.out.println("Added vertex -> " + uniqueVertex);
+                    nextVertexUnique.setRealVertex(nextVertex);
 
-                    MyEdgeUnique edgeUnique = supportGraph.insertEdge(vertex, uniqueVertex, edge.element());
-                    System.out.println("Adding edge -> " + edgeUnique);
+                    MyEdgeUnique edgeUnique = supportGraph.insertEdge(currentVertex, nextVertexUnique, edge.element());
 
-                    boolean isThisPathGood = false;
-
-                    isThisPathGood = testGraphWithWord(uniqueVertex, pointer + pointerSubString);
+                    boolean isThisPathGood = testGraphWithWord(nextVertexUnique, pointer + pointerSubString);
 
                     if (isThisPathGood) {
                         atLeastOnePathIsGood = true;
                     } else {
-                        System.out.println("Removing edge -> " + edgeUnique);
                         supportGraph.removeEdge(edgeUnique);
-                        System.out.println("Removing vertex -> " + uniqueVertex);
-                        supportGraph.removeVertex(uniqueVertex);
+                        supportGraph.removeVertex(nextVertexUnique);
                     }
 
                 }
@@ -154,7 +157,7 @@ public class TestGraphPopup extends AnchorPane {
         } else {
 
             if (testWord.substring(pointerSubString).length() == 0) {
-                if (vertex.getRealVertex().isFinal()) {
+                if (currentVertex.getRealVertex().isFinal()) {
                     return true;
                 } else {
                     return false;
@@ -167,45 +170,40 @@ public class TestGraphPopup extends AnchorPane {
         return atLeastOnePathIsGood;
     }
 
-    private int compare(String first, String second) {
-        int count = 0;
+    private int compareStrings(String firstString, String secondString) {
+        int counterCharactersCompatible = 0;
 
-        for (int i = 0; i < second.length() && i < first.length(); i++) {
-            if (second.charAt(i) == first.charAt(i)) {
-                count++;
+        for (int i = 0; i < secondString.length() && i < firstString.length(); i++) {
+            if (secondString.charAt(i) == firstString.charAt(i)) {
+                counterCharactersCompatible++;
             } else {
                 break;
             }
         }
 
-        return count;
+        return counterCharactersCompatible;
     }
 
     private void greedyChoice(MyVertexUnique root) {
         int maxLength = 0;
         Edge<String, String> max = null;
 
-        for (Edge<String, String> edge : graph.outboundEdges((Vertex<String>) (root.getRealVertex()))) {
+        Collection<Edge<String, String>> edges = supportGraph.outboundEdgesUnique(root);
+
+        for (Edge<String, String> edge : edges) {
             if (edge.element().length() > maxLength) {
                 maxLength = edge.element().length();
                 max = edge;
             }
         }
 
-        MyVertexUnique nextVertex = ((MyEdgeUnique) max).getInboundUnique();
+        System.out.println(" -> " + root);
 
-        if (nextVertex.getRealVertex() != null) {
-            greedyChoice(nextVertex);
+        if (max != null) {
+            greedyChoice(((MyEdgeUnique) max).getInboundUnique());
         } else {
-            if (root.isFinal()) {
-
-            }
+            System.out.println(" ==== > Hai finito < ====\n\n");
         }
-
     }
-
-    // private boolean removeWrongPaths() {
-
-    // }
 
 }
