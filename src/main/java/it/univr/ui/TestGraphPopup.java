@@ -3,7 +3,6 @@ package it.univr.ui;
 import java.io.IOException;
 import java.lang.String;
 import java.util.Collection;
-import java.util.List;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList.MyEdge;
@@ -40,9 +39,7 @@ public class TestGraphPopup extends AnchorPane {
 
     public TestGraphPopup() {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("testGraphPopup.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
+        FXMLLoader fxmlLoader = fxmlSetter();
 
         try {
             fxmlLoader.load();
@@ -51,8 +48,15 @@ public class TestGraphPopup extends AnchorPane {
         }
     }
 
+    private FXMLLoader fxmlSetter() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("testGraphPopup.fxml"));
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
+        return fxmlLoader;
+    }
+
     private void checkName() {
-        boolean isThereAValidPath = false;
+        boolean isThereValidPath = false;
         testWord = graphTestWordNameField.getText();
 
         if (testWord.equals("")) {
@@ -61,15 +65,19 @@ public class TestGraphPopup extends AnchorPane {
 
             MyVertexUnique initialVertexUnique = creatingInitialVertexUnique(); // and adding it to the supportGraph
 
-            isThereAValidPath = testGraphWithWord(initialVertexUnique, 0);
+            isThereValidPath = createGraphOfAllPossiblePaths(initialVertexUnique, 0);
 
-            if (!isThereAValidPath) {
-                supportGraph.removeVertex(initialVertexUnique);
-            }
-
-            greedyChoice(initialVertexUnique);
+            choosePath(isThereValidPath, initialVertexUnique);
         }
         stage.close();
+    }
+
+    private void choosePath(boolean isThereValidPath, MyVertexUnique initialVertexUnique) {
+        if (!isThereValidPath) {
+            supportGraph.removeVertex(initialVertexUnique);
+        } else {
+            greedyChoice(initialVertexUnique);
+        }
     }
 
     private MyVertexUnique creatingInitialVertexUnique() {
@@ -107,7 +115,7 @@ public class TestGraphPopup extends AnchorPane {
         });
     }
 
-    private boolean testGraphWithWord(MyVertexUnique currentVertex, int pointerSubString) {
+    private boolean createGraphOfAllPossiblePaths(MyVertexUnique currentVertex, int pointerSubString) {
 
         boolean atLeastOnePathIsGood = false;
 
@@ -140,7 +148,7 @@ public class TestGraphPopup extends AnchorPane {
 
                     MyEdgeUnique edgeUnique = supportGraph.insertEdge(currentVertex, nextVertexUnique, edge.element());
 
-                    boolean isThisPathGood = testGraphWithWord(nextVertexUnique, pointer + pointerSubString);
+                    boolean isThisPathGood = createGraphOfAllPossiblePaths(nextVertexUnique, pointer + pointerSubString);
 
                     if (isThisPathGood) {
                         atLeastOnePathIsGood = true;
@@ -151,6 +159,7 @@ public class TestGraphPopup extends AnchorPane {
 
                 }
             }
+
         } else {
 
             if (testWord.substring(pointerSubString).length() == 0) {
