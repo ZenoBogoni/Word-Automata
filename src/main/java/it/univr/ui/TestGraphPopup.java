@@ -52,22 +52,20 @@ public class TestGraphPopup extends AnchorPane {
     }
 
     private void checkName() {
-
+        boolean isThereAValidPath = false;
         testWord = graphTestWordNameField.getText();
 
         if (testWord.equals("")) {
             resetTestWordNameFieldWithErrorMessage("Enter a valid word");
         } else {
 
-            MyVertexUnique initialVertexUnique = creatingInitialVertexUnique();
+            MyVertexUnique initialVertexUnique = creatingInitialVertexUnique(); // and adding it to the supportGraph
 
-            boolean isThereAValidPath = testGraphWithWord(initialVertexUnique, 0);
+            isThereAValidPath = testGraphWithWord(initialVertexUnique, 0);
 
             if (!isThereAValidPath) {
                 supportGraph.removeVertex(initialVertexUnique);
             }
-
-            // System.out.println(supportGraph);
 
             greedyChoice(initialVertexUnique);
         }
@@ -79,7 +77,6 @@ public class TestGraphPopup extends AnchorPane {
         Vertex<String> initialVertex = SceneReference.getInitialVertexNode().getUnderlyingVertex();
 
         MyVertexUnique initialVertexUnique = supportGraph.insertVertex(numberOfVertices + "");
-
         numberOfVertices++;
 
         initialVertexUnique.setRealVertex(initialVertex);
@@ -184,11 +181,23 @@ public class TestGraphPopup extends AnchorPane {
         return counterCharactersCompatible;
     }
 
-    private void greedyChoice(MyVertexUnique root) {
+    private void greedyChoice(MyVertexUnique vertex) {
+
+        Collection<Edge<String, String>> edges = supportGraph.outboundEdgesUnique(vertex);
+        Edge<String, String> edgeWithLongestElement = returnEdgeWithLongestElement(edges);
+
+        System.out.println(" -> " + vertex);
+
+        if (edgeWithLongestElement != null) {
+            greedyChoice(((MyEdgeUnique) edgeWithLongestElement).getInboundUnique());
+        } else {
+            System.out.println(" ==== > Hai finito < ====\n\n");
+        }
+    }
+
+    private Edge<String, String> returnEdgeWithLongestElement(Collection<Edge<String, String>> edges) {
         int maxLength = 0;
         Edge<String, String> max = null;
-
-        Collection<Edge<String, String>> edges = supportGraph.outboundEdgesUnique(root);
 
         for (Edge<String, String> edge : edges) {
             if (edge.element().length() > maxLength) {
@@ -197,13 +206,6 @@ public class TestGraphPopup extends AnchorPane {
             }
         }
 
-        System.out.println(" -> " + root);
-
-        if (max != null) {
-            greedyChoice(((MyEdgeUnique) max).getInboundUnique());
-        } else {
-            System.out.println(" ==== > Hai finito < ====\n\n");
-        }
+        return max;
     }
-
 }
