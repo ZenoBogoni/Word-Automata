@@ -22,7 +22,7 @@ public class VertexPopup extends AnchorPane {
     // JavaFX variables
     private Stage stage;
     private static DigraphEdgeList<String, String> graph = SceneReference.getGraph();
-    private static SmartGraphPanel<String, String> graphView = SceneReference.getGrapView();
+    private static SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
 
     // Java variables
     private String vertexName;
@@ -64,6 +64,8 @@ public class VertexPopup extends AnchorPane {
                 Vertex<String> newVertex = graph.insertVertex(vertexName);
                 graphView.updateAndWait();
                 SmartGraphVertexNode<String> newVertexNode = graphView.getVertexNodeOf(newVertex);
+                newVertexNode.setCenterX(SceneReference.getMainPane().getMouseX());
+                newVertexNode.setCenterY(SceneReference.getMainPane().getMouseY());
                 updateSpecialVertices(newVertexNode);
                 SceneReference.getMainPane().setSelectedVertexNode(newVertexNode);
                 stage.close();

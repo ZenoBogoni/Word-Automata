@@ -50,4 +50,5 @@ public interface Vertex<V> {
     boolean isInitial();
 
     void setElement(V element);
+
 }

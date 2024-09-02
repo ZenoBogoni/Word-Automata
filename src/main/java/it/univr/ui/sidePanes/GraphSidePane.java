@@ -24,7 +24,7 @@ import javafx.scene.text.Text;
 public class GraphSidePane extends VBox {
     // components
     private MainPane mainPane = SceneReference.getMainPane();
-    private SmartGraphPanel<String, String> graphView = SceneReference.getGrapView();
+    private SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
     private DigraphEdgeList<String, String> graph = SceneReference.getGraph();
     private SmartGraphVertexNode<String> selectedVertexNode;
 

@@ -174,7 +174,7 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
             setControlX2(midpointX2);
             setControlY2(midpointY2);
 
-        } else if (SceneReference.getGrapView().getTotalEdgesBetween((Vertex<String>) outbound.getUnderlyingVertex(), (Vertex<String>) inbound.getUnderlyingVertex()) == 1) {
+        } else if (SceneReference.getGraphView().getTotalEdgesBetween((Vertex<String>) outbound.getUnderlyingVertex(), (Vertex<String>) inbound.getUnderlyingVertex()) == 1) {
             /*
              * Make the edge a straight line if it's the only edge between two vertices
              */

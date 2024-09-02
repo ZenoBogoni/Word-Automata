@@ -56,7 +56,7 @@ public class App extends Application {
     }
 
     public void changeTheme() {
-        graphView = SceneReference.getGrapView();
+        graphView = SceneReference.getGraphView();
         if (isDarkMode) {
             Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
             scene.getStylesheets().add(getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());

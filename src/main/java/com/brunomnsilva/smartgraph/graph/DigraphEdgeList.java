@@ -30,6 +30,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
+
+import it.univr.utils.SceneReference;
+
 /**
  * Implementation of a digraph that adheres to the {@link Digraph} interface.
  * <br>
@@ -327,6 +331,10 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         public boolean isInitial() {
             return initialNode;
         }
+
+        public String getElement() {
+            return element + "";
+        }
     }
 
     public class MyEdge implements Edge<E, V> {
@@ -386,6 +394,10 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
 
         public void setOutbound(Vertex<V> outbound) {
             this.vertexOutbound = outbound;
+        }
+
+        public String getElement() {
+            return element + "";
         }
     }
 
@@ -461,5 +473,26 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
             return edges.get(id);
         }
         return null;
+    }
+
+    public List<MyVertexExported> getMyVertexList() {
+        List<MyVertexExported> vertexList = new ArrayList<>();
+        vertices().forEach(vertex -> {
+            SmartGraphVertexNode<String> vertexNode = SceneReference.getGraphView().getVertexNodeOf((Vertex<String>) vertex);
+            vertexList.add(new MyVertexExported(((MyVertex) vertex).getElement(), vertex.isInitial(), vertex.isFinal(), vertexNode.getCenterX(), vertexNode.getCenterY()));
+        });
+        return vertexList;
+    }
+
+    public List<MyEdgeExported> getMyEdgeList() {
+        List<MyEdgeExported> edgeList = new ArrayList<>();
+        edges().forEach(edge -> {
+            String element = ((MyEdge) edge).getElement();
+            String inbound = ((MyVertex) ((MyEdge) edge).getInbound()).getElement();
+            String outbound = ((MyVertex) ((MyEdge) edge).getOutbound()).getElement();
+
+            edgeList.add(new MyEdgeExported(element, inbound, outbound));
+        });
+        return edgeList;
     }
 }

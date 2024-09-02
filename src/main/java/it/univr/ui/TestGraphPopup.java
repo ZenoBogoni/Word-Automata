@@ -30,7 +30,7 @@ public class TestGraphPopup extends AnchorPane {
     private Stage stage;
     private static DigraphEdgeList<String, String> graph = SceneReference.getGraph();
     private DigraphEdgeListUnique<String, String> supportGraph = new DigraphEdgeListUnique<>();
-    private static SmartGraphPanel<String, String> graphView = SceneReference.getGrapView();
+    private static SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
     private int numberOfVertices = 0;
     private String testWord;
     private int pointer;
@@ -58,8 +58,7 @@ public class TestGraphPopup extends AnchorPane {
         return fxmlLoader;
     }
 
-    private void checkName() {
-        boolean isThereValidPath = false;
+    private void checkName() {// TODO: handle exception
         testWord = graphTestWordNameField.getText();
 
         if (testWord.equals("")) {
@@ -68,7 +67,7 @@ public class TestGraphPopup extends AnchorPane {
 
             MyVertexUnique initialVertexUnique = creatingVertexUnique(SceneReference.getInitialVertexNode().getUnderlyingVertex()); // and adding it to the supportGraph
 
-            isThereValidPath = createGraphOfAllPossiblePaths(initialVertexUnique, 0);
+            boolean isThereValidPath = createGraphOfAllPossiblePaths(initialVertexUnique, 0);
 
             choosePath(isThereValidPath, initialVertexUnique);
         }
@@ -107,6 +106,7 @@ public class TestGraphPopup extends AnchorPane {
         submitButton.setOnAction(e -> {
             this.stage = (Stage) getScene().getWindow();
             checkName();
+            SceneReference.createFileFromGraph(graph, "test");
         });
 
         graphTestWordNameField.setOnAction(e -> {
@@ -116,6 +116,7 @@ public class TestGraphPopup extends AnchorPane {
 
         cancelButton.setOnAction(e -> {
             this.stage = (Stage) getScene().getWindow();
+            SceneReference.createGraphFromFile("test");
             stage.close();
         });
     }

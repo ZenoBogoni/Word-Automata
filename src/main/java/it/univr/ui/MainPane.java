@@ -117,7 +117,7 @@ public class MainPane extends BorderPane {
         SceneReference.setConfirmToApplyProperty(confirmToApplyProperty);
         SceneReference.setClearTextOnClickProperty(clearTextOnClickProperty);
         SceneReference.setGraph(graph);
-        SceneReference.setGrapView(graphView);
+        SceneReference.setGraphView(graphView);
         SceneReference.setInitialVertexSetProperty(initialVertexSetProperty);
         SceneReference.setInitialVertexNode(initialVertexNode);
         SceneReference.setFinalVerticesNodes(finalVerticesNodes);
@@ -180,7 +180,6 @@ public class MainPane extends BorderPane {
     }
 
     private void initSideMenu() {
-
         // icons
         magicIcon = new IconButton("ci-magic-wand-filled", magicLayoutSidePane);
         nodeIcon = new IconButton("ci-text-creation", graphSidePane);

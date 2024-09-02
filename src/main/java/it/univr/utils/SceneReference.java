@@ -1,11 +1,15 @@
 package it.univr.utils;
 
+import java.io.File;
 import java.util.HashSet;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
+import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeBase;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import it.univr.ui.MainPane;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -18,7 +22,7 @@ public class SceneReference {
     // Components
     private static Stage stage;
     private static MainPane mainPane;
-    private static SmartGraphPanel<String, String> grapView;
+    private static SmartGraphPanel<String, String> graphView;
     private static DigraphEdgeList<String, String> graph;
     private static SmartGraphVertexNode<String> initialVertexNode;
     private static HashSet<SmartGraphVertexNode<String>> finalVerticesNodes;
@@ -39,8 +43,8 @@ public class SceneReference {
         return mainPane;
     }
 
-    public static SmartGraphPanel<String, String> getGrapView() {
-        return grapView;
+    public static SmartGraphPanel<String, String> getGraphView() {
+        return graphView;
     }
 
     public static SmartGraphVertexNode<String> getInitialVertexNode() {
@@ -119,8 +123,8 @@ public class SceneReference {
         SceneReference.finalVerticesNodes = finalVerticesNodes;
     }
 
-    public static void setGrapView(SmartGraphPanel<String, String> grapView) {
-        SceneReference.grapView = grapView;
+    public static void setGraphView(SmartGraphPanel<String, String> grapView) {
+        SceneReference.graphView = grapView;
     }
 
     public static void setStage(Stage stage) {
@@ -206,5 +210,59 @@ public class SceneReference {
 
     public static boolean isEdgeSelected() {
         return isEdgeSelectedProperty.get();
+    }
+
+    public static void createFileFromGraph(DigraphEdgeList<String, String> graph, String fileName) {
+        GraphToFile graphToFile = new GraphToFile();
+        graphToFile.setVertexList(graph.getMyVertexList());
+        graphToFile.setEdgeList(graph.getMyEdgeList());
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writeValue(new File(fileName + ".json"), graphToFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteGraph(DigraphEdgeList<String, String> graph) {
+        graph.vertices().forEach(vertex -> {
+            graph.removeVertex(vertex);
+        });
+        SceneReference.graphView.update();
+        SceneReference.getFinalVerticesNodes().clear();
+        SceneReference.setInitialVertexNode(null);
+    }
+
+    public static void createGraphFromFile(String fileName) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        GraphToFile graphToFile;
+        try {
+            graphToFile = mapper.readValue(new File(fileName + ".json"), GraphToFile.class);
+            deleteGraph(graph);
+
+            graphToFile.getVertexList().forEach(vertex -> {
+                Vertex<String> newVertex = SceneReference.graph.insertVertex(vertex.getElement());
+                SceneReference.graphView.updateAndWait();
+                SmartGraphVertexNode<String> newVertexNode = SceneReference.graphView.getVertexNodeOf(newVertex);
+                newVertexNode.setCenterX(vertex.getxPosition());
+                newVertexNode.setCenterY(vertex.getyPosition());
+                if (vertex.isFinalNode()) {
+                    SceneReference.addFinalvertex(newVertexNode);
+                } else if (vertex.isInitialNode()) {
+                    SceneReference.setInitialVertexNode(newVertexNode);
+                }
+            });
+
+            graphToFile.getEdgeList().forEach(edge -> {
+                Vertex<String> inbound = SceneReference.graph.vertexOf(edge.getInbound());
+                Vertex<String> outbound = SceneReference.graph.vertexOf(edge.getOutbound());
+                SceneReference.graph.insertEdge(outbound, inbound, edge.getElement());
+            });
+
+            SceneReference.graphView.update();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
