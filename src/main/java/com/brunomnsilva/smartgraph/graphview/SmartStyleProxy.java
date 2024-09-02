@@ -97,7 +97,7 @@ public class SmartStyleProxy implements SmartStylableNode {
 
     @Override
     public boolean removeStyleClass(String cssClass) {
-        return client.getStyleClass().remove(cssClass);
+        return client.getStyleClass().removeAll(cssClass);
     }
 
     /**
