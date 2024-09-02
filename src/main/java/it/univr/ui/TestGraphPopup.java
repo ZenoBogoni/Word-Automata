@@ -1,17 +1,20 @@
 package it.univr.ui;
 
 import java.io.IOException;
-import java.lang.String;
 import java.util.Collection;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList.MyEdge;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeListUnique;
-import com.brunomnsilva.smartgraph.graph.Edge;
-import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeListUnique.MyEdgeUnique;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeListUnique.MyVertexUnique;
+import com.brunomnsilva.smartgraph.graph.Edge;
+import com.brunomnsilva.smartgraph.graph.Vertex;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeBase;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.utils.SceneReference;
 import javafx.fxml.FXML;
@@ -192,9 +195,42 @@ public class TestGraphPopup extends AnchorPane {
 
         System.out.println(" -> " + vertex);
 
+        Timer timerVertex = new Timer();
+        timerVertex.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                SmartGraphVertexNode<String> currentVertexNode = graphView.getVertexNodeOf(vertex.getRealVertex());
+                currentVertexNode.addStyleClass("pathVertex");
+                timerVertex.cancel(); // Stop the timer
+            }
+        }, 750);
+
         if (edgeWithLongestElement != null) {
-            greedyChoice(((MyEdgeUnique) edgeWithLongestElement).getInboundUnique());
+
+            Timer timerEdge = new Timer();
+            timerEdge.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Vertex<String> inbound = ((MyEdgeUnique) edgeWithLongestElement).getInboundUnique().getRealVertex();
+                    Vertex<String> outbound = ((MyEdgeUnique) edgeWithLongestElement).getOutboundUnique().getRealVertex();
+                    Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream().filter(edge -> ((MyEdge) edge).getInbound().equals(inbound)).findFirst().orElse(null);
+                    SmartGraphEdgeBase<String, String> currentEdgeNode = graphView.getEdgeNodeOf(currentEdge);
+                    currentEdgeNode.addStyleClass("pathEdge");
+
+                    greedyChoice(((MyEdgeUnique) edgeWithLongestElement).getInboundUnique());
+                    timerEdge.cancel(); // Stop the timer
+                }
+            }, 1500);
         } else {
+            Timer timerClear = new Timer();
+            timerClear.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    System.out.println("Clearing path");
+                    clearPath();
+                    timerClear.cancel(); // Stop the timer
+                }
+            }, 2000);
             System.out.println(" ==== > Hai finito < ====\n\n");
         }
     }
@@ -212,4 +248,15 @@ public class TestGraphPopup extends AnchorPane {
 
         return max;
     }
+
+    private void clearPath() {
+        graph.vertices().forEach(vertex -> {
+            graphView.getVertexNodeOf(vertex).removeStyleClass("pathVertex");
+        });
+
+        graph.edges().forEach(edge -> {
+            graphView.getEdgeNodeOf(edge).removeStyleClass("pathEdge");
+        });
+    }
+
 }

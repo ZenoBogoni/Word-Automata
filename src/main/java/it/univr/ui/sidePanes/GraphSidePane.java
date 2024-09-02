@@ -142,7 +142,6 @@ public class GraphSidePane extends VBox {
                     SceneReference.setInitialVertexNode(null);
                 }
                 graph.removeVertex(selectedVertexNode.getUnderlyingVertex());
-                System.out.println(graph.toString());
                 graphView.update();
                 mainPane.deselectNodes();
             }
@@ -186,7 +185,6 @@ public class GraphSidePane extends VBox {
             graph.removeEdge(SceneReference.getSelectedEdge().getUnderlyingEdge());
             graphView.update();
             SceneReference.deselectEdge();
-            System.out.println(SceneReference.getGraph().toString());
         });
     }
 
@@ -212,7 +210,6 @@ public class GraphSidePane extends VBox {
         }
         graphView.updateAndWait();
         mainPane.setSelectedVertexNode(graphView.getVertexNodeOf(newVertex));
-        System.out.println(SceneReference.getGraph().toString());
         lastVertexName = new String(newVertex.element());
     }
 
@@ -222,6 +219,5 @@ public class GraphSidePane extends VBox {
         }
         graph.replace(graph.getEdgeById(edgeId), edgeLabelTextField.getText());
         graphView.update();
-        System.out.println(SceneReference.getGraph().toString());
     }
 }

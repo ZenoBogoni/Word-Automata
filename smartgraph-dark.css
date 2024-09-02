@@ -60,6 +60,14 @@ This should help you understand which styles you can apply.
     -fx-fill: #fffed7;
 }
 
+.pathVertex {
+    -fx-stroke-width: 3;
+    -fx-stroke: #fda359;
+    -fx-stroke-type: inside; /* you should keep this if using arrows */
+    -fx-fill: #fcc48f;
+    
+}
+
 .edge {
     -fx-stroke-width: 2;
     -fx-stroke: #81a9c4;  
@@ -96,7 +104,13 @@ This should help you understand which styles you can apply.
     -fx-stroke-line-cap: round;
     -fx-opacity: 1;
 }
-
+ .pathEdge {
+    -fx-stroke-width: 4;
+    -fx-stroke: #fda359;  
+    -fx-fill: transparent; /* important to keep for curved edges */
+    -fx-stroke-line-cap: round;
+    -fx-opacity: 1;
+}
 
 
 
