@@ -93,7 +93,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="38.0" prefWidth="290.0">
          <children>
-            <Button fx:id="testWordButton" mnemonicParsing="false" style="-fx-background-color: #ff2929bb;" text="TEST GRAPH" HBox.hgrow="ALWAYS">
+            <Button fx:id="testWordButton" mnemonicParsing="false" style="-fx-background-color: #ff2929bb;" text="TEST AUTOMATA" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

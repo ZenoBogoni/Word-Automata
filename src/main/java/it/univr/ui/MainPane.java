@@ -301,7 +301,7 @@ public class MainPane extends BorderPane {
     /* -------------------------------------------------------------------------- */
 
     private void vertexNamePopup() {
-        SceneReference.createModal(new VertexPopup(), 300, 200);
+        SceneReference.createModal(new VertexPopup());
     }
 
     /* -------------------------------------------------------------------------- */

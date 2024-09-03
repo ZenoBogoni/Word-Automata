@@ -245,9 +245,6 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
     // ! forse l'ho fixata
     @Override
     public E replace(Edge<E, V> e, E newElement) throws InvalidEdgeException {
-        // if (existsEdgeWith(e.getId())) {
-        // throw new InvalidEdgeException("There's already an edge with this element.");
-        // }
 
         MyEdge edge = checkEdge(e);
 

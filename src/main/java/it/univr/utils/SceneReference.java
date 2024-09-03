@@ -278,9 +278,8 @@ public class SceneReference {
             });
 
             SceneReference.graphView.update();
-        } catch (StreamReadException e) {
-            SceneReference.showErrorPopup("File non compatibile", "Il file:\n" + fileName + "\nnon contiene un grafo al suo interno. Selezionare un file valido");
         } catch (Exception e) {
+            SceneReference.showErrorPopup("File non compatibile", "Il file:\n" + fileName + "\nnon contiene un grafo al suo interno. Selezionare un file valido");
             e.printStackTrace();
         }
     }
@@ -290,30 +289,28 @@ public class SceneReference {
      * 
      * @param root the popup component
      */
-    public static void createModal(Parent root, double width, double height) {
+    public static void createModal(Parent root) {
         Stage stage = new Stage();
-        Scene edgeScene = new Scene(root, width, height);
+        Scene scene = new Scene(root);
+        double width = scene.getWidth();
+        double height = scene.getHeight();
 
         // Scene Style
         stage.initStyle(StageStyle.TRANSPARENT);
-        edgeScene.setFill(Color.TRANSPARENT);
+        scene.setFill(Color.TRANSPARENT);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(edgeScene);
+        stage.setScene(scene);
         stage.sizeToScene();
         stage.setResizable(false);
 
         // put this window in the middle of the primary window
         Stage primaryStage = SceneReference.getStage();
-        double centerX = primaryStage.getX() + (primaryStage.getWidth() - 300) / 2;
-        double centerY = primaryStage.getY() + (primaryStage.getHeight() - 160) / 2;
+        double centerX = primaryStage.getX() + (primaryStage.getWidth() - width) / 2;
+        double centerY = primaryStage.getY() + (primaryStage.getHeight() - height) / 2;
         stage.setX(centerX);
         stage.setY(centerY);
 
         stage.show();
-    }
-
-    public static void createModal(Parent root) {
-        createModal(root, 300, 160);
     }
 
     /**

@@ -161,10 +161,14 @@ public class GraphSidePane extends VBox {
             if (selectedVertexNode != null) {
                 if (selectedVertexNode.equals(SceneReference.getInitialVertexNode())) {
                     SceneReference.setInitialVertexNode(null);
+                } else if (SceneReference.getFinalVerticesNodes().contains(selectedVertexNode)) {
+                    SceneReference.removeFinalVertex(selectedVertexNode);
                 }
                 graph.removeVertex(selectedVertexNode.getUnderlyingVertex());
+                System.out.println(graph);
                 graphView.update();
                 mainPane.deselectNodes();
+
             }
 
         });
