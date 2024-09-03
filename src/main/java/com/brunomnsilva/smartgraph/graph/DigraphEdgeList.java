@@ -229,7 +229,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
     @Override
     public V replace(Vertex<V> v, V newElement) throws InvalidVertexException {
         if (existsVertexWith(newElement)) {
-            throw new InvalidVertexException("There's already a vertex with this element.");
+            return null;
         }
 
         MyVertex vertex = checkVertex(v);

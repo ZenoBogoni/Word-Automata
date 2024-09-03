@@ -20,10 +20,13 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Text fx:id="errorText" strokeType="OUTSIDE" strokeWidth="0.0">
+            <Text fx:id="errorText" fill="#ff7e03" strokeType="OUTSIDE" strokeWidth="0.0">
                <VBox.margin>
                   <Insets bottom="-10.0" top="-10.0" />
                </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
             </Text>
             <TextField fx:id="vertexNameField" alignment="CENTER" prefHeight="36.0" prefWidth="280.0" style="-fx-background-radius: 5;">
                <font>

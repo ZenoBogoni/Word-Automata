@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class EdgePopup extends AnchorPane {
@@ -22,6 +23,8 @@ public class EdgePopup extends AnchorPane {
     private Button cancelButton, submitButton;
     @FXML
     private TextField edgeNameField;
+    @FXML
+    private Text errorText;
 
     public EdgePopup(SmartGraphVertexNode<String> from, SmartGraphVertexNode<String> to) {
         this.from = from;
@@ -41,10 +44,10 @@ public class EdgePopup extends AnchorPane {
 
         String edgeName = edgeNameField.getText();
         if (edgeName.equals("")) {
-            edgeNameField.setPromptText("Enter a valid edge name");
+            errorText.setText("Enter a non blank edge name");
             edgeNameField.setText("");
         } else {
-            mainPane.setEdgeName(edgeName); // TODO - controllare che sia possibile creare questo edge
+            mainPane.setEdgeName(edgeName);
             mainPane.addEdge(from, to);
             stage.close();
         }

@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class VertexPopup extends AnchorPane {
@@ -37,6 +38,8 @@ public class VertexPopup extends AnchorPane {
     private TextField vertexNameField;
     @FXML
     private CheckBox initialVertexCheckBox, finalVertexCheckBox;
+    @FXML
+    private Text errorText;
 
     public VertexPopup() {
 
@@ -56,11 +59,14 @@ public class VertexPopup extends AnchorPane {
         vertexName = vertexNameField.getText();
 
         if (vertexName.equals("")) {
-            resetNameFieldWithErrorMessage("Enter a valid vertex name");
+            errorText.setText("Enter a non blank vertex name");
+            vertexNameField.setText("");
         } else {
             if (graph.existsVertexWith(vertexName)) {
-                resetNameFieldWithErrorMessage("Vertex name already taken");
+                errorText.setText("A vertex with this name already esists");
+                vertexNameField.setText("");
             } else {
+                errorText.setText("");
                 Vertex<String> newVertex = graph.insertVertex(vertexName);
                 graphView.updateAndWait();
                 SmartGraphVertexNode<String> newVertexNode = graphView.getVertexNodeOf(newVertex);
@@ -79,11 +85,6 @@ public class VertexPopup extends AnchorPane {
         } else if (initialVertexCheckBox.isSelected()) {
             SceneReference.setInitialVertexNode(newVertexNode);
         }
-    }
-
-    private void resetNameFieldWithErrorMessage(String error) {
-        vertexNameField.setText("");
-        vertexNameField.setPromptText(error);
     }
 
     @FXML

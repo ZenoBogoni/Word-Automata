@@ -10,6 +10,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 import it.univr.ui.MainPane;
 import it.univr.ui.testGraphAlgoritm;
 import it.univr.utils.SceneReference;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -66,11 +67,11 @@ public class GraphSidePane extends VBox {
         testWordTextField.setAlignment(Pos.CENTER);
         testWordButton.setOnAction(e -> {
             if (!initialvertexSetProperty.get()) {
-                SceneReference.showErrorPopup("Initial vertex not set", "Initial vertex not set, please set an initial vertex to start the testing from");
+                SceneReference.showErrorPopup("Initial vertex not set", "Initial vertex not set, please set an initial vertex to start the testing from.");
             } else if (SceneReference.getFinalVerticesNodes().size() == 0) {
-                SceneReference.showErrorPopup("Final vertex not set", "Final vertex not set, please select at least one final vertex");
+                SceneReference.showErrorPopup("Final vertex not set", "Final vertex not set, please select at least one final vertex.");
             } else if (testWordTextField.getText().equals("")) {
-                SceneReference.showErrorPopup("Invalid testing word", "It's not possible to test the automata with an empty testing word, please insert a valid testing word");
+                SceneReference.showErrorPopup("Invalid testing word", "It's not possible to test the automata with an empty testing word, please insert a valid testing word.");
             } else {
                 SceneReference.setTestWord(testWordTextField.getText());
                 testGraphAlgoritm.testGraph();
@@ -120,8 +121,10 @@ public class GraphSidePane extends VBox {
         vertexLabelTextField.disableProperty().bind(Bindings.not(isVertexSelectedProperty));
         vertexLabelTextField.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
         vertexLabelTextField.setAlignment(Pos.CENTER);
-        vertexLabelTextField.setPromptText("no vertex selected");
-        vertexLabel.setStyle("-fx-fill: gray");
+        if (lastVertexName == null) {
+            vertexLabelTextField.setPromptText("no vertex selected");
+            vertexLabel.setStyle("-fx-fill: gray");
+        }
 
         vertexLabelTextField.disableProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
@@ -131,6 +134,7 @@ public class GraphSidePane extends VBox {
             } else {
                 selectedVertexNode = mainPane.getSelectedVertexNode();
                 vertexLabelTextField.setText(selectedVertexNode.getAttachedLabel().getText());
+                vertexLabelTextField.setPromptText("");
                 lastVertexName = (lastVertexName == null) ? new String(vertexLabelTextField.getText()) : vertexLabelTextField.getText();
                 vertexLabel.setStyle(null);
 
@@ -138,8 +142,10 @@ public class GraphSidePane extends VBox {
         });
 
         vertexLabelTextField.setOnAction(e -> {
-            if (!vertexLabelTextField.getText().equals(lastVertexName)) {
+            if (!vertexLabelTextField.getText().equals(lastVertexName) && confirmToApplyProperty.get()) {
                 updateVertexName();
+            } else {
+                vertexLabelTextField.getParent().requestFocus();
             }
         });
 
@@ -173,6 +179,7 @@ public class GraphSidePane extends VBox {
         isEdgeSelectedProperty.addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 edgeLabelTextField.setText(SceneReference.getSelectedEdge().getAttachedLabel().getText());
+                edgeLabelTextField.setPromptText("");
                 edgeLabel.setStyle(null);
             } else {
                 edgeLabelTextField.setText("");
@@ -190,7 +197,11 @@ public class GraphSidePane extends VBox {
         });
 
         edgeLabelTextField.setOnAction(e -> {
-            updateEdgeName();
+            if (confirmToApplyProperty.get()) {
+                updateEdgeName();
+            } else {
+                edgeLabelTextField.getParent().requestFocus();
+            }
         });
 
         // delete edge button
@@ -216,9 +227,15 @@ public class GraphSidePane extends VBox {
 
     private void updateVertexName() {
         if (vertexLabelTextField.getText().isBlank()) {
+            vertexLabelTextField.setText(lastVertexName);
+            SceneReference.showErrorPopup("Invalid vertex name", "It's not possible to rename a vertex with a blank name, please insert a valid name.");
             return;
         }
-        graph.replace(graph.vertexOf(lastVertexName), vertexLabelTextField.getText());
+        String success = graph.replace(graph.vertexOf(lastVertexName), vertexLabelTextField.getText());
+        if (success == null) {
+            SceneReference.showErrorPopup("Invalid vertex name", "A vertex with this name already exists, please insert a unique vertex name.");
+            return;
+        }
         Vertex<String> newVertex = graph.vertexOf(vertexLabelTextField.getText());
         if (newVertex == null) {
             return;
@@ -230,6 +247,8 @@ public class GraphSidePane extends VBox {
 
     private void updateEdgeName() {
         if (edgeLabelTextField.getText().isBlank()) {
+            edgeLabelTextField.setText(SceneReference.getSelectedEdge().getAttachedLabel().getText());
+            SceneReference.showErrorPopup("Invalid edge name", "It's not possible to rename an edge with a blank name, please insert a valid name.");
             return;
         }
         graph.replace(graph.getEdgeById(edgeId), edgeLabelTextField.getText());

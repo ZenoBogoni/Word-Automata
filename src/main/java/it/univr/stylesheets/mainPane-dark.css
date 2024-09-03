@@ -39,3 +39,8 @@
 .item-container {
     -fx-padding: 0 10 0 10;
 }
+
+.red-field{
+    -fx-background-color: #9c3232;
+    -fx-border-color: #7e2525;
+}
