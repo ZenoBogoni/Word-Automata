@@ -254,41 +254,6 @@ public class MainPane extends BorderPane {
     }
 
     /* -------------------------------------------------------------------------- */
-    /* //ANCHOR - Create Modal */
-    /* -------------------------------------------------------------------------- */
-
-    /**
-     * Create a modal window popup
-     * 
-     * @param root the popup component
-     */
-    private void createModal(Parent root, double width, double height) {
-        Stage stage = new Stage();
-        Scene edgeScene = new Scene(root, width, height);
-
-        // Scene Style
-        stage.initStyle(StageStyle.TRANSPARENT);
-        edgeScene.setFill(Color.TRANSPARENT);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(edgeScene);
-        stage.sizeToScene();
-        stage.setResizable(false);
-
-        // put this window in the middle of the primary window
-        Stage primaryStage = SceneReference.getStage();
-        double centerX = primaryStage.getX() + (primaryStage.getWidth() - 300) / 2;
-        double centerY = primaryStage.getY() + (primaryStage.getHeight() - 160) / 2;
-        stage.setX(centerX);
-        stage.setY(centerY);
-
-        stage.show();
-    }
-
-    private void createModal(Parent root) {
-        createModal(root, 300, 160);
-    }
-
-    /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Edge popup */
     /* -------------------------------------------------------------------------- */
 
@@ -299,7 +264,7 @@ public class MainPane extends BorderPane {
      * @param to   the inbound vertex
      */
     private void edgeNamePopup(SmartGraphVertexNode<String> from, SmartGraphVertexNode<String> to) {
-        createModal(new EdgePopup(from, to));
+        SceneReference.createModal(new EdgePopup(from, to));
     }
 
     public void deselectNodes() {
@@ -324,24 +289,11 @@ public class MainPane extends BorderPane {
     }
 
     /* -------------------------------------------------------------------------- */
-    /* //ANCHOR - Error Pupup */
-    /* -------------------------------------------------------------------------- */
-
-    /**
-     * Shows an error message popup
-     * 
-     * @param errorMsg the error message to display to th user
-     */
-    private void showErrorPopup(String errorMsg) {
-        createModal(new ErrorPopup(errorMsg));
-    }
-
-    /* -------------------------------------------------------------------------- */
     /* /// ANCHOR - Vertex popup */
     /* -------------------------------------------------------------------------- */
 
     private void vertexNamePopup() {
-        createModal(new VertexPopup(), 300, 200);
+        SceneReference.createModal(new VertexPopup(), 300, 200);
     }
 
     /* -------------------------------------------------------------------------- */
@@ -393,7 +345,7 @@ public class MainPane extends BorderPane {
 
             if (isLinkingPhase) {
                 if (graph.areAdjacent(selectedVertexNode.getUnderlyingVertex(), vertex.getUnderlyingVertex())) {
-                    showErrorPopup("An edge from vertex " + selectedVertexNode.getAttachedLabel().getText() + " to vertex " + vertex.getAttachedLabel().getText()
+                    SceneReference.showErrorPopup("Edge already exists", "An edge from vertex " + selectedVertexNode.getAttachedLabel().getText() + " to vertex " + vertex.getAttachedLabel().getText()
                             + " already exists, please modify the existing one instead of creating a new one");
                 } else {
                     edgeNamePopup(selectedVertexNode, vertex);

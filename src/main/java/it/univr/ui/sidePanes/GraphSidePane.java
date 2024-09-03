@@ -41,7 +41,7 @@ public class GraphSidePane extends VBox {
 
     // FXML
     @FXML
-    private TextField vertexLabelTextField, edgeLabelTextField, testingWordField;
+    private TextField vertexLabelTextField, edgeLabelTextField, testWordTextField;
     @FXML
     private Button deleteVertexButton, deleteEdgeButton, testWordButton;
     @FXML
@@ -62,18 +62,22 @@ public class GraphSidePane extends VBox {
     }
 
     public void initialize() {
-
+        testWordTextField.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
+        testWordTextField.setAlignment(Pos.CENTER);
         testWordButton.setOnAction(e -> {
-            if (testingWordField.getText().equals("")) {
-                testingWordField.setPromptText("Insert a valide word");
+            if (!initialvertexSetProperty.get()) {
+                SceneReference.showErrorPopup("Initial vertex not set", "Initial vertex not set, please set an initial vertex to start the testing from");
+            } else if (SceneReference.getFinalVerticesNodes().size() == 0) {
+                SceneReference.showErrorPopup("Final vertex not set", "Final vertex not set, please select at least one final vertex");
+            } else if (testWordTextField.getText().equals("")) {
+                SceneReference.showErrorPopup("Invalid testing word", "It's not possible to test the automata with an empty testing word, please insert a valid testing word");
             } else {
-                SceneReference.setTestWord(testingWordField.getText());
+                SceneReference.setTestWord(testWordTextField.getText());
                 testGraphAlgoritm.testGraph();
             }
         });
 
-        // hide when vertex is not selected
-        // deleteVertexButton.visibleProperty().bind(isVertexSelectedProperty);
+        // disable when vertex is not selected
         initialNodeRadioButton.setDisable(true);
         finalNodeRadioButton.disableProperty().bind(Bindings.not(isVertexSelectedProperty));
 

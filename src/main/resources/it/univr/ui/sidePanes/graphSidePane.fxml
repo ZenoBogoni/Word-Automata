@@ -37,7 +37,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="38.0" prefWidth="290.0">
          <children>
-            <Button fx:id="deleteVertexButton" mnemonicParsing="false" prefHeight="24.0" style="-fx-background-color: #ff2929bb;" text="DELETE VERTEX" HBox.hgrow="ALWAYS">
+            <Button fx:id="deleteVertexButton" mnemonicParsing="false" style="-fx-background-color: #ff2929bb;" text="DELETE VERTEX" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -65,7 +65,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="38.0" prefWidth="290.0">
          <children>
-            <Button fx:id="deleteEdgeButton" mnemonicParsing="false" style="-fx-background-color: #ff2929bb;" text="DELETE EDGE">
+            <Button fx:id="deleteEdgeButton" mnemonicParsing="false" style="-fx-background-color: #ff2929bb;" text="DELETE EDGE" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -74,7 +74,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="55.0" prefWidth="300.0" styleClass="sidePane-title-container">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sidePane-title" text="TEST GRAPH">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sidePane-title" text="WORD AUTOMATA TEST">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
@@ -88,12 +88,12 @@
                   <Text fx:id="testingWord" strokeType="OUTSIDE" strokeWidth="0.0" text="Testing word" />
                </children>
             </VBox>
-            <TextField fx:id="testingWordField" prefWidth="170.0" />
+            <TextField fx:id="testWordTextField" prefWidth="170.0" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="38.0" prefWidth="290.0">
          <children>
-            <Button fx:id="testWordButton" mnemonicParsing="false" style="-fx-background-color: #ff2929bb;" text="TEST">
+            <Button fx:id="testWordButton" mnemonicParsing="false" style="-fx-background-color: #ff2929bb;" text="TEST GRAPH" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

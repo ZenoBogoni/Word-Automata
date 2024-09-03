@@ -11,9 +11,15 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import it.univr.ui.ErrorPopup;
 import it.univr.ui.MainPane;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class SceneReference {
     // java variables
@@ -274,5 +280,45 @@ public class SceneReference {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Create a modal window popup
+     * 
+     * @param root the popup component
+     */
+    public static void createModal(Parent root, double width, double height) {
+        Stage stage = new Stage();
+        Scene edgeScene = new Scene(root, width, height);
+
+        // Scene Style
+        stage.initStyle(StageStyle.TRANSPARENT);
+        edgeScene.setFill(Color.TRANSPARENT);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(edgeScene);
+        stage.sizeToScene();
+        stage.setResizable(false);
+
+        // put this window in the middle of the primary window
+        Stage primaryStage = SceneReference.getStage();
+        double centerX = primaryStage.getX() + (primaryStage.getWidth() - 300) / 2;
+        double centerY = primaryStage.getY() + (primaryStage.getHeight() - 160) / 2;
+        stage.setX(centerX);
+        stage.setY(centerY);
+
+        stage.show();
+    }
+
+    public static void createModal(Parent root) {
+        createModal(root, 300, 160);
+    }
+
+    /**
+     * Shows an error message popup
+     * 
+     * @param errorMsg the error message to display to th user
+     */
+    public static void showErrorPopup(String errorType, String errorMsg) {
+        createModal(new ErrorPopup(errorType, errorMsg));
     }
 }

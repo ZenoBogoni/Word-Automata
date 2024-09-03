@@ -11,15 +11,16 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ErrorPopup extends BorderPane {
-    private String errorMsg;
+    private String errorMsg, errorType;
     private Stage stage;
     @FXML
-    private Text errorText;
+    private Text errorText, titleText;
     @FXML
     private Button closeButton;
 
-    public ErrorPopup(String errorMsg) {
+    public ErrorPopup(String errorType, String errorMsg) {
         this.errorMsg = errorMsg;
+        this.errorType = errorType;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("errorPopup.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -37,6 +38,7 @@ public class ErrorPopup extends BorderPane {
             SceneReference.getMainPane().setIsLinkingPhase(false);
             stage.close();
         });
+        titleText.setText(errorType);
         errorText.setText(errorMsg);
     }
 }
