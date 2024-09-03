@@ -1,6 +1,7 @@
 package it.univr.ui;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 
@@ -26,6 +27,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -90,7 +92,7 @@ public class MainPane extends BorderPane {
     @FXML
     private CheckMenuItem clearTextOnClick = new CheckMenuItem("Clear text on input");
     @FXML
-    private CheckMenuItem exportGraph = new CheckMenuItem("Export"), importGraph = new CheckMenuItem("Import");
+    private MenuItem exportGraph = new MenuItem("Export Graph"), importGraph = new MenuItem("Import Graph");
 
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Constructor */
@@ -157,6 +159,21 @@ public class MainPane extends BorderPane {
 
             if (file != null) {
                 SceneReference.createGraphFromFile(file.getAbsolutePath());
+            }
+        });
+
+        exportGraph.setOnAction(e -> {
+            FileChooser fileChooser = initFileChooser();
+
+            File file = fileChooser.showSaveDialog(SceneReference.getStage());
+
+            if (file != null) {
+                // Check if the file already exists
+                if (file.exists()) {
+                    System.out.println("File will be overwritten");
+                }
+                // Create and write to the file
+                SceneReference.createFileFromGraph(graph, file.getAbsolutePath());
             }
         });
 
