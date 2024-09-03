@@ -30,44 +30,72 @@ public class App extends Application {
         this.stage = stage;
         SceneReference.setStage(stage);
 
-        // ATLANTA
-        Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
+        setStyleDark();
 
         mainPane = new MainPane(this);
         mainPane.initSceneReference();
 
         this.scene = new Scene(mainPane, Constants.WIDTH, Constants.HEIGHT);
+
         this.scene.setOnKeyPressed(key -> {
             if (key.getCode() == KeyCode.F11 || key.isAltDown() && key.getCode() == KeyCode.ENTER) {
                 this.stage.setFullScreen(!this.stage.isFullScreen());
             }
         });
-        String css = getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm();
-        this.scene.getStylesheets().add(css);
+
+        addStyleSheetToScene("stylesheets/mainPane-dark.css");
+
+        initStage(stage);
+
+        mainPane.initMainPane();
+    }
+
+    private void initStage(Stage stage) {
         this.stage.setScene(scene);
         this.stage.setTitle("Word Automata");
         this.stage.setMinHeight(Constants.HEIGHT);
         this.stage.setMinWidth(Constants.WIDTH);
         this.stage.setScene(scene);
         this.stage.show();
-
-        mainPane.initMainPane();
-
     }
 
     public void changeTheme() {
         graphView = SceneReference.getGraphView();
         if (isDarkMode) {
-            Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
-            scene.getStylesheets().add(getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());
-            scene.getStylesheets().removeAll(getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
+            setLightMode();
         } else {
-            Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
-            scene.getStylesheets().add(getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
-            scene.getStylesheets().removeAll(getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());
+            setDarkMode();
         }
         graphView.changeGraphTheme();
         isDarkMode = !isDarkMode;
+    }
+
+    private void setDarkMode() {
+        setStyleDark();
+        addStyleSheetToScene("stylesheets/mainPane-dark.css");
+        removeStyleSheetFromScene("stylesheets/mainPane-light.css");
+    }
+
+    private void setLightMode() {
+        setStyleLight();
+        addStyleSheetToScene("stylesheets/mainPane-light.css");
+        removeStyleSheetFromScene("stylesheets/mainPane-dark.css");
+    }
+
+    private void setStyleDark() {
+        Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
+    }
+
+    private void setStyleLight() {
+        Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
+    }
+
+    private void addStyleSheetToScene(String cssStyle) {
+        scene.getStylesheets().add(getClass().getResource(cssStyle).toExternalForm());
+    }
+
+    private void removeStyleSheetFromScene(String cssStyle) {
+        scene.getStylesheets().removeAll(getClass().getResource(cssStyle).toExternalForm());
     }
 
     public void runApp(String[] args) {
