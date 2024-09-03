@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -23,11 +22,4 @@
          </BorderPane.margin>
       </HBox>
    </left>
-    <bottom>
-      <HBox fx:id="bottomMenuStatic" prefHeight="31.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="testGraphButton" mnemonicParsing="false" prefHeight="46.0" prefWidth="84.0" text="Test" />
-         </children>
-      </HBox>
-   </bottom>
 </fx:root>

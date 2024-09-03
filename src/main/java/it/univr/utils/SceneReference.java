@@ -234,7 +234,7 @@ public class SceneReference {
         graphToFile.setEdgeList(graph.getMyEdgeList());
         ObjectMapper mapper = new ObjectMapper();
         try {
-            mapper.writeValue(new File(fileName + ".json"), graphToFile);
+            mapper.writeValue(new File(fileName), graphToFile);
         } catch (Exception e) {
             e.printStackTrace();
         }

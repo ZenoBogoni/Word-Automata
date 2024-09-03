@@ -1,7 +1,6 @@
 package it.univr.ui;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 
@@ -21,9 +20,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -34,11 +30,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class MainPane extends BorderPane {
 
@@ -168,12 +160,11 @@ public class MainPane extends BorderPane {
             File file = fileChooser.showSaveDialog(SceneReference.getStage());
 
             if (file != null) {
-                // Check if the file already exists
                 if (file.exists()) {
-                    System.out.println("File will be overwritten");
+                    SceneReference.createFileFromGraph(graph, file.getAbsolutePath());
+                } else {
+                    SceneReference.createFileFromGraph(graph, file.getAbsolutePath() + ".json");
                 }
-                // Create and write to the file
-                SceneReference.createFileFromGraph(graph, file.getAbsolutePath());
             }
         });
 
