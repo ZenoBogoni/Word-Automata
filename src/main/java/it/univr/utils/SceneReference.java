@@ -8,6 +8,7 @@ import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeBase;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
+import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -277,6 +278,8 @@ public class SceneReference {
             });
 
             SceneReference.graphView.update();
+        } catch (StreamReadException e) {
+            SceneReference.showErrorPopup("File non compatibile", "Il file:\n" + fileName + "\nnon contiene un grafo al suo interno. Selezionare un file valido");
         } catch (Exception e) {
             e.printStackTrace();
         }
