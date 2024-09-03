@@ -18,63 +18,43 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.utils.SceneReference;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
-public class TestGraphPopup extends AnchorPane {
+public class testGraphAlgoritm {
 
     // JavaFX variables
-    private Stage stage;
     private static DigraphEdgeList<String, String> graph = SceneReference.getGraph();
-    private DigraphEdgeListUnique<String, String> supportGraph = new DigraphEdgeListUnique<>();
+    private static DigraphEdgeListUnique<String, String> supportGraph;
     private static SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
-    private int numberOfVertices = 0;
-    private String testWord;
-    private int pointer;
+    private static int numberOfVertices;
+    private static String testWord;
+    private static int pointer;
 
     @FXML
     private Button cancelButton, submitButton;
     @FXML
     private TextField graphTestWordNameField;
 
-    public TestGraphPopup() {
+    public static void testGraph() {// TODO: handle exception
 
-        FXMLLoader fxmlLoader = fxmlSetter();
+        initialize();
 
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
+        MyVertexUnique initialVertexUnique = creatingVertexUnique(SceneReference.getInitialVertexNode().getUnderlyingVertex()); // and adding it to the supportGraph
+
+        boolean isThereValidPath = createGraphOfAllPossiblePaths(initialVertexUnique, 0);
+
+        choosePath(isThereValidPath, initialVertexUnique);
     }
 
-    private FXMLLoader fxmlSetter() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("testGraphPopup.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-        return fxmlLoader;
+    private static void initialize() {
+        supportGraph = new DigraphEdgeListUnique<>();
+        testWord = SceneReference.getTestWord();
+        pointer = 0;
+        numberOfVertices = 0;
     }
 
-    private void checkName() {// TODO: handle exception
-        testWord = graphTestWordNameField.getText();
-
-        if (testWord.equals("")) {
-            resetTestWordNameFieldWithErrorMessage("Enter a valid word");
-        } else {
-
-            MyVertexUnique initialVertexUnique = creatingVertexUnique(SceneReference.getInitialVertexNode().getUnderlyingVertex()); // and adding it to the supportGraph
-
-            boolean isThereValidPath = createGraphOfAllPossiblePaths(initialVertexUnique, 0);
-
-            choosePath(isThereValidPath, initialVertexUnique);
-        }
-        stage.close();
-    }
-
-    private void choosePath(boolean isThereValidPath, MyVertexUnique initialVertexUnique) {
+    private static void choosePath(boolean isThereValidPath, MyVertexUnique initialVertexUnique) {
         if (!isThereValidPath) {
             supportGraph.removeVertex(initialVertexUnique);
         } else {
@@ -86,7 +66,7 @@ public class TestGraphPopup extends AnchorPane {
      * Creates a MyVertexUnique, adds it to the Support Graph
      * and set as real Vertex the argument vertex
      */
-    private MyVertexUnique creatingVertexUnique(Vertex<String> Vertex) {
+    private static MyVertexUnique creatingVertexUnique(Vertex<String> Vertex) {
 
         MyVertexUnique VertexUnique = supportGraph.insertVertex(numberOfVertices + "");
         numberOfVertices++;
@@ -96,32 +76,7 @@ public class TestGraphPopup extends AnchorPane {
         return VertexUnique;
     }
 
-    private void resetTestWordNameFieldWithErrorMessage(String error) {
-        graphTestWordNameField.setText("");
-        graphTestWordNameField.setPromptText(error);
-    }
-
-    @FXML
-    public void initialize() {
-        submitButton.setOnAction(e -> {
-            this.stage = (Stage) getScene().getWindow();
-            checkName();
-            SceneReference.createFileFromGraph(graph, "test");
-        });
-
-        graphTestWordNameField.setOnAction(e -> {
-            this.stage = (Stage) getScene().getWindow();
-            checkName();
-        });
-
-        cancelButton.setOnAction(e -> {
-            this.stage = (Stage) getScene().getWindow();
-            SceneReference.createGraphFromFile("test");
-            stage.close();
-        });
-    }
-
-    private boolean createGraphOfAllPossiblePaths(MyVertexUnique currentVertex, int pointerSubString) {
+    private static boolean createGraphOfAllPossiblePaths(MyVertexUnique currentVertex, int pointerSubString) {
 
         boolean atLeastOnePathIsGood = false;
 
@@ -175,7 +130,7 @@ public class TestGraphPopup extends AnchorPane {
         return atLeastOnePathIsGood;
     }
 
-    private int compareStrings(String firstString, String secondString) {
+    private static int compareStrings(String firstString, String secondString) {
         int counterCharactersCompatible = 0;
 
         for (int i = 0; i < secondString.length() && i < firstString.length(); i++) {
@@ -189,54 +144,86 @@ public class TestGraphPopup extends AnchorPane {
         return counterCharactersCompatible;
     }
 
-    private void greedyChoice(MyVertexUnique vertex) {
+    private static void greedyChoice(MyVertexUnique vertex) {
 
         Collection<Edge<String, String>> edges = supportGraph.outboundEdgesUnique(vertex);
         Edge<String, String> edgeWithLongestElement = returnEdgeWithLongestElement(edges);
 
-        System.out.println(" -> " + vertex);
+        waitForAndAfterColorVertex(750, vertex);
+        waitForAndAfterClearVertex(2250, vertex);
 
-        Timer timerVertex = new Timer();
-        timerVertex.schedule(new TimerTask() {
+        if (edgeWithLongestElement != null) {
+
+            waitForAndAfterColorEdge(1500, edgeWithLongestElement);
+            waitForAndAfterClearEdge(3000, edgeWithLongestElement);
+
+        }
+    }
+
+    private static void waitForAndAfterColorVertex(int milliseconds, MyVertexUnique vertex) {
+        Timer timerClear = new Timer();
+        timerClear.schedule(new TimerTask() {
             @Override
             public void run() {
                 SmartGraphVertexNode<String> currentVertexNode = graphView.getVertexNodeOf(vertex.getRealVertex());
                 currentVertexNode.addStyleClass("pathVertex");
-                timerVertex.cancel(); // Stop the timer
+                timerClear.cancel(); // Stop the timer
             }
-        }, 750);
-
-        if (edgeWithLongestElement != null) {
-
-            Timer timerEdge = new Timer();
-            timerEdge.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    Vertex<String> inbound = ((MyEdgeUnique) edgeWithLongestElement).getInboundUnique().getRealVertex();
-                    Vertex<String> outbound = ((MyEdgeUnique) edgeWithLongestElement).getOutboundUnique().getRealVertex();
-                    Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream().filter(edge -> ((MyEdge) edge).getInbound().equals(inbound)).findFirst().orElse(null);
-                    SmartGraphEdgeBase<String, String> currentEdgeNode = graphView.getEdgeNodeOf(currentEdge);
-                    currentEdgeNode.addStyleClass("pathEdge");
-
-                    greedyChoice(((MyEdgeUnique) edgeWithLongestElement).getInboundUnique());
-                    timerEdge.cancel(); // Stop the timer
-                }
-            }, 1500);
-        } else {
-            Timer timerClear = new Timer();
-            timerClear.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    System.out.println("Clearing path");
-                    clearPath();
-                    timerClear.cancel(); // Stop the timer
-                }
-            }, 2000);
-            System.out.println(" ==== > Hai finito < ====\n\n");
-        }
+        }, milliseconds);
     }
 
-    private Edge<String, String> returnEdgeWithLongestElement(Collection<Edge<String, String>> edges) {
+    private static void waitForAndAfterColorEdge(int milliseconds, Edge<String, String> edge) {
+        Timer timerEdge = new Timer();
+        timerEdge.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Vertex<String> inbound = ((MyEdgeUnique) edge).getInboundUnique().getRealVertex();
+                Vertex<String> outbound = ((MyEdgeUnique) edge).getOutboundUnique().getRealVertex();
+                Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream().filter(edge -> ((MyEdge) edge).getInbound().equals(inbound)).findFirst().orElse(null);
+                SmartGraphEdgeBase<String, String> currentEdgeNode = graphView.getEdgeNodeOf(currentEdge);
+                currentEdgeNode.addStyleClass("pathEdge");
+
+                greedyChoice(((MyEdgeUnique) edge).getInboundUnique());
+                timerEdge.cancel(); // Stop the timer
+            }
+        }, milliseconds);
+    }
+
+    private static void waitForAndAfterClearVertex(int milliseconds, MyVertexUnique vertex) {
+        Timer timerClear = new Timer();
+        timerClear.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                clearVertex(vertex);
+                timerClear.cancel(); // Stop the timer
+            }
+        }, milliseconds);
+    }
+
+    private static void waitForAndAfterClearEdge(int milliseconds, Edge<String, String> edge) {
+        Timer timerClear = new Timer();
+        timerClear.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Vertex<String> inbound = ((MyEdgeUnique) edge).getInboundUnique().getRealVertex();
+                Vertex<String> outbound = ((MyEdgeUnique) edge).getOutboundUnique().getRealVertex();
+                Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream().filter(edge -> ((MyEdge) edge).getInbound().equals(inbound)).findFirst().orElse(null);
+                clearEdge(currentEdge);
+
+                timerClear.cancel(); // Stop the timer
+            }
+        }, milliseconds);
+    }
+
+    private static void clearVertex(MyVertexUnique vertex) {
+        graphView.getVertexNodeOf(vertex.getRealVertex()).removeStyleClass("pathVertex");
+    }
+
+    private static void clearEdge(Edge edge) {
+        graphView.getEdgeNodeOf(edge).removeStyleClass("pathEdge");
+    }
+
+    private static Edge<String, String> returnEdgeWithLongestElement(Collection<Edge<String, String>> edges) {
         int maxLength = 0;
         Edge<String, String> max = null;
 
@@ -248,16 +235,6 @@ public class TestGraphPopup extends AnchorPane {
         }
 
         return max;
-    }
-
-    private void clearPath() {
-        graph.vertices().forEach(vertex -> {
-            graphView.getVertexNodeOf(vertex).removeStyleClass("pathVertex");
-        });
-
-        graph.edges().forEach(edge -> {
-            graphView.getEdgeNodeOf(edge).removeStyleClass("pathEdge");
-        });
     }
 
 }

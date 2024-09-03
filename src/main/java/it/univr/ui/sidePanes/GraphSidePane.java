@@ -8,6 +8,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.ui.MainPane;
+import it.univr.ui.testGraphAlgoritm;
 import it.univr.utils.SceneReference;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -40,9 +41,9 @@ public class GraphSidePane extends VBox {
 
     // FXML
     @FXML
-    private TextField vertexLabelTextField, edgeLabelTextField;
+    private TextField vertexLabelTextField, edgeLabelTextField, testingWordField;
     @FXML
-    private Button deleteVertexButton, deleteEdgeButton;
+    private Button deleteVertexButton, deleteEdgeButton, testWordButton;
     @FXML
     private RadioButton initialNodeRadioButton, finalNodeRadioButton;
     @FXML
@@ -61,6 +62,16 @@ public class GraphSidePane extends VBox {
     }
 
     public void initialize() {
+
+        testWordButton.setOnAction(e -> {
+            if (testingWordField.getText().equals("")) {
+                testingWordField.setPromptText("Insert a valide word");
+            } else {
+                SceneReference.setTestWord(testingWordField.getText());
+                testGraphAlgoritm.testGraph();
+            }
+        });
+
         // hide when vertex is not selected
         // deleteVertexButton.visibleProperty().bind(isVertexSelectedProperty);
         initialNodeRadioButton.setDisable(true);

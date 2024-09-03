@@ -36,11 +36,17 @@ public class SceneReference {
     private static SimpleBooleanProperty initialVertexSetProperty;
     private static SimpleBooleanProperty isEdgeSelectedProperty = new SimpleBooleanProperty(false);
 
+    private static String testWord;
+
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Getters */
     /* -------------------------------------------------------------------------- */
     public static MainPane getMainPane() {
         return mainPane;
+    }
+
+    public static String getTestWord() {
+        return testWord;
     }
 
     public static SmartGraphPanel<String, String> getGraphView() {
@@ -101,6 +107,10 @@ public class SceneReference {
 
     public static void setMainPane(MainPane pane) {
         mainPane = pane;
+    }
+
+    public static void setTestWord(String word) {
+        SceneReference.testWord = word;
     }
 
     public static void setInitialVertexNode(SmartGraphVertexNode<String> initialVertexNode) {
@@ -238,7 +248,7 @@ public class SceneReference {
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         GraphToFile graphToFile;
         try {
-            graphToFile = mapper.readValue(new File(fileName + ".json"), GraphToFile.class);
+            graphToFile = mapper.readValue(new File(fileName), GraphToFile.class);
             deleteGraph(graph);
 
             graphToFile.getVertexList().forEach(vertex -> {

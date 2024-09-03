@@ -72,5 +72,33 @@
             </Button>
          </children>
       </HBox>
+      <HBox alignment="CENTER" prefHeight="55.0" prefWidth="300.0" styleClass="sidePane-title-container">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="sidePane-title" text="TEST GRAPH">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" prefWidth="200.0" spacing="5.0" styleClass="item-container">
+         <children>
+            <VBox alignment="CENTER" prefHeight="24.0" prefWidth="63.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Text fx:id="testingWord" strokeType="OUTSIDE" strokeWidth="0.0" text="Testing word" />
+               </children>
+            </VBox>
+            <TextField fx:id="testingWordField" prefWidth="170.0" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="38.0" prefWidth="290.0">
+         <children>
+            <Button fx:id="testWordButton" mnemonicParsing="false" style="-fx-background-color: #ff2929bb;" text="TEST">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
    </children>
 </fx:root>

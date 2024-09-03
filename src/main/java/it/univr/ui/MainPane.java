@@ -1,5 +1,6 @@
 package it.univr.ui;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 
@@ -32,6 +33,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -78,8 +80,6 @@ public class MainPane extends BorderPane {
     @FXML
     private VBox sideMenuStatic;
     @FXML
-    private Button testGraphButton;
-    @FXML
     private ScrollPane sideMenuHidable;
     @FXML
     private HBox sideMenu;
@@ -89,6 +89,8 @@ public class MainPane extends BorderPane {
     private CheckMenuItem theme = new CheckMenuItem("Dark Mode"), autoLayout = new CheckMenuItem("Automatic Layout"), confirmToApply = new CheckMenuItem("Confirm to apply");
     @FXML
     private CheckMenuItem clearTextOnClick = new CheckMenuItem("Clear text on input");
+    @FXML
+    private CheckMenuItem exportGraph = new CheckMenuItem("Export"), importGraph = new CheckMenuItem("Import");
 
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Constructor */
@@ -130,20 +132,33 @@ public class MainPane extends BorderPane {
         initMenuBar();
         initSideMenu();
         graphView.init();
-        initBottomMenu();
         graphView.setAutomaticLayoutStrategy(magicLayoutSidePane.getMagicLayout());
         graphView.update();
     }
 
-    private void initBottomMenu() {
-        testGraphButton.setOnAction(e -> {
-            testGraphPopup();
-        });
+    private FileChooser initFileChooser() {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+        return fileChooser;
     }
 
     private void initMenuBar() {
         // MenuBar
         menuBar.getMenus().addAll(file, options, help);
+
+        // file managment
+        file.getItems().addAll(importGraph, exportGraph);
+
+        importGraph.setOnAction(e -> {
+            FileChooser fileChooser = initFileChooser();
+
+            File file = fileChooser.showOpenDialog(SceneReference.getStage());
+
+            if (file != null) {
+                SceneReference.createGraphFromFile(file.getAbsolutePath());
+            }
+        });
 
         // View
         options.getItems().addAll(theme, autoLayout, confirmToApply, clearTextOnClick);
@@ -327,14 +342,6 @@ public class MainPane extends BorderPane {
 
     private void vertexNamePopup() {
         createModal(new VertexPopup(), 300, 200);
-    }
-
-    /* -------------------------------------------------------------------------- */
-    /* /// ANCHOR - Test Graph popup */
-    /* -------------------------------------------------------------------------- */
-
-    private void testGraphPopup() {
-        createModal(new TestGraphPopup(), 300, 200);
     }
 
     /* -------------------------------------------------------------------------- */
