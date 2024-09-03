@@ -24,9 +24,9 @@ import javafx.scene.control.TextField;
 public class testGraphAlgoritm {
 
     // JavaFX variables
-    private static DigraphEdgeList<String, String> graph = SceneReference.getGraph();
+    private static DigraphEdgeList<String, String> graph;
     private static DigraphEdgeListUnique<String, String> supportGraph;
-    private static SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
+    private static SmartGraphPanel<String, String> graphView;
     private static int numberOfVertices;
     private static String testWord;
     private static int pointer;
@@ -48,8 +48,11 @@ public class testGraphAlgoritm {
     }
 
     private static void initialize() {
-        supportGraph = new DigraphEdgeListUnique<>();
+        graphView = SceneReference.getGraphView();
+        graph = SceneReference.getGraph();
         testWord = SceneReference.getTestWord();
+
+        supportGraph = new DigraphEdgeListUnique<>();
         pointer = 0;
         numberOfVertices = 0;
     }
