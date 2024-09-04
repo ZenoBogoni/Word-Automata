@@ -36,15 +36,18 @@ public class testGraphAlgoritm {
     @FXML
     private TextField graphTestWordNameField;
 
-    public static void testGraph() {// TODO: handle exception
+    public static void testGraph() {
+        try {
+            initialize();
 
-        initialize();
+            MyVertexUnique initialVertexUnique = creatingVertexUnique(SceneReference.getInitialVertexNode().getUnderlyingVertex());
+            boolean isThereValidPath = createGraphOfAllPossiblePaths(initialVertexUnique, 0);
 
-        MyVertexUnique initialVertexUnique = creatingVertexUnique(SceneReference.getInitialVertexNode().getUnderlyingVertex()); // and adding it to the supportGraph
-
-        boolean isThereValidPath = createGraphOfAllPossiblePaths(initialVertexUnique, 0);
-
-        choosePath(isThereValidPath, initialVertexUnique);
+            choosePath(isThereValidPath, initialVertexUnique);
+        } catch (Exception e) {
+            // Gestione delle eccezioni
+            e.printStackTrace();
+        }
     }
 
     private static void initialize() {
@@ -120,11 +123,7 @@ public class testGraphAlgoritm {
         } else {
 
             if (testWordSubStringLength == 0) {
-                if (currentVertex.getRealVertex().isFinal()) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return currentVertex.getRealVertex().isFinal();
             } else {
                 return false;
             }
