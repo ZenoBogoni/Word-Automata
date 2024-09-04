@@ -112,7 +112,7 @@ public class SceneReference {
         return isEdgeSelectedProperty;
     }
 
-    public static boolean unsavedChanges() {
+    public static boolean getUnsavedChanges() {
         return unsavedChanges;
     }
 

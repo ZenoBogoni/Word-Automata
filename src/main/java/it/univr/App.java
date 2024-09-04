@@ -13,6 +13,7 @@ import it.univr.utils.SceneReference;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
@@ -51,12 +52,13 @@ public class App extends Application {
 
         // Stage initialization
         this.stage.setScene(scene);
+        this.stage.getIcons().add(new Image(getClass().getResource("assets/WordAutomataIcon5.png").toExternalForm()));
         this.stage.titleProperty().bind(SceneReference.getFileNameProperty());
         this.stage.setMinHeight(Constants.HEIGHT);
         this.stage.setMinWidth(Constants.WIDTH);
         this.stage.setScene(scene);
         this.stage.setOnCloseRequest(e -> {
-            if (SceneReference.unsavedChanges()) {
+            if (SceneReference.getUnsavedChanges()) {
                 SceneReference.createModal(new ClosePopup());
                 e.consume();
             } else {
