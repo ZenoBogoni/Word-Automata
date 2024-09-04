@@ -1,4 +1,4 @@
-package it.univr.ui;
+package it.univr.ui.popups;
 
 import java.io.File;
 import java.io.IOException;

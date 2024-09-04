@@ -9,6 +9,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.ui.MainPane;
 import it.univr.ui.TestGraphAlgoritm;
+import it.univr.ui.popups.ConfirmPopup;
 import it.univr.utils.SceneReference;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -44,7 +45,7 @@ public class GraphSidePane extends VBox {
     @FXML
     private TextField vertexLabelTextField, edgeLabelTextField, testWordTextField;
     @FXML
-    private Button deleteVertexButton, deleteEdgeButton, testWordButton;
+    private Button deleteVertexButton, deleteEdgeButton, testWordButton, destroyButton;
     @FXML
     private RadioButton initialNodeRadioButton, finalNodeRadioButton;
     @FXML
@@ -218,6 +219,14 @@ public class GraphSidePane extends VBox {
             graph.removeEdge(SceneReference.getSelectedEdge().getUnderlyingEdge());
             graphView.update();
             SceneReference.deselectEdge();
+            SceneReference.setUnsavedChanges(true);
+        });
+
+        destroyButton.setOnAction(e -> {
+            SceneReference.createModal(new ConfirmPopup(
+                    "Are you sure you want to destroy this Automata?",
+                    "By clicking confirm you will completely delete ALL the vertices and edges of the current automata",
+                    () -> SceneReference.deleteGraph(graph)));
             SceneReference.setUnsavedChanges(true);
         });
     }

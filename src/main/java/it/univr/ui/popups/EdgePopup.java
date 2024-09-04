@@ -1,9 +1,10 @@
-package it.univr.ui;
+package it.univr.ui.popups;
 
 import java.io.IOException;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
+import it.univr.ui.MainPane;
 import it.univr.utils.SceneReference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

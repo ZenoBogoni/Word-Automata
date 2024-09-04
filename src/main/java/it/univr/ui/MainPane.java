@@ -13,6 +13,8 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 import com.brunomnsilva.smartgraph.graphview.SmartPlacementStrategy;
 
 import it.univr.App;
+import it.univr.ui.popups.EdgePopup;
+import it.univr.ui.popups.VertexPopup;
 import it.univr.ui.sidePanes.GraphSidePane;
 import it.univr.ui.sidePanes.MagicLayoutSidePane;
 import it.univr.utils.SceneReference;
@@ -109,7 +111,7 @@ public class MainPane extends BorderPane {
         theme = new CheckMenuItem("Dark Mode");
         autoLayout = new CheckMenuItem("Automatic Layout");
         confirmToApply = new CheckMenuItem("Confirm to apply");
-        clearTextOnClick = new CheckMenuItem("Clear text on input");
+        clearTextOnClick = new CheckMenuItem("Clear values       on input");
 
         exportGraph = new MenuItem("Save Automata");
         importGraph = new MenuItem("Open Automata");

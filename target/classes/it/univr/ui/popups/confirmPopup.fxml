@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-radius: 8; -fx-border-color: #0004; -fx-border-radius: 8; -fx-border-width: 2;" type="AnchorPane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+         <children>
+            <Text fx:id="confirmTypeText" strokeType="OUTSIDE" strokeWidth="0.0" text="Can you confirm this program is good?" textAlignment="CENTER" wrappingWidth="300.0">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text fx:id="confirmText" strokeType="OUTSIDE" strokeWidth="0.0" text="Are you sure you want to confirm this program is actually insanely good?" textAlignment="CENTER" wrappingWidth="300.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <HBox alignment="CENTER" prefWidth="200.0" spacing="5.0">
+               <children>
+                  <Button fx:id="confirmButton" mnemonicParsing="false" prefWidth="200.0" text="Confirm" style="-fx-background-radius: 5;"/>
+                  <Button fx:id="cancelButton" mnemonicParsing="false" prefWidth="200.0" text="Cancel" style="-fx-background-radius: 5;"/>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</fx:root>

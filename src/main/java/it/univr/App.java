@@ -6,8 +6,8 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 
 import atlantafx.base.theme.NordDark;
 import atlantafx.base.theme.NordLight;
-import it.univr.ui.ClosePopup;
 import it.univr.ui.MainPane;
+import it.univr.ui.popups.ClosePopup;
 import it.univr.utils.Constants;
 import it.univr.utils.SceneReference;
 import javafx.application.Application;

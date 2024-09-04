@@ -12,8 +12,8 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import it.univr.ui.ErrorPopup;
 import it.univr.ui.MainPane;
+import it.univr.ui.popups.ErrorPopup;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Parent;
@@ -312,8 +312,6 @@ public class SceneReference {
     public static void createModal(Parent root) {
         Stage stage = new Stage();
         Scene scene = new Scene(root);
-        double width = scene.getWidth();
-        double height = scene.getHeight();
 
         // Scene Style
         stage.initStyle(StageStyle.TRANSPARENT);
@@ -323,12 +321,21 @@ public class SceneReference {
         stage.sizeToScene();
         stage.setResizable(false);
 
-        // put this window in the middle of the primary window
-        Stage primaryStage = SceneReference.getStage();
-        double centerX = primaryStage.getX() + (primaryStage.getWidth() - width) / 2;
-        double centerY = primaryStage.getY() + (primaryStage.getHeight() - height) / 2;
-        stage.setX(centerX);
-        stage.setY(centerY);
+        stage.setOnShown(event -> {
+            // Size the stage to the scene
+            stage.sizeToScene();
+
+            // Get the width and height after sizing the stage
+            double width = stage.getWidth();
+            double height = stage.getHeight();
+
+            // Put this window in the middle of the primary window
+            Stage primaryStage = SceneReference.getStage();
+            double centerX = primaryStage.getX() + (primaryStage.getWidth() - width) / 2;
+            double centerY = primaryStage.getY() + (primaryStage.getHeight() - height) / 2;
+            stage.setX(centerX);
+            stage.setY(centerY);
+        });
 
         stage.show();
     }
