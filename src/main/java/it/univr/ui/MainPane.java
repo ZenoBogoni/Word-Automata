@@ -112,7 +112,7 @@ public class MainPane extends BorderPane {
         clearTextOnClick = new CheckMenuItem("Clear text on input");
 
         exportGraph = new MenuItem("Save Automata");
-        importGraph = new MenuItem("Export Automata");
+        importGraph = new MenuItem("Open Automata");
     }
 
     /* //ANCHOR - Constructor */
