@@ -78,16 +78,43 @@ public class MainPane extends BorderPane {
     private ScrollPane sideMenuHidable;
     @FXML
     private HBox sideMenu;
-    @FXML
-    private Menu file = new Menu("File"), options = new Menu("Options"), help = new Menu("Help");
-    @FXML
-    private CheckMenuItem theme = new CheckMenuItem("Dark Mode"), autoLayout = new CheckMenuItem("Automatic Layout"), confirmToApply = new CheckMenuItem("Confirm to apply");
-    @FXML
-    private CheckMenuItem clearTextOnClick = new CheckMenuItem("Clear text on input");
-    @FXML
-    private MenuItem exportGraph = new MenuItem("Save Automata"), importGraph = new MenuItem("Open Automata");
 
-    /* -------------------------------------------------------------------------- */
+    // Menus
+    @FXML
+    private Menu file;
+    @FXML
+    private Menu options;
+    @FXML
+    private Menu help;
+
+    // Menu Items
+    @FXML
+    private CheckMenuItem theme;
+    @FXML
+    private CheckMenuItem autoLayout;
+    @FXML
+    private CheckMenuItem confirmToApply;
+    @FXML
+    private CheckMenuItem clearTextOnClick;
+    @FXML
+    private MenuItem exportGraph;
+    @FXML
+    private MenuItem importGraph;
+
+    private void initializeFXMLVariables() {
+        file = new Menu("File");
+        options = new Menu("Options");
+        help = new Menu("Help");
+
+        theme = new CheckMenuItem("Dark Mode");
+        autoLayout = new CheckMenuItem("Automatic Layout");
+        confirmToApply = new CheckMenuItem("Confirm to apply");
+        clearTextOnClick = new CheckMenuItem("Clear text on input");
+
+        exportGraph = new MenuItem("Save Automata");
+        importGraph = new MenuItem("Export Automata");
+    }
+
     /* //ANCHOR - Constructor */
     /* -------------------------------------------------------------------------- */
 
@@ -102,6 +129,7 @@ public class MainPane extends BorderPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+        initializeFXMLVariables();
         initGraph();
     }
 
