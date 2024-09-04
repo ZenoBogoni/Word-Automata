@@ -8,7 +8,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.ui.MainPane;
-import it.univr.ui.testGraphAlgoritm;
+import it.univr.ui.TestGraphAlgoritm;
 import it.univr.utils.SceneReference;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -74,7 +74,7 @@ public class GraphSidePane extends VBox {
                 SceneReference.showErrorPopup("Invalid testing word", "It's not possible to test the automata with an empty testing word, please insert a valid testing word.");
             } else {
                 SceneReference.setTestWord(testWordTextField.getText());
-                testGraphAlgoritm.testGraph();
+                TestGraphAlgoritm.testGraph();
             }
         });
 
@@ -100,8 +100,10 @@ public class GraphSidePane extends VBox {
                     SceneReference.removeFinalVertex(selectedVertexNode);
                 }
                 SceneReference.setInitialVertexNode(selectedVertexNode);
+                SceneReference.setUnsavedChanges(true);
             } else {
                 SceneReference.setInitialVertexNode(null);
+                SceneReference.setUnsavedChanges(true);
             }
         });
 
@@ -112,8 +114,10 @@ public class GraphSidePane extends VBox {
                     SceneReference.setInitialVertexNode(null);
                 }
                 SceneReference.addFinalvertex(selectedVertexNode);
+                SceneReference.setUnsavedChanges(true);
             } else {
                 SceneReference.removeFinalVertex(selectedVertexNode);
+                SceneReference.setUnsavedChanges(true);
             }
         });
 
@@ -137,7 +141,6 @@ public class GraphSidePane extends VBox {
                 vertexLabelTextField.setPromptText("");
                 lastVertexName = (lastVertexName == null) ? new String(vertexLabelTextField.getText()) : vertexLabelTextField.getText();
                 vertexLabel.setStyle(null);
-
             }
         });
 
@@ -168,7 +171,7 @@ public class GraphSidePane extends VBox {
                 System.out.println(graph);
                 graphView.update();
                 mainPane.deselectNodes();
-
+                SceneReference.setUnsavedChanges(true);
             }
 
         });
@@ -215,6 +218,7 @@ public class GraphSidePane extends VBox {
             graph.removeEdge(SceneReference.getSelectedEdge().getUnderlyingEdge());
             graphView.update();
             SceneReference.deselectEdge();
+            SceneReference.setUnsavedChanges(true);
         });
     }
 
@@ -247,6 +251,7 @@ public class GraphSidePane extends VBox {
         graphView.updateAndWait();
         mainPane.setSelectedVertexNode(graphView.getVertexNodeOf(newVertex));
         lastVertexName = new String(newVertex.element());
+        SceneReference.setUnsavedChanges(true);
     }
 
     private void updateEdgeName() {
@@ -257,5 +262,6 @@ public class GraphSidePane extends VBox {
         }
         graph.replace(graph.getEdgeById(edgeId), edgeLabelTextField.getText());
         graphView.update();
+        SceneReference.setUnsavedChanges(true);
     }
 }

@@ -74,6 +74,7 @@ public class VertexPopup extends AnchorPane {
                 newVertexNode.setCenterY(SceneReference.getMainPane().getMouseY());
                 updateSpecialVertices(newVertexNode);
                 SceneReference.getMainPane().setSelectedVertexNode(newVertexNode);
+                SceneReference.setUnsavedChanges(true);
                 stage.close();
             }
         }

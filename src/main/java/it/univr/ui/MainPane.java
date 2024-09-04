@@ -20,6 +20,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -84,7 +85,7 @@ public class MainPane extends BorderPane {
     @FXML
     private CheckMenuItem clearTextOnClick = new CheckMenuItem("Clear text on input");
     @FXML
-    private MenuItem exportGraph = new MenuItem("Export Graph"), importGraph = new MenuItem("Import Graph");
+    private MenuItem exportGraph = new MenuItem("Save Automata"), importGraph = new MenuItem("Open Automata");
 
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Constructor */
@@ -130,13 +131,6 @@ public class MainPane extends BorderPane {
         graphView.update();
     }
 
-    private FileChooser initFileChooser() {
-        FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
-        fileChooser.getExtensionFilters().add(extFilter);
-        return fileChooser;
-    }
-
     private void initMenuBar() {
         // MenuBar
         menuBar.getMenus().addAll(file, options, help);
@@ -145,25 +139,31 @@ public class MainPane extends BorderPane {
         file.getItems().addAll(importGraph, exportGraph);
 
         importGraph.setOnAction(e -> {
-            FileChooser fileChooser = initFileChooser();
+            FileChooser fileChooser = SceneReference.initFileChooser();
 
             File file = fileChooser.showOpenDialog(SceneReference.getStage());
 
             if (file != null) {
                 SceneReference.createGraphFromFile(file.getAbsolutePath());
+                SceneReference.setFileName(file.getName().substring(0, file.getName().lastIndexOf(".") == -1 ? file.getName().length() : file.getName().lastIndexOf(".")));
+                SceneReference.setUnsavedChanges(false);
             }
         });
 
         exportGraph.setOnAction(e -> {
-            FileChooser fileChooser = initFileChooser();
+            FileChooser fileChooser = SceneReference.initFileChooser();
 
             File file = fileChooser.showSaveDialog(SceneReference.getStage());
 
             if (file != null) {
                 if (file.exists()) {
                     SceneReference.createFileFromGraph(graph, file.getAbsolutePath());
+                    SceneReference.setFileName(file.getName().substring(0, file.getName().lastIndexOf(".") == -1 ? file.getName().length() : file.getName().lastIndexOf(".")));
+                    SceneReference.setUnsavedChanges(false);
                 } else {
                     SceneReference.createFileFromGraph(graph, file.getAbsolutePath() + ".json");
+                    SceneReference.setFileName(file.getName().substring(0, file.getName().lastIndexOf(".") == -1 ? file.getName().length() : file.getName().lastIndexOf(".")));
+                    SceneReference.setUnsavedChanges(false);
                 }
             }
         });
@@ -294,6 +294,7 @@ public class MainPane extends BorderPane {
         Edge<String, String> newEgde = graph.insertEdge(from.getUnderlyingVertex(), to.getUnderlyingVertex(), edgeName);
         graphView.updateAndWait();
         SceneReference.setSelectedEdge(graphView.getEdgeNodeOf(newEgde));
+        SceneReference.setUnsavedChanges(true);
     }
 
     /* -------------------------------------------------------------------------- */

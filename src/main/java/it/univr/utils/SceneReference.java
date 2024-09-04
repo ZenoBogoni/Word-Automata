@@ -15,9 +15,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import it.univr.ui.ErrorPopup;
 import it.univr.ui.MainPane;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -25,6 +27,7 @@ import javafx.stage.StageStyle;
 public class SceneReference {
     // java variables
     private static boolean isEdgePressed = false;
+    private static boolean unsavedChanges = false;
 
     // Components
     private static Stage stage;
@@ -42,6 +45,7 @@ public class SceneReference {
     private static SimpleBooleanProperty clearTextOnClickProperty;
     private static SimpleBooleanProperty initialVertexSetProperty;
     private static SimpleBooleanProperty isEdgeSelectedProperty = new SimpleBooleanProperty(false);
+    private static SimpleStringProperty fileNameProperty = new SimpleStringProperty("Word Automata - unnamed Automata");
 
     private static String testWord;
 
@@ -106,6 +110,14 @@ public class SceneReference {
 
     public static SimpleBooleanProperty getIsEdgeSelectedProperty() {
         return isEdgeSelectedProperty;
+    }
+
+    public static boolean getUnsavedChanges() {
+        return unsavedChanges;
+    }
+
+    public static SimpleStringProperty getFileNameProperty() {
+        return fileNameProperty;
     }
 
     /* -------------------------------------------------------------------------- */
@@ -193,6 +205,14 @@ public class SceneReference {
 
     public static void setEdgePressed(boolean bool) {
         isEdgePressed = bool;
+    }
+
+    public static void setUnsavedChanges(boolean bool) {
+        unsavedChanges = bool;
+    }
+
+    public static void setFileName(String fileName) {
+        fileNameProperty.set("Word Automata - " + fileName);
     }
 
     /* -------------------------------------------------------------------------- */
@@ -320,5 +340,12 @@ public class SceneReference {
      */
     public static void showErrorPopup(String errorType, String errorMsg) {
         createModal(new ErrorPopup(errorType, errorMsg));
+    }
+
+    public static FileChooser initFileChooser() {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+        return fileChooser;
     }
 }
