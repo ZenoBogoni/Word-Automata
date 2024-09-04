@@ -56,12 +56,11 @@ public class App extends Application {
         this.stage.setMinWidth(Constants.WIDTH);
         this.stage.setScene(scene);
         this.stage.setOnCloseRequest(e -> {
-            if (!SceneReference.getUnsavedChanges()) {
-                Platform.exit();
-            } else {
-                System.out.println("unsaved changes");
+            if (SceneReference.unsavedChanges()) {
                 SceneReference.createModal(new ClosePopup());
                 e.consume();
+            } else {
+                Platform.exit();
             }
         });
         this.stage.show();
