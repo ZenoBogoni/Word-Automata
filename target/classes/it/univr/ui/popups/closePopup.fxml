@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-radius: 8; -fx-border-color: #0004; -fx-border-radius: 8; -fx-border-width: 2;" type="AnchorPane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="popup-window" type="AnchorPane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
          <children>
@@ -24,9 +24,9 @@
             </Text>
             <HBox alignment="CENTER" prefWidth="200.0" spacing="5.0">
                <children>
-                  <Button fx:id="dontButton" mnemonicParsing="false" prefWidth="100.0" text="Don't save" HBox.hgrow="ALWAYS" style="-fx-background-radius: 5;"/>
-                  <Button fx:id="cancelButton" mnemonicParsing="false" prefWidth="100.0" text="Cancel" HBox.hgrow="ALWAYS" style="-fx-background-radius: 5;"/>
-                  <Button fx:id="saveButton" mnemonicParsing="false" prefWidth="100.0" text="Save" HBox.hgrow="ALWAYS" style="-fx-background-radius: 5;"/>
+                  <Button fx:id="dontButton" mnemonicParsing="false" prefWidth="100.0" text="Don't save" HBox.hgrow="ALWAYS" styleClass="popup-button"/>
+                  <Button fx:id="cancelButton" mnemonicParsing="false" prefWidth="100.0" text="Cancel" HBox.hgrow="ALWAYS" styleClass="popup-button"/>
+                  <Button fx:id="saveButton" mnemonicParsing="false" prefWidth="100.0" text="Save" HBox.hgrow="ALWAYS" styleClass="popup-button"/>
                </children>
             </HBox>
          </children>

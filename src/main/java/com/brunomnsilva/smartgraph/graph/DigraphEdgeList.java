@@ -108,11 +108,10 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
     @Override
     public synchronized Edge<E, V> insertEdge(Vertex<V> outbound, Vertex<V> inbound, E edgeElement) throws InvalidVertexException, InvalidEdgeException {
 
-        // ! non fa nulla in teoria
-        if (existsEdgeWith(id)) {
-            throw new InvalidEdgeException("There's already an edge with this element.");
+        if (!isDeterministic(outbound, edgeElement)) {
+            return null;
         }
-        // !========================
+
         MyVertex outVertex = checkVertex(outbound);
         MyVertex inVertex = checkVertex(inbound);
 
@@ -491,5 +490,9 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
             edgeList.add(new MyEdgeExported(element, inbound, outbound));
         });
         return edgeList;
+    }
+
+    private boolean isDeterministic(Vertex<V> vertex, E edgeElement) {
+        return !outboundEdges(vertex).stream().anyMatch(edge -> edge.element().equals(edgeElement));
     }
 }

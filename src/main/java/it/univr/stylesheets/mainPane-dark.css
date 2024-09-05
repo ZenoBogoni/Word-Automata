@@ -44,3 +44,14 @@
     -fx-background-color: #9c3232;
     -fx-border-color: #7e2525;
 }
+
+.popup-window {
+    -fx-background-radius: 8; 
+    -fx-border-color: #0004; 
+    -fx-border-radius: 8; 
+    -fx-border-width: 2;
+}
+
+.popup-button {
+    -fx-background-radius: 5; 
+}

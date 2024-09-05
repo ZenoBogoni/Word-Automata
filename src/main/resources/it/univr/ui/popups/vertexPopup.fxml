@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-radius: 8; -fx-border-color: #0004; -fx-border-radius: 8; -fx-border-width: 2;" type="AnchorPane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="popup-window" type="AnchorPane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="CENTER" layoutX="12.0" spacing="12.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
          <children>
@@ -48,8 +48,8 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="26.0" prefWidth="280.0" spacing="10.0">
                <children>
-                  <Button fx:id="submitButton" layoutX="100.0" layoutY="11.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="100.0" style="-fx-background-radius: 5;" text="Submit" />
-                  <Button fx:id="cancelButton" mnemonicParsing="false" prefHeight="20.0" prefWidth="100.0" style="-fx-background-radius: 5;" text="Cancel" />
+                  <Button fx:id="submitButton" layoutX="100.0" layoutY="11.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="100.0" styleClass="popup-button" text="Submit" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" prefHeight="20.0" prefWidth="100.0" styleClass="popup-button" text="Cancel" />
                </children>
             </HBox>
             

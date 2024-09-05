@@ -24,12 +24,13 @@ public class App extends Application {
 
     private Stage stage;
     private Scene scene;
-    private boolean isDarkMode = true;
+    private static boolean isDarkMode = true;
     private MainPane mainPane;
     SmartGraphPanel<String, String> graphView;
 
     @Override
     public void start(Stage stage) throws IOException {
+        SceneReference.setApp(this);
         this.stage = stage;
         SceneReference.setStage(stage);
 
@@ -74,12 +75,10 @@ public class App extends Application {
         graphView = SceneReference.getGraphView();
         if (isDarkMode) {
             Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
-            scene.getStylesheets().add(getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());
-            scene.getStylesheets().removeAll(getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
+            applyLightStyleSheet(scene);
         } else {
             Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
-            scene.getStylesheets().add(getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
-            scene.getStylesheets().removeAll(getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());
+            applyDarkStyleSheet(scene);
         }
         graphView.changeGraphTheme();
         isDarkMode = !isDarkMode;
@@ -87,6 +86,20 @@ public class App extends Application {
 
     public void runApp(String[] args) {
         launch(args);
+    }
+
+    public static void applyDarkStyleSheet(Scene scene) {
+        scene.getStylesheets().add(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
+        scene.getStylesheets().removeAll(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());
+    }
+
+    public static void applyLightStyleSheet(Scene scene) {
+        scene.getStylesheets().add(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());
+        scene.getStylesheets().removeAll(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
+    }
+
+    public static boolean isDarkMode() {
+        return isDarkMode;
     }
 
 }

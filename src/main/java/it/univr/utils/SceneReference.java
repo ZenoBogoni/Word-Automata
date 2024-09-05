@@ -12,8 +12,10 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import it.univr.App;
 import it.univr.ui.MainPane;
 import it.univr.ui.popups.ErrorPopup;
+import javafx.application.Application;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Parent;
@@ -30,6 +32,7 @@ public class SceneReference {
     private static boolean unsavedChanges = false;
 
     // Components
+    private static Application app;
     private static Stage stage;
     private static MainPane mainPane;
     private static SmartGraphPanel<String, String> graphView;
@@ -118,6 +121,10 @@ public class SceneReference {
 
     public static SimpleStringProperty getFileNameProperty() {
         return fileNameProperty;
+    }
+
+    public static Application getApp() {
+        return app;
     }
 
     /* -------------------------------------------------------------------------- */
@@ -213,6 +220,10 @@ public class SceneReference {
 
     public static void setFileName(String fileName) {
         fileNameProperty.set("Word Automata - " + fileName);
+    }
+
+    public static void setApp(Application app) {
+        SceneReference.app = app;
     }
 
     /* -------------------------------------------------------------------------- */
@@ -314,6 +325,11 @@ public class SceneReference {
         Scene scene = new Scene(root);
 
         // Scene Style
+        if (App.isDarkMode()) {
+            App.applyDarkStyleSheet(scene);
+        } else {
+            App.applyLightStyleSheet(scene);
+        }
         stage.initStyle(StageStyle.TRANSPARENT);
         scene.setFill(Color.TRANSPARENT);
         stage.initModality(Modality.APPLICATION_MODAL);

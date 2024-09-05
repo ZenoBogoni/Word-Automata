@@ -320,13 +320,6 @@ public class MainPane extends BorderPane {
         }
     }
 
-    public void addEdge(SmartGraphVertexNode<String> from, SmartGraphVertexNode<String> to) {
-        Edge<String, String> newEgde = graph.insertEdge(from.getUnderlyingVertex(), to.getUnderlyingVertex(), edgeName);
-        graphView.updateAndWait();
-        SceneReference.setSelectedEdge(graphView.getEdgeNodeOf(newEgde));
-        SceneReference.setUnsavedChanges(true);
-    }
-
     /* -------------------------------------------------------------------------- */
     /* /// ANCHOR - Vertex popup */
     /* -------------------------------------------------------------------------- */

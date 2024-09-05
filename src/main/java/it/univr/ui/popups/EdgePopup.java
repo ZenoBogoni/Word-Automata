@@ -2,6 +2,7 @@ package it.univr.ui.popups;
 
 import java.io.IOException;
 
+import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.ui.MainPane;
@@ -42,14 +43,21 @@ public class EdgePopup extends AnchorPane {
     }
 
     private void checkName() {
-
         String edgeName = edgeNameField.getText();
         if (edgeName.equals("")) {
             errorText.setText("Enter a non blank edge name");
             edgeNameField.setText("");
         } else {
             mainPane.setEdgeName(edgeName);
-            mainPane.addEdge(from, to);
+            Edge<String, String> newEgde = SceneReference.getGraph().insertEdge(from.getUnderlyingVertex(), to.getUnderlyingVertex(), edgeName);
+            if (newEgde == null) {
+                errorText.setText("This vertex has an outgoing edge with the same name");
+                edgeNameField.setText("");
+                return;
+            }
+            SceneReference.getGraphView().updateAndWait();
+            SceneReference.setSelectedEdge(SceneReference.getGraphView().getEdgeNodeOf(newEgde));
+            SceneReference.setUnsavedChanges(true);
             stage.close();
         }
     }
