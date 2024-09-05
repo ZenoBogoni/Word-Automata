@@ -50,7 +50,9 @@ import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 
+import it.univr.App;
 import it.univr.utils.Constants;
+import it.univr.utils.SceneReference;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
@@ -1327,10 +1329,10 @@ public class SmartGraphPanel<V, E> extends Pane {
      */
     private void loadAndApplyStylesheet(URI cssFile) {
         try {
-            String css = cssFile.toURL().toExternalForm();
+            String css = Constants.GRAPH_DARK;
             getStylesheets().add(css);
             this.getStyleClass().add("graph");
-        } catch (MalformedURLException ex) {
+        } catch (Exception ex) {
             String msg = String.format("Error loading stylesheet from URI = %s", cssFile);
             Logger.getLogger(SmartGraphPanel.class.getName()).log(Level.SEVERE, msg, ex);
         }
@@ -1429,17 +1431,12 @@ public class SmartGraphPanel<V, E> extends Pane {
     /* -------------------------------------------------------------------------- */
 
     public void changeGraphTheme() {
-        String lightMode;
-        try {
-            lightMode = new File(Constants.GRAPH_LIGHT).toURI().toURL().toExternalForm();
-            if (getStylesheets().contains(lightMode)) {
-                getStylesheets().remove(lightMode);
-            } else {
-                getStylesheets().add(lightMode);
-            }
-        } catch (MalformedURLException ex) {
-            String msg = String.format("Error loading stylesheet from URI = %s", Constants.GRAPH_LIGHT);
-            Logger.getLogger(SmartGraphPanel.class.getName()).log(Level.SEVERE, msg, ex);
+        if (App.isDarkMode()) {
+            getStylesheets().addAll(Constants.GRAPH_LIGHT);
+            getStylesheets().removeAll(Constants.GRAPH_DARK);
+        } else {
+            getStylesheets().addAll(Constants.GRAPH_DARK);
+            getStylesheets().removeAll(Constants.GRAPH_LIGHT);
         }
     }
 

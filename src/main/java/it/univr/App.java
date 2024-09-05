@@ -81,6 +81,7 @@ public class App extends Application {
             applyDarkStyleSheet(scene);
         }
         graphView.changeGraphTheme();
+        ;
         isDarkMode = !isDarkMode;
     }
 
