@@ -310,7 +310,7 @@ public class SceneReference {
 
             SceneReference.graphView.update();
         } catch (Exception e) {
-            SceneReference.showErrorPopup("File non compatibile", "Il file:\n" + fileName + "\nnon contiene un grafo al suo interno. Selezionare un file valido");
+            SceneReference.showErrorPopup("File not compatible", fileName + "\ndoes not contain a valid Automata.");
             e.printStackTrace();
         }
     }
