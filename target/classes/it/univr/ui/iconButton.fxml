@@ -4,6 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<fx:root alignment="CENTER" depthTest="DISABLE" ellipsisString="" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" textAlignment="CENTER" type="Button" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER" depthTest="DISABLE" ellipsisString="" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" textAlignment="CENTER" type="Button" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    
 </fx:root>
