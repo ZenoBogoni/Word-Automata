@@ -247,6 +247,10 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
 
         MyEdge edge = checkEdge(e);
 
+        if (!isDeterministic(edge.getOutbound(), newElement)) {
+            return null;
+        }
+
         E oldElement = edge.element;
         edge.element = newElement;
 

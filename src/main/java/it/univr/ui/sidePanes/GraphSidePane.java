@@ -10,6 +10,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 import it.univr.ui.MainPane;
 import it.univr.ui.TestGraphAlgoritm;
 import it.univr.ui.popups.ConfirmPopup;
+import it.univr.ui.popups.ErrorPopup;
 import it.univr.utils.SceneReference;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -269,7 +270,12 @@ public class GraphSidePane extends VBox {
             SceneReference.showErrorPopup("Invalid edge name", "It's not possible to rename an edge with a blank name, please insert a valid name.");
             return;
         }
-        graph.replace(graph.getEdgeById(edgeId), edgeLabelTextField.getText());
+        String succes = graph.replace(graph.getEdgeById(edgeId), edgeLabelTextField.getText());
+        if (succes == null) {
+            SceneReference.showErrorPopup("Edge element already present", "An edge with this element already exist");
+            edgeLabelTextField.setText("");
+            return;
+        }
         graphView.update();
         SceneReference.setUnsavedChanges(true);
     }
