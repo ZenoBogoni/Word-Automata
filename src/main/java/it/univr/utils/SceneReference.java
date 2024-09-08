@@ -295,6 +295,7 @@ public class SceneReference {
             graph.removeVertex(vertex);
         });
         SceneReference.graphView.update();
+        SceneReference.getSolutionPane().clearHistory();
         SceneReference.getFinalVerticesNodes().clear();
         SceneReference.setInitialVertexNode(null);
     }

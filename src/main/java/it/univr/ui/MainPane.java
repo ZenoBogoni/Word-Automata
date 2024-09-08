@@ -409,9 +409,7 @@ public class MainPane extends BorderPane {
             setIsVertexSelected(true);
             selectedVertexNode.addStyleClassLast("selectedVertex");
             graphSidePane.focusVertexField();
-            solutionPane.insertVertexNode(selectedVertexNode);
         }
-
     }
 
     public void setVertexPressed(boolean isVertexPressed) {
