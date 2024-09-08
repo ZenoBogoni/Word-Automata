@@ -18,10 +18,14 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.utils.SceneReference;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 
 public class TestGraphAlgoritm {
 
@@ -166,60 +170,52 @@ public class TestGraphAlgoritm {
     }
 
     private static void colorVertexAfterTime(int milliseconds, MyVertexUnique vertex) {
-        Timer timerClear = new Timer();
-        timerClear.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                SmartGraphVertexNode<String> currentVertexNode = graphView.getVertexNodeOf(vertex.getRealVertex());
-                currentVertexNode.addStyleClass("pathVertex");
-                Platform.runLater(() -> SceneReference.getSolutionPane().insertVertexNode(currentVertexNode));
-                timerClear.cancel(); // Stop the timer
-            }
-        }, milliseconds);
+
+        PauseTransition pause = new PauseTransition(Duration.millis(750));
+        pause.setOnFinished(e -> {
+            SmartGraphVertexNode<String> currentVertexNode = graphView.getVertexNodeOf(vertex.getRealVertex());
+            currentVertexNode.addStyleClass("pathVertex");
+            SceneReference.getSolutionPane().insertVertexNode(currentVertexNode);
+        });
+
+        pause.play();
     }
 
     private static void colorEdgeAfterTime(int milliseconds, Edge<String, String> edge) {
-        Timer timerEdge = new Timer();
-        timerEdge.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Vertex<String> inbound = ((MyEdgeUnique) edge).getInboundUnique().getRealVertex();
-                Vertex<String> outbound = ((MyEdgeUnique) edge).getOutboundUnique().getRealVertex();
-                Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream().filter(edge -> ((MyEdge) edge).getInbound().equals(inbound)).findFirst().orElse(null);
-                SmartGraphEdgeBase<String, String> currentEdgeNode = graphView.getEdgeNodeOf(currentEdge);
-                currentEdgeNode.addStyleClass("pathEdge");
 
-                greedyChoice(((MyEdgeUnique) edge).getInboundUnique());
-                Platform.runLater(() -> SceneReference.getSolutionPane().insertEdgeNode(currentEdgeNode));
-                timerEdge.cancel(); // Stop the timer
-            }
-        }, milliseconds);
+        PauseTransition pause = new PauseTransition(Duration.millis(milliseconds));
+        pause.setOnFinished(e -> {
+            Vertex<String> inbound = ((MyEdgeUnique) edge).getInboundUnique().getRealVertex();
+            Vertex<String> outbound = ((MyEdgeUnique) edge).getOutboundUnique().getRealVertex();
+            Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream().filter(edgeFilter -> ((MyEdge) edgeFilter).getInbound().equals(inbound)).findFirst().orElse(null);
+            SmartGraphEdgeBase<String, String> currentEdgeNode = graphView.getEdgeNodeOf(currentEdge);
+            currentEdgeNode.addStyleClass("pathEdge");
+
+            greedyChoice(((MyEdgeUnique) edge).getInboundUnique());
+            SceneReference.getSolutionPane().insertEdgeNode(currentEdgeNode);
+        });
+
+        pause.play();
     }
 
     private static void clearVertexAfterTime(int milliseconds, MyVertexUnique vertex) {
-        Timer timerClear = new Timer();
-        timerClear.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                clearVertex(vertex);
-                timerClear.cancel(); // Stop the timer
-            }
-        }, milliseconds);
+
+        PauseTransition pause = new PauseTransition(Duration.millis(milliseconds));
+        pause.setOnFinished(e -> {
+            clearVertex(vertex);
+        });
+        pause.play();
     }
 
     private static void clearEdgeAfterTime(int milliseconds, Edge<String, String> edge) {
-        Timer timerClear = new Timer();
-        timerClear.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Vertex<String> inbound = ((MyEdgeUnique) edge).getInboundUnique().getRealVertex();
-                Vertex<String> outbound = ((MyEdgeUnique) edge).getOutboundUnique().getRealVertex();
-                Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream().filter(edge -> ((MyEdge) edge).getInbound().equals(inbound)).findFirst().orElse(null);
-                clearEdge(currentEdge);
-
-                timerClear.cancel(); // Stop the timer
-            }
-        }, milliseconds);
+        PauseTransition pause = new PauseTransition(Duration.millis(milliseconds));
+        pause.setOnFinished(e -> {
+            Vertex<String> inbound = ((MyEdgeUnique) edge).getInboundUnique().getRealVertex();
+            Vertex<String> outbound = ((MyEdgeUnique) edge).getOutboundUnique().getRealVertex();
+            Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream().filter(edgeFilter -> ((MyEdge) edgeFilter).getInbound().equals(inbound)).findFirst().orElse(null);
+            clearEdge(currentEdge);
+        });
+        pause.play();
     }
 
     private static void clearVertex(MyVertexUnique vertex) {

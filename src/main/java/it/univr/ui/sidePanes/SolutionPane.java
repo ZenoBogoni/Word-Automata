@@ -10,6 +10,7 @@ import it.univr.ui.smallComponents.PathEdgeNode;
 import it.univr.ui.smallComponents.PathVertexNode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
