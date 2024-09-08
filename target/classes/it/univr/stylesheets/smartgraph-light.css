@@ -111,3 +111,11 @@ This should help you understand which styles you can apply.
     -fx-stroke-line-cap: round;
     -fx-opacity: 1;
 }
+.arrowHead {
+    -fx-stroke-width: 2;
+    -fx-stroke: #3b454e;  
+    /* -fx-stroke-dash-array: 2 5 2 5; remove for clean lines */
+    -fx-fill: #3b454e; /* important to keep for curved edges */
+    -fx-stroke-line-cap: round;
+    -fx-opacity: 0.8;
+}

@@ -6,7 +6,6 @@ import java.util.HashSet;
 
 import com.brunomnsilva.smartgraph.containers.ContentZoomScrollPane;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
-import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
@@ -17,12 +16,13 @@ import it.univr.ui.popups.EdgePopup;
 import it.univr.ui.popups.VertexPopup;
 import it.univr.ui.sidePanes.GraphSidePane;
 import it.univr.ui.sidePanes.MagicLayoutSidePane;
+import it.univr.ui.sidePanes.SolutionPane;
+import it.univr.ui.smallComponents.IconButton;
 import it.univr.utils.SceneReference;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -30,9 +30,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 
 public class MainPane extends BorderPane {
@@ -41,7 +44,6 @@ public class MainPane extends BorderPane {
     private static boolean isLinkingPhase = false; // are we trying to link vertices?
     private boolean isSideHidden = false; // is the side panel hidden?
     private boolean isVertexPressed = false; // is a vertex being pressed?
-    private String edgeName;
     private double mouseX;
     private double mouseY;
 
@@ -51,6 +53,8 @@ public class MainPane extends BorderPane {
     private SmartPlacementStrategy initialPlacement = new SmartCircularSortedPlacementStrategy();
     private SmartGraphPanel<String, String> graphView = new SmartGraphPanel<>(graph, initialPlacement);
     private ContentZoomScrollPane graphPane = new ContentZoomScrollPane(graphView);
+    private VBox centerPane = new VBox();
+    private SolutionPane solutionPane = new SolutionPane();
 
     // ANCHOR - Properties
     private SimpleBooleanProperty isVertexSelectedProperty = new SimpleBooleanProperty(false);
@@ -111,7 +115,7 @@ public class MainPane extends BorderPane {
         theme = new CheckMenuItem("Dark Mode");
         autoLayout = new CheckMenuItem("Automatic Layout");
         confirmToApply = new CheckMenuItem("Confirm to apply");
-        clearTextOnClick = new CheckMenuItem("Clear values       on input");
+        clearTextOnClick = new CheckMenuItem("Clear values on input");
 
         exportGraph = new MenuItem("Save Automata");
         importGraph = new MenuItem("Open Automata");
@@ -149,11 +153,13 @@ public class MainPane extends BorderPane {
         SceneReference.setInitialVertexNode(initialVertexNode);
         SceneReference.setFinalVerticesNodes(finalVerticesNodes);
         SceneReference.setIsVertexSelectedProperty(isVertexSelectedProperty);
+        SceneReference.setSolutionPane(solutionPane);
     }
 
     public void initMainPane() {
         magicLayoutSidePane = new MagicLayoutSidePane();
         graphSidePane = new GraphSidePane();
+        SceneReference.setGraphSidePane(graphSidePane);
         initMenuBar();
         initSideMenu();
         graphView.init();
@@ -220,7 +226,10 @@ public class MainPane extends BorderPane {
     }
 
     private void initGraph() {
-        this.setCenter(graphPane);
+        centerPane.getChildren().addAll(graphPane, solutionPane);
+        VBox.setVgrow(graphPane, Priority.ALWAYS);
+        // graphPane.setBackground(Background.fill(Color.RED));
+        this.setCenter(centerPane);
         graphPane.setPadding(new Insets(10));
         graphView.setOnMouseClicked(e -> {
             if (e.getButton().equals(MouseButton.PRIMARY) && e.getClickCount() == 2 && selectedVertexNode == null) {
@@ -385,6 +394,7 @@ public class MainPane extends BorderPane {
                 }
             } else {
                 if (selectedVertexNode.equals(vertex)) {
+                    graphSidePane.focusVertexField();
                     return;
                 }
                 selectedVertexNode.removeStyleClass("selectedVertex");
@@ -392,11 +402,14 @@ public class MainPane extends BorderPane {
                 selectedVertexNode = vertex;
                 isVertexSelectedProperty.set(true);
                 selectedVertexNode.addStyleClassLast("selectedVertex");
+                graphSidePane.focusVertexField();
             }
         } else {
             selectedVertexNode = vertex;
             setIsVertexSelected(true);
             selectedVertexNode.addStyleClassLast("selectedVertex");
+            graphSidePane.focusVertexField();
+            solutionPane.insertVertexNode(selectedVertexNode);
         }
 
     }
@@ -406,7 +419,6 @@ public class MainPane extends BorderPane {
     }
 
     public void setEdgeName(String edgeName) {
-        this.edgeName = edgeName;
     }
 
     public void setIsVertexSelected(boolean bool) {

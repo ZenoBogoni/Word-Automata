@@ -49,11 +49,11 @@ public class App extends Application {
             }
         });
 
-        scene.getStylesheets().add(getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
+        applyDarkStyleSheet(scene);
 
         // Stage initialization
         this.stage.setScene(scene);
-        this.stage.getIcons().add(new Image(getClass().getResource("assets/WordAutomataIcon5.png").toExternalForm()));
+        this.stage.getIcons().add(new Image(getClass().getResource("assets/WordAutomataIcon7.png").toExternalForm()));
         this.stage.titleProperty().bind(SceneReference.getFileNameProperty());
         this.stage.setMinHeight(Constants.HEIGHT);
         this.stage.setMinWidth(Constants.WIDTH);
@@ -91,12 +91,17 @@ public class App extends Application {
 
     public static void applyDarkStyleSheet(Scene scene) {
         scene.getStylesheets().add(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
+        scene.getStylesheets().add(SceneReference.getApp().getClass().getResource("stylesheets/smartgraph-dark.css").toExternalForm());
         scene.getStylesheets().removeAll(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());
+        scene.getStylesheets().removeAll(SceneReference.getApp().getClass().getResource("stylesheets/smartgraph-light.css").toExternalForm());
     }
 
     public static void applyLightStyleSheet(Scene scene) {
         scene.getStylesheets().add(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());
+        scene.getStylesheets().add(SceneReference.getApp().getClass().getResource("stylesheets/smartgraph-light.css").toExternalForm());
         scene.getStylesheets().removeAll(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
+        scene.getStylesheets().removeAll(SceneReference.getApp().getClass().getResource("stylesheets/smartgraph-dark.css").toExternalForm());
+
     }
 
     public static boolean isDarkMode() {

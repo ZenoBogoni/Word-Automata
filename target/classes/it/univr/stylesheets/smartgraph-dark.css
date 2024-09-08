@@ -112,6 +112,20 @@ This should help you understand which styles you can apply.
     -fx-opacity: 1;
 }
 
+.pathLabel {
+    -fx-font: normal 12pt "Arial";
+    -fx-font-smoothing-type: gray;
+    -fx-fill: rgb(23, 25, 27);
+}
+.arrowHead {
+    -fx-stroke-width: 2;
+    -fx-stroke: #81a9c4;  
+    /* -fx-stroke-dash-array: 2 5 2 5; remove for clean lines */
+    -fx-fill: #81a9c4; 
+    -fx-stroke-line-cap: round;
+    -fx-opacity: 0.8;
+}
+
 
 
 

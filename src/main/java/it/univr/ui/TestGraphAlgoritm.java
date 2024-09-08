@@ -7,6 +7,7 @@ import java.util.TimerTask;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList.MyEdge;
+import com.brunomnsilva.smartgraph.graph.DigraphEdgeList.MyVertex;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeListUnique;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeListUnique.MyEdgeUnique;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeListUnique.MyVertexUnique;
@@ -17,6 +18,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.utils.SceneReference;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -37,6 +39,7 @@ public class TestGraphAlgoritm {
     private TextField graphTestWordNameField;
 
     public static void testGraph() {
+        SceneReference.getSolutionPane().clearHistory();
         try {
             initialize();
 
@@ -151,30 +154,31 @@ public class TestGraphAlgoritm {
         Collection<Edge<String, String>> edges = supportGraph.outboundEdgesUnique(vertex);
         Edge<String, String> edgeWithLongestElement = returnEdgeWithLongestElement(edges);
 
-        waitForAndAfterColorVertex(750, vertex);
-        waitForAndAfterClearVertex(2250, vertex);
+        colorVertexAfterTime(750, vertex);
+        clearVertexAfterTime(2250, vertex);
 
         if (edgeWithLongestElement != null) {
 
-            waitForAndAfterColorEdge(1500, edgeWithLongestElement);
-            waitForAndAfterClearEdge(3000, edgeWithLongestElement);
+            colorEdgeAfterTime(1500, edgeWithLongestElement);
+            clearEdgeAfterTime(3000, edgeWithLongestElement);
 
         }
     }
 
-    private static void waitForAndAfterColorVertex(int milliseconds, MyVertexUnique vertex) {
+    private static void colorVertexAfterTime(int milliseconds, MyVertexUnique vertex) {
         Timer timerClear = new Timer();
         timerClear.schedule(new TimerTask() {
             @Override
             public void run() {
                 SmartGraphVertexNode<String> currentVertexNode = graphView.getVertexNodeOf(vertex.getRealVertex());
                 currentVertexNode.addStyleClass("pathVertex");
+                Platform.runLater(() -> SceneReference.getSolutionPane().insertVertexNode(currentVertexNode));
                 timerClear.cancel(); // Stop the timer
             }
         }, milliseconds);
     }
 
-    private static void waitForAndAfterColorEdge(int milliseconds, Edge<String, String> edge) {
+    private static void colorEdgeAfterTime(int milliseconds, Edge<String, String> edge) {
         Timer timerEdge = new Timer();
         timerEdge.schedule(new TimerTask() {
             @Override
@@ -186,12 +190,13 @@ public class TestGraphAlgoritm {
                 currentEdgeNode.addStyleClass("pathEdge");
 
                 greedyChoice(((MyEdgeUnique) edge).getInboundUnique());
+                Platform.runLater(() -> SceneReference.getSolutionPane().insertEdgeNode(currentEdgeNode));
                 timerEdge.cancel(); // Stop the timer
             }
         }, milliseconds);
     }
 
-    private static void waitForAndAfterClearVertex(int milliseconds, MyVertexUnique vertex) {
+    private static void clearVertexAfterTime(int milliseconds, MyVertexUnique vertex) {
         Timer timerClear = new Timer();
         timerClear.schedule(new TimerTask() {
             @Override
@@ -202,7 +207,7 @@ public class TestGraphAlgoritm {
         }, milliseconds);
     }
 
-    private static void waitForAndAfterClearEdge(int milliseconds, Edge<String, String> edge) {
+    private static void clearEdgeAfterTime(int milliseconds, Edge<String, String> edge) {
         Timer timerClear = new Timer();
         timerClear.schedule(new TimerTask() {
             @Override

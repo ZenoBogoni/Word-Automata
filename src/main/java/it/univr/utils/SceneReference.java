@@ -15,6 +15,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import it.univr.App;
 import it.univr.ui.MainPane;
 import it.univr.ui.popups.ErrorPopup;
+import it.univr.ui.sidePanes.GraphSidePane;
+import it.univr.ui.sidePanes.SolutionPane;
 import javafx.application.Application;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -40,6 +42,8 @@ public class SceneReference {
     private static SmartGraphVertexNode<String> initialVertexNode;
     private static HashSet<SmartGraphVertexNode<String>> finalVerticesNodes;
     private static SmartGraphEdgeBase<String, String> selectedEdge;
+    private static SolutionPane solutionPane;
+    private static GraphSidePane graphSidePane;
 
     // Properties
     private static SimpleBooleanProperty isVertexSelectedProperty;
@@ -127,6 +131,10 @@ public class SceneReference {
         return app;
     }
 
+    public static SolutionPane getSolutionPane() {
+        return solutionPane;
+    }
+
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Setters */
     /* -------------------------------------------------------------------------- */
@@ -200,12 +208,14 @@ public class SceneReference {
                 SceneReference.selectedEdge = selectedEdge;
                 SceneReference.selectedEdge.addStyleClass("selectedEdge");
                 isEdgeSelectedProperty.set(true);
+                graphSidePane.focusEdgeField();
             }
         } else {
             if (selectedEdge != null) {
                 SceneReference.selectedEdge = selectedEdge;
                 SceneReference.selectedEdge.addStyleClass("selectedEdge");
                 isEdgeSelectedProperty.set(true);
+                graphSidePane.focusEdgeField();
             }
         }
     }
@@ -224,6 +234,14 @@ public class SceneReference {
 
     public static void setApp(Application app) {
         SceneReference.app = app;
+    }
+
+    public static void setSolutionPane(SolutionPane solutionPane) {
+        SceneReference.solutionPane = solutionPane;
+    }
+
+    public static void setGraphSidePane(GraphSidePane graphSidePane) {
+        SceneReference.graphSidePane = graphSidePane;
     }
 
     /* -------------------------------------------------------------------------- */

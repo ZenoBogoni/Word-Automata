@@ -65,20 +65,6 @@ public class GraphSidePane extends VBox {
     }
 
     public void initialize() {
-        testWordTextField.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
-        testWordTextField.setAlignment(Pos.CENTER);
-        testWordButton.setOnAction(e -> {
-            if (!initialvertexSetProperty.get()) {
-                SceneReference.showErrorPopup("Initial vertex not set", "Initial vertex not set, please set an initial vertex to start the testing from.");
-            } else if (SceneReference.getFinalVerticesNodes().size() == 0) {
-                SceneReference.showErrorPopup("Final vertex not set", "Final vertex not set, please select at least one final vertex.");
-            } else if (testWordTextField.getText().equals("")) {
-                SceneReference.showErrorPopup("Invalid testing word", "It's not possible to test the automata with an empty testing word, please insert a valid testing word.");
-            } else {
-                SceneReference.setTestWord(testWordTextField.getText());
-                TestGraphAlgoritm.testGraph();
-            }
-        });
 
         // disable when vertex is not selected
         initialNodeRadioButton.setDisable(true);
@@ -200,13 +186,13 @@ public class GraphSidePane extends VBox {
         edgeLabelTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 edgeId = SceneReference.getSelectedEdge().getUnderlyingEdge().getId();
-            } else if (!confirmToApplyProperty.get()) {
+            } else if (!confirmToApplyProperty.get() && !edgeLabelTextField.getText().equals(SceneReference.getSelectedEdge().getAttachedLabel().getText())) {
                 updateEdgeName();
             }
         });
 
         edgeLabelTextField.setOnAction(e -> {
-            if (confirmToApplyProperty.get()) {
+            if (confirmToApplyProperty.get() && !edgeLabelTextField.getText().equals(SceneReference.getSelectedEdge().getAttachedLabel().getText())) {
                 updateEdgeName();
             } else {
                 edgeLabelTextField.getParent().requestFocus();
@@ -223,6 +209,23 @@ public class GraphSidePane extends VBox {
             SceneReference.setUnsavedChanges(true);
         });
 
+        // Automata testing
+        testWordTextField.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
+        testWordTextField.setAlignment(Pos.CENTER);
+        testWordButton.setOnAction(e -> {
+            if (!initialvertexSetProperty.get()) {
+                SceneReference.showErrorPopup("Initial vertex not set", "Initial vertex not set, please set an initial vertex to start the testing from.");
+            } else if (SceneReference.getFinalVerticesNodes().size() == 0) {
+                SceneReference.showErrorPopup("Final vertex not set", "Final vertex not set, please select at least one final vertex.");
+            } else if (testWordTextField.getText().equals("")) {
+                SceneReference.showErrorPopup("Invalid testing word", "It's not possible to test the automata with an empty testing word, please insert a valid testing word.");
+            } else {
+                SceneReference.setTestWord(testWordTextField.getText());
+                TestGraphAlgoritm.testGraph();
+            }
+        });
+
+        // delete automata
         destroyButton.setOnAction(e -> {
             SceneReference.createModal(new ConfirmPopup(
                     "Are you sure you want to destroy this Automata?",
@@ -259,7 +262,7 @@ public class GraphSidePane extends VBox {
             return;
         }
         graphView.updateAndWait();
-        mainPane.setSelectedVertexNode(graphView.getVertexNodeOf(newVertex));
+        // mainPane.setSelectedVertexNode(graphView.getVertexNodeOf(newVertex));
         lastVertexName = new String(newVertex.element());
         SceneReference.setUnsavedChanges(true);
     }
@@ -272,11 +275,21 @@ public class GraphSidePane extends VBox {
         }
         String succes = graph.replace(graph.getEdgeById(edgeId), edgeLabelTextField.getText());
         if (succes == null) {
-            SceneReference.showErrorPopup("Edge element already present", "An edge with this element already exist");
+            SceneReference.showErrorPopup("Invalid edge name", "This vertex already has an outgoing edge with the same name");
             edgeLabelTextField.setText("");
             return;
         }
         graphView.update();
         SceneReference.setUnsavedChanges(true);
+    }
+
+    public void focusEdgeField() {
+        edgeLabelTextField.requestFocus();
+        edgeLabelTextField.selectAll();
+    }
+
+    public void focusVertexField() {
+        vertexLabelTextField.requestFocus();
+        vertexLabelTextField.selectAll();
     }
 }

@@ -1,9 +1,10 @@
-package it.univr.ui;
+package it.univr.ui.smallComponents;
 
 import java.io.IOException;
 
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import it.univr.ui.MainPane;
 import it.univr.utils.SceneReference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,7 +36,7 @@ public class IconButton extends Button {
     }
 
     @FXML
-    void initialize() {
+    public void initialize() {
         mainPane = SceneReference.getMainPane();
 
         this.getStyleClass().clear(); // clear default button style
@@ -60,7 +61,7 @@ public class IconButton extends Button {
         });
     }
 
-    void setSelectedtab() {
+    public void setSelectedtab() {
         selectedTab = this;
         selectedTab.getStyleClass().add("selected-tab");
         selectedTab.getStyleClass().removeAll("tab");
@@ -68,14 +69,14 @@ public class IconButton extends Button {
         selectedTab.getIcon().getStyleClass().removeAll("icon");
     }
 
-    void removeTabSelection() {
+    public void removeTabSelection() {
         selectedTab.getStyleClass().removeAll("selected-tab");
         selectedTab.getStyleClass().add("tab");
         selectedTab.getIcon().getStyleClass().removeAll("selected-icon");
         selectedTab.getIcon().getStyleClass().add("icon");
     }
 
-    FontIcon getIcon() {
+    public FontIcon getIcon() {
         return icon;
     }
 }
