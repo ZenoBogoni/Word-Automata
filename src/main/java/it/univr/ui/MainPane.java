@@ -13,6 +13,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartPlacementStrategy;
 
 import it.univr.App;
 import it.univr.ui.popups.EdgePopup;
+import it.univr.ui.popups.TutorialPopup;
 import it.univr.ui.popups.VertexPopup;
 import it.univr.ui.sidePanes.GraphSidePane;
 import it.univr.ui.sidePanes.MagicLayoutSidePane;
@@ -106,6 +107,8 @@ public class MainPane extends BorderPane {
     private MenuItem exportGraph;
     @FXML
     private MenuItem importGraph;
+    @FXML
+    private MenuItem tutorial;
 
     private void initializeFXMLVariables() {
         file = new Menu("File");
@@ -117,6 +120,7 @@ public class MainPane extends BorderPane {
         confirmToApply = new CheckMenuItem("Confirm to apply");
         clearTextOnClick = new CheckMenuItem("Clear values on input");
 
+        tutorial = new MenuItem("Tutorial");
         exportGraph = new MenuItem("Save Automata");
         importGraph = new MenuItem("Open Automata");
     }
@@ -173,6 +177,12 @@ public class MainPane extends BorderPane {
 
         // file managment
         file.getItems().addAll(importGraph, exportGraph);
+
+        help.getItems().addAll(tutorial);
+
+        tutorial.setOnAction(e -> {
+            tutorialPopup();
+        });
 
         importGraph.setOnAction(e -> {
             FileChooser fileChooser = SceneReference.initFileChooser();
@@ -330,11 +340,15 @@ public class MainPane extends BorderPane {
     }
 
     /* -------------------------------------------------------------------------- */
-    /* /// ANCHOR - Vertex popup */
+    /* /// ANCHOR - Popups */
     /* -------------------------------------------------------------------------- */
 
     private void vertexNamePopup() {
         SceneReference.createModal(new VertexPopup());
+    }
+
+    private void tutorialPopup() {
+        SceneReference.createModal(new TutorialPopup());
     }
 
     /* -------------------------------------------------------------------------- */

@@ -45,4 +45,8 @@ public class PathVertexNode extends AnchorPane {
             vertexCircle.getStyleClass().add("initialVertex");
         }
     }
+
+    public Circle circle() {
+        return vertexCircle;
+    }
 }
