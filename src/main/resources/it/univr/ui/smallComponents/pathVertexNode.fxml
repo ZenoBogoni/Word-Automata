@@ -5,16 +5,12 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Text?>
 
-<fx:root maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" type="AnchorPane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root focusTraversable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="81.0" type="AnchorPane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Circle fx:id="vertexCircle" fill="DODGERBLUE" layoutX="30.0" layoutY="30.0" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Circle fx:id="vertexCircle" fill="DODGERBLUE" focusTraversable="true" layoutX="30.0" layoutY="30.0" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="20.0" AnchorPane.topAnchor="0.0" />
+      <VBox alignment="BOTTOM_CENTER" focusTraversable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
          <children>
-            <AnchorPane maxWidth="-Infinity" minWidth="0.0" style="-fx-background-color: #ffffff32; -fx-background-radius: 2;">
-               <children>
-                  <Text fx:id="vertexText" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0" />
-               </children>
-            </AnchorPane>
+            <Text fx:id="vertexText" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="text" textAlignment="CENTER" />
          </children>
       </VBox>
    </children>

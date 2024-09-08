@@ -8,9 +8,11 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.ui.smallComponents.PathEdgeNode;
 import it.univr.ui.smallComponents.PathVertexNode;
+import it.univr.utils.SceneReference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -53,15 +55,17 @@ public class SolutionPane extends VBox {
         boolean isInitial = ((MyVertex) vertexNode.getUnderlyingVertex()).isInitial();
         boolean isFinal = ((MyVertex) vertexNode.getUnderlyingVertex()).isFinal();
 
-        PathVertexNode vertex = new PathVertexNode(label, isInitial, isFinal);
-
+        PathVertexNode vertex = new PathVertexNode(label, isInitial, isFinal, vertexNode);
         nodesHBox.getChildren().add(vertex);
     }
 
     public void insertEdgeNode(SmartGraphEdgeBase<String, String> edgeNode) {
         String label = edgeNode.getAttachedLabel().getText();
-        PathEdgeNode edge = new PathEdgeNode(label);
+        PathEdgeNode edge = new PathEdgeNode(label, edgeNode);
         nodesHBox.getChildren().add(edge);
+        edge.setOnMouseClicked(e -> {
+            SceneReference.setSelectedEdge(edgeNode);
+        });
     }
 
     public void clearHistory() {

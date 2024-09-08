@@ -2,6 +2,9 @@ package it.univr.ui.smallComponents;
 
 import java.io.IOException;
 
+import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
+
+import it.univr.utils.SceneReference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
@@ -16,11 +19,13 @@ public class PathVertexNode extends AnchorPane {
 
     private boolean isFinal, isInitial;
     private String label;
+    private SmartGraphVertexNode<String> vertexNode;
 
-    public PathVertexNode(String label, boolean isInitial, boolean isFinal) {
+    public PathVertexNode(String label, boolean isInitial, boolean isFinal, SmartGraphVertexNode<String> vertexNode) {
         this.isFinal = isFinal;
         this.isInitial = isInitial;
         this.label = label;
+        this.vertexNode = vertexNode;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("pathVertexNode.fxml"));
         fxmlLoader.setRoot(this);
@@ -33,9 +38,11 @@ public class PathVertexNode extends AnchorPane {
         }
     }
 
-    public void initialize() {
+    public PathVertexNode(String label, boolean isInitial, boolean isFinal) {
+        this(label, isInitial, isFinal, null);
+    }
 
-        vertexText.getStyleClass().add("pathLabel");
+    public void initialize() {
         vertexText.setText(label);
 
         vertexCircle.getStyleClass().add("vertex");
@@ -44,6 +51,11 @@ public class PathVertexNode extends AnchorPane {
         } else if (isInitial) {
             vertexCircle.getStyleClass().add("initialVertex");
         }
+
+        vertexCircle.setOnMouseClicked(e -> {
+            if (vertexNode != null)
+                SceneReference.getMainPane().setSelectedVertexNode(vertexNode);
+        });
     }
 
     public Circle circle() {

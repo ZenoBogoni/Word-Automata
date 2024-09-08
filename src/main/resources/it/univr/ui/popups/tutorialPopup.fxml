@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -8,30 +9,141 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="popup-window" type="AnchorPane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root minHeight="-Infinity" minWidth="-Infinity" styleClass="popup-window" type="AnchorPane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="TOP_CENTER" layoutX="208.0" layoutY="137.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+      <VBox alignment="TOP_CENTER" layoutX="208.0" layoutY="137.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Automata rules">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" Word Automata Tutorial">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Text>
             <HBox fx:id="nodesImagesBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
                <VBox.margin>
-                  <Insets top="20.0" />
+                  <Insets />
                </VBox.margin>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="3.0">
                <children>
-                  <TextFlow fx:id="rules" prefHeight="100.0" prefWidth="583.0" />
+                  <TextFlow fx:id="rules" prefWidth="583.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Word Automata ">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="lets you define a finite state machine, once defined you can test a word and see if it can be resolved by the automata, if it can find a valid path it will be shown step by step on the bottom part of the screen.">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin></TextFlow>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Here are the rules:">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="3.0" />
+                     </VBox.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- All vertices must have a unique name">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- From a vertex A to a vertex B there can only be one edge">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- All the edges coming from one vertex must have a unique name">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- The automata must have ONE starting node set">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- The automata must have at least one final vertex set(multiple can be set)">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- Vertices and edges must have a non-blank name">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- The names of the vertices are used to identify the states">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- The names of the edges are used to find a path based on the user's test word">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
                </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            </VBox>
+            <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="3.0">
                <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="How to define an automata:">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="3.0" />
+                     </VBox.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- Double click on the empty space to create a vertex">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- Click on a vertex to select it">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- ">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select two vertices with CTRL pressed to create an edge, from the first vertex selected to the last one" wrappingWidth="600.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- Click on an edge to select it">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- While selected, vertices and edges can be modified and deleted">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="- Insert a test word and press Enter or the &quot;Test Automata&quot; button to test the automata">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
                   <TextFlow fx:id="tutorial" prefHeight="100.0" prefWidth="608.0" />
                </children>
-            </HBox>
+            </VBox>
+            <Button fx:id="closeButton" mnemonicParsing="false" styleClass="popup-button" text="Understood!" />
          </children>
       </VBox>
    </children>

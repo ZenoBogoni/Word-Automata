@@ -2,6 +2,9 @@ package it.univr.ui.smallComponents;
 
 import java.io.IOException;
 
+import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeBase;
+
+import it.univr.utils.SceneReference;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,9 +27,11 @@ public class PathEdgeNode extends StackPane {
 
     private String label;
     private double size = 10;
+    private SmartGraphEdgeBase<String, String> edgeNode;
 
-    public PathEdgeNode(String label) {
+    public PathEdgeNode(String label, SmartGraphEdgeBase<String, String> edgeNode) {
         this.label = label;
+        this.edgeNode = edgeNode;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("pathEdgeNode.fxml"));
         fxmlLoader.setRoot(this);
@@ -41,7 +46,7 @@ public class PathEdgeNode extends StackPane {
 
     public void initialize() {
         edgeText.setText(label);
-        edgeLine.endXProperty().bind(Bindings.subtract(widthProperty(), 6));
+        edgeLine.endXProperty().bind(Bindings.subtract(widthProperty(), 10));
         arrowHead.getPoints().clear();
         double x = edgeLine.getEndX();
         double y = edgeLine.getEndY();
@@ -51,6 +56,15 @@ public class PathEdgeNode extends StackPane {
                 x - size, y + size / 2);
         edgeLine.getStyleClass().add("edge");
         arrowHead.getStyleClass().add("arrowHead");
+        edgeText.hoverProperty().addListener((obs, o, n) -> {
+            if (n) {
+                edgeLine.setStyle("-fx-stroke-width: 4;");
+                arrowHead.setStyle("-fx-stroke-width: 4;");
+            } else {
+                edgeLine.setStyle(null);
+                arrowHead.setStyle(null);
+            }
+        });
     }
 
 }

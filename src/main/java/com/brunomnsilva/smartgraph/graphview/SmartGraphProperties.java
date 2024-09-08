@@ -278,10 +278,10 @@ public class SmartGraphProperties {
      * 
      * @param args not used
      */
-    public static void main(String[] args) {
-        SmartGraphProperties props = new SmartGraphProperties();
+    // public static void main(String[] args) {
+    // SmartGraphProperties props = new SmartGraphProperties();
 
-        System.out.println("Prop vertex radius: " + props.getVertexRadius());
-        System.out.println("Prop vertex shape: " + props.getVertexShape());
-    }
+    // System.out.println("Prop vertex radius: " + props.getVertexRadius());
+    // System.out.println("Prop vertex shape: " + props.getVertexShape());
+    // }
 }

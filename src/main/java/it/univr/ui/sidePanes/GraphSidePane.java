@@ -212,18 +212,8 @@ public class GraphSidePane extends VBox {
         // Automata testing
         testWordTextField.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
         testWordTextField.setAlignment(Pos.CENTER);
-        testWordButton.setOnAction(e -> {
-            if (!initialvertexSetProperty.get()) {
-                SceneReference.showErrorPopup("Initial vertex not set", "Initial vertex not set, please set an initial vertex to start the testing from.");
-            } else if (SceneReference.getFinalVerticesNodes().size() == 0) {
-                SceneReference.showErrorPopup("Final vertex not set", "Final vertex not set, please select at least one final vertex.");
-            } else if (testWordTextField.getText().equals("")) {
-                SceneReference.showErrorPopup("Invalid testing word", "It's not possible to test the automata with an empty testing word, please insert a valid testing word.");
-            } else {
-                SceneReference.setTestWord(testWordTextField.getText());
-                TestGraphAlgoritm.testGraph();
-            }
-        });
+        testWordButton.setOnAction(e -> testGraph());
+        testWordTextField.setOnAction(e -> testGraph());
 
         // delete automata
         destroyButton.setOnAction(e -> {
@@ -281,6 +271,19 @@ public class GraphSidePane extends VBox {
         }
         graphView.update();
         SceneReference.setUnsavedChanges(true);
+    }
+
+    private void testGraph() {
+        if (!initialvertexSetProperty.get()) {
+            SceneReference.showErrorPopup("Initial vertex not set", "Initial vertex not set, please set an initial vertex to start the testing from.");
+        } else if (SceneReference.getFinalVerticesNodes().size() == 0) {
+            SceneReference.showErrorPopup("Final vertex not set", "Final vertex not set, please select at least one final vertex.");
+        } else if (testWordTextField.getText().equals("")) {
+            SceneReference.showErrorPopup("Invalid testing word", "It's not possible to test the automata with an empty testing word, please insert a valid testing word.");
+        } else {
+            SceneReference.setTestWord(testWordTextField.getText());
+            TestGraphAlgoritm.testGraph();
+        }
     }
 
     public void focusEdgeField() {
