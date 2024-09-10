@@ -1,0 +1,142 @@
+@startuml
+package ui.panes {
+
+    
+    class MagicLayoutSidePane {
+        - TextField repulsiveForceTextField
+        - TextField attractiveForceTextField
+        - TextField attractionScaleTextField
+        - TextField accellerationTextField
+        - Slider repulsiveForceSlider
+        - Slider attractiveForceSlider
+        - Slider attractionScaleSlider
+        - Slider accellerationSlider
+        - Button applyButton
+        - CheckBox autoLayoutCheckBox
+        - final double defaultRepulsiveForce
+        - final double defaultAttractiveForce
+        - final double defaultAttractionScale
+        - final double defaultAccelleration
+        - SimpleDoubleProperty repulsiveForce
+        - SimpleDoubleProperty attractiveForce
+        - SimpleDoubleProperty attractionScale
+        - SimpleDoubleProperty accelleration
+        - Label applyLabel
+        - ForceDirectedSpringGravityLayoutStrategy<String> springLayout
+        + MagicLayoutSidePane()
+        + void initialize()
+        - void initForce(SimpleDoubleProperty force, Slider slider, TextField textField, double min, double max)
+        - void updateForceValue(DoubleProperty force, TextField textField, double min, double max)
+        - void fadeTextChange(Label label, String newText, double time)
+        + void resetForcesToDefault()
+        + ForceDirectedLayoutStrategy<String> getMagicLayout()
+    } 
+    class SolutionPane {
+        - HBox nodesHBox
+        - ScrollPane nodesScrollPane
+        + SolutionPane()
+        + void initialize()
+        + void insertVertexNode(SmartGraphVertexNode vertexNode)
+        + void insertEdgeNode(SmartGraphEdgeBase edgeNode)
+        + void clearHistory()
+    }
+    class MainPane {
+        - static boolean isLinkingPhase
+        - boolean isSideHidden
+        - boolean isVertexPressed
+        - double mouseX
+        - double mouseY
+        - App app
+        - DigraphEdgeList graph
+        - SmartPlacementStrategy initialPlacement
+        - SmartGraphPanel graphView
+        - ContentZoomScrollPane graphPane
+        - VBox centerPane
+        - SolutionPane solutionPane
+        - SimpleBooleanProperty isVertexSelectedProperty
+        - SimpleBooleanProperty confirmToApplyProperty
+        - SimpleBooleanProperty autoLayoutProperty
+        - SimpleBooleanProperty clearTextOnClickProperty
+        - SimpleBooleanProperty initialVertexSetProperty
+        - IconButton nodeIcon
+        - IconButton magicIcon
+        - MagicLayoutSidePane magicLayoutSidePane
+        - GraphSidePane graphSidePane
+        - SmartGraphVertexNode selectedVertexNode
+        - SmartGraphVertexNode initialVertexNode
+        - HashSet<SmartGraphVertexNode> finalVerticesNodes
+        - MenuBar menuBar
+        - VBox sideMenuStatic
+        - ScrollPane sideMenuHidable
+        - HBox sideMenu
+        - Menu file
+        - Menu options
+        - Menu help
+        - CheckMenuItem theme
+        - CheckMenuItem autoLayout
+        - CheckMenuItem confirmToApply
+        - CheckMenuItem clearTextOnClick
+        - MenuItem exportGraph
+        - MenuItem importGraph
+        - MenuItem tutorial
+        + MainPane(App app)
+        + void initSceneReference()
+        + void initMainPane()
+        - void initMenuBar()
+        - void initGraph()
+        - void initSideMenu()
+        + void hideSidePane(VBox sidePane)
+        + void setSidePane(VBox sidePane)
+        - void edgeNamePopup(SmartGraphVertexNode from, SmartGraphVertexNode to)
+        + void deselectNodes()
+        + void deselectVertex()
+        - void vertexNamePopup()
+        - void tutorialPopup()
+        + SmartGraphVertexNode getSelectedVertexNode()
+        + SmartGraphVertexNode getInitialVertexNode()
+        + HashSet<SmartGraphVertexNode> getFinalVerticesNodes()
+        + boolean isVertexPressed()
+        + DigraphEdgeList getGraph()
+        + double getMouseX()
+        + double getMouseY()
+        + boolean getIsVertexSelected()
+        + boolean isLinkingPhase()
+        + void setSelectedVertexNode(SmartGraphVertexNode vertex)
+        + void setVertexPressed(boolean isVertexPressed)
+        + void setEdgeName(String edgeName)
+        + void setIsVertexSelected(boolean bool)
+        + void setIsLinkingPhase(boolean bool)
+    }
+   class GraphSidePane {
+        - MainPane mainPane
+        - SmartGraphPanel<String, String> graphView
+        - DigraphEdgeList<String, String> graph
+        - SmartGraphVertexNode<String> selectedVertexNode
+        - SimpleBooleanProperty isVertexSelectedProperty
+        - SimpleBooleanProperty confirmToApplyProperty
+        - SimpleBooleanProperty initialvertexSetProperty
+        - SimpleBooleanProperty isEdgeSelectedProperty
+        - String lastVertexName
+        - int edgeId
+        - TextField vertexLabelTextField
+        - TextField edgeLabelTextField
+        - TextField testWordTextField
+        - Button deleteVertexButton
+        - Button deleteEdgeButton
+        - Button testWordButton
+        - Button destroyButton
+        - RadioButton initialNodeRadioButton
+        - RadioButton finalNodeRadioButton
+        - Text vertexLabel
+        - Text edgeLabel
+        + GraphSidePane()
+        + void initialize()
+        - void updateRadioButtons()
+        - void updateVertexName()
+        - void updateEdgeName()
+        - void testGraph()
+        + void focusEdgeField()
+        + void focusVertexField()
+    }
+}
+@enduml

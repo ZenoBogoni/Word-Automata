@@ -1,4 +1,4 @@
-package it.univr.ui;
+package it.univr.ui.panes;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,9 +15,6 @@ import it.univr.App;
 import it.univr.ui.popups.EdgePopup;
 import it.univr.ui.popups.TutorialPopup;
 import it.univr.ui.popups.VertexPopup;
-import it.univr.ui.sidePanes.GraphSidePane;
-import it.univr.ui.sidePanes.MagicLayoutSidePane;
-import it.univr.ui.sidePanes.SolutionPane;
 import it.univr.ui.smallComponents.IconButton;
 import it.univr.utils.SceneReference;
 import javafx.beans.property.SimpleBooleanProperty;

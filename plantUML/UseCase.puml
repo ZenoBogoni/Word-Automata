@@ -1,0 +1,28 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+rectangle WordAutomata {
+    usecase "aggiung stato" as UCVAdd
+    usecase "aggiungi transizione" as UCEAdd
+    user -- (carica / importa automa)
+    user -- (salva / esporta automa) 
+    user -- (cambia tema)
+    user -- (visualizza regole / tutorial)
+    usecase "modifica automa" as UCMod
+    usecase "modifica stato" as UCVMod
+    usecase "modifica transizione" as UCEMod
+    usecase "inserisci parola test" as UCTW
+    usecase "calcola percorso" as UCCP
+    usecase "modifica layout" as UCLMod
+}
+user -- UCMod
+user -- UCCP
+user -- UCLMod
+UCMod <-. UCVMod : <<extend>>
+UCMod <-. UCEMod : <<extend>>
+UCMod <-. UCVAdd : <<extend>>
+UCMod <. UCEAdd : <<extend>>
+UCCP .-> UCTW : <<include>>
+
+@enduml

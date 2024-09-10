@@ -37,10 +37,10 @@ public class TutorialPopup extends AnchorPane {
         closeButton.setOnAction(e -> {
             ((Stage) getScene().getWindow()).close();
         });
-        initVertexImages();
+        vertexLegend();
     }
 
-    private void initVertexImages() {
+    private void vertexLegend() {
         nodesImagesBox.getChildren().addAll(new PathVertexNode("Initial", true, false));
         nodesImagesBox.getChildren().addAll(new PathVertexNode("Normal", false, false));
         PathVertexNode vertex = new PathVertexNode("Selected", false, false);

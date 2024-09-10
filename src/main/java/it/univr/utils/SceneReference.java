@@ -13,10 +13,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import it.univr.App;
-import it.univr.ui.MainPane;
+import it.univr.ui.panes.GraphSidePane;
+import it.univr.ui.panes.MainPane;
+import it.univr.ui.panes.SolutionPane;
 import it.univr.ui.popups.ErrorPopup;
-import it.univr.ui.sidePanes.GraphSidePane;
-import it.univr.ui.sidePanes.SolutionPane;
 import javafx.application.Application;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;

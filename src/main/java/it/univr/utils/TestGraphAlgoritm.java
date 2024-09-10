@@ -1,4 +1,4 @@
-package it.univr.ui;
+package it.univr.utils;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -17,7 +17,6 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeBase;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
-import it.univr.utils.SceneReference;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;

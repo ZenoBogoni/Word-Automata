@@ -1,0 +1,43 @@
+@startuml
+package ui.smallComponents {
+    
+    class PathEdgeNode {
+        - Text edgeText
+        - Line edgeLine
+        - HBox textHBox
+        - Polygon arrowHead
+        - String label
+        - double size
+        - edgeNode
+
+        + PathEdgeNode(String label, edgeNode)
+        + void initialize()
+    } 
+    class IconButton {
+        - static IconButton selectedTab
+        - MainPane mainPane
+        - VBox sidePane
+        - FontIcon icon
+
+        + IconButton(String iconName, VBox sidePane)
+        + void initialize()
+        + void setSelectedtab()
+        + void removeTabSelection()
+        + FontIcon getIcon()
+    }
+    class PathVertexNode {
+        - Circle vertexCircle
+        - Text vertexText
+        - boolean isFinal
+        - boolean isInitial
+        - String label
+        - SmartGraphVertexNode<String> vertexNode
+
+        + PathVertexNode(String label, boolean isInitial, boolean isFinal, SmartGraphVertexNode<String> vertexNode)
+        + PathVertexNode(String label, boolean isInitial, boolean isFinal)
+        + void initialize()
+        + Circle circle()
+    }
+
+}
+@enduml

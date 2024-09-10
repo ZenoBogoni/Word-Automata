@@ -1,0 +1,76 @@
+@startuml
+
+package ui.popups {
+   
+    class VertexPopup {
+        - Stage stage
+        - static DigraphEdgeList graph
+        - static SmartGraphPanel graphView
+        - String vertexName
+        - static int count
+        - static SimpleBooleanProperty initialVertexSetProperty
+        - Button cancelButton
+        - Button submitButton
+        - TextField vertexNameField
+        - CheckBox initialVertexCheckBox
+        - CheckBox finalVertexCheckBox
+        - Text errorText
+        + VertexPopup()
+        + initialize()
+        - checkName()
+        - updateSpecialVertices(SmartGraphVertexNode newVertexNode)
+    }
+    class EdgePopup {
+        - Stage stage
+        - MainPane mainPane
+        - SmartGraphVertexNode from
+        - SmartGraphVertexNode to
+        - Button cancelButton
+        - Button submitButton
+        - TextField edgeNameField
+        - Text errorText
+        + EdgePopup(SmartGraphVertexNode from, SmartGraphVertexNode to)
+        + initialize()
+        - checkName()
+    }   
+    class ClosePopup {
+        - Button dontButton
+        - Button cancelButton
+        - Button saveButton
+        + ClosePopup()
+        + initialize()
+    }
+    class ConfirmPopup {
+        - String confirmType
+        - String confirmString
+        - Runnable onConfirm
+        - Text confirmText
+        - Text confirmTypeText
+        - Button confirmButton
+        - Button cancelButton
+        + ConfirmPopup(String confirmType, String confirmString, Runnable onConfirm)
+        + initialize()
+    } 
+    class ErrorPopup {
+        - String errorMsg
+        - String errorType
+        - Stage stage
+        - Text errorText
+        - Text titleText
+        - Button closeButton
+        + ErrorPopup(String errorType, String errorMsg)
+        + initialize()
+    }
+    class TutorialPopup {
+        - HBox nodesImagesBox
+        - TextFlow tutorial
+        - TextFlow rules
+        - Button closeButton
+        + TutorialPopup()
+        + initialize()
+        - vertexLegend()
+    }
+    
+}
+
+@enduml

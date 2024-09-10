@@ -1,0 +1,48 @@
+    @startuml
+    skinparam linetype ortho
+    package it.univr {
+        rectangle Main
+        rectangle App
+        package ui {
+            package panes {
+                rectangle GraphSidePane
+                rectangle MagicLayoutSidePane
+                rectangle MainPane 
+                rectangle SolutionPane
+            } 
+            package smallComponents {
+                rectangle IconButton
+                rectangle PathEdgeNode
+                rectangle PathVertexNode
+            }
+            package popups {
+                rectangle ClosePopup
+                rectangle ConfirmPopup
+                rectangle EdgePopup
+                rectangle ErrorPopup
+                rectangle TutorialPopup
+                rectangle VertexPopup
+            }   
+        }
+        package utils {
+            rectangle Constants 
+            rectangle GraphToFile
+            rectangle SceneReference 
+            rectangle TestGraphAlgorithm
+        }
+    
+        Main .> App
+        App .-> MainPane
+        App -- popups
+        SolutionPane .-> PathEdgeNode
+        SolutionPane .-> PathVertexNode
+        GraphSidePane o--> IconButton
+        ui .> SceneReference
+        TestGraphAlgorithm .> MainPane
+        popups - panes
+ 
+        MainPane o--> MagicLayoutSidePane
+        MainPane o--> GraphSidePane
+        MainPane o--> SolutionPane
+    }
+    @enduml

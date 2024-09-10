@@ -1,0 +1,23 @@
+@startuml
+package it.univr {
+    class Main {
+        +main(args: String[]): void
+    }
+    class App {
+        - Stage stage
+        - Scene scene
+        - static boolean isDarkMode
+        - MainPane mainPane
+        - SmartGraphPanel graphView
+
+        + void start(Stage stage) throws IOException
+        + void changeTheme()
+        + void runApp(String[] args)
+        + static void applyDarkStyleSheet(Scene scene)
+        + static void applyLightStyleSheet(Scene scene)
+        + static boolean isDarkMode()
+    }
+    Main --> App : creates instance
+}
+
+@enduml

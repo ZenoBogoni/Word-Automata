@@ -1,0 +1,120 @@
+@startuml
+
+package utils {
+
+    class GraphToFile {
+        - Collection vertexList
+        - Collection edgeList
+        + Collection getEdgeList()
+        + Collection getVertexList()
+        + void setEdgeList(Collection edgeList)
+        + void setVertexList(Collection vertexList)
+    }
+    class Constants {
+        + static final int HEIGHT
+        + static final int WIDTH
+        + static final String GRAPH_DARK
+        + static final String GRAPH_LIGHT
+    }
+     
+    class SceneReference {
+        - static boolean isEdgePressed
+        - static boolean unsavedChanges
+        - static Application app
+        - static Stage stage
+        - static MainPane mainPane
+        - static SmartGraphPanel graphView
+        - static DigraphEdgeList graph
+        - static SmartGraphVertexNode initialVertexNode
+        - static HashSet finalVerticesNodes
+        - static SmartGraphEdgeBase selectedEdge
+        - static SolutionPane solutionPane
+        - static GraphSidePane graphSidePane
+        - static SimpleBooleanProperty isVertexSelectedProperty
+        - static SimpleBooleanProperty confirmToApplyProperty
+        - static SimpleBooleanProperty autoLayoutProperty
+        - static SimpleBooleanProperty clearTextOnClickProperty
+        - static SimpleBooleanProperty initialVertexSetProperty
+        - static SimpleBooleanProperty isEdgeSelectedProperty
+        - static SimpleStringProperty fileNameProperty
+        - static String testWord
+        + static MainPane getMainPane()
+        + static String getTestWord()
+        + static SmartGraphPanel getGraphView()
+        + static SmartGraphVertexNode getInitialVertexNode()
+        + static HashSet getFinalVerticesNodes()
+        + static Stage getStage()
+        + static DigraphEdgeList getGraph()
+        + static SimpleBooleanProperty getConfirmToApplyProperty()
+        + static SimpleBooleanProperty getClearTextOnClickProperty()
+        + static SimpleBooleanProperty getAutoLayoutProperty()
+        + static SimpleBooleanProperty getIsVertexSelectedProperty()
+        + static SimpleBooleanProperty getInitialVertexSetProperty()
+        + static SmartGraphEdgeBase getSelectedEdge()
+        + static boolean isEdgePressed()
+        + static SimpleBooleanProperty getIsEdgeSelectedProperty()
+        + static boolean getUnsavedChanges()
+        + static SimpleStringProperty getFileNameProperty()
+        + static Application getApp()
+        + static SolutionPane getSolutionPane()
+        + static void setMainPane(MainPane pane)
+        + static void setTestWord(String word)
+        + static void setInitialVertexNode(SmartGraphVertexNode initialVertexNode)
+        + static void setFinalVerticesNodes(HashSet finalVerticesNodes)
+        + static void setGraphView(SmartGraphPanel graphView)
+        + static void setStage(Stage stage)
+        + static void setGraph(DigraphEdgeList graph)
+        + static void setConfirmToApplyProperty(SimpleBooleanProperty confirmToApplyProperty)
+        + static void setClearTextOnClickProperty(SimpleBooleanProperty clearTextOnClickProperty)
+        + static void setAutoLayoutProperty(SimpleBooleanProperty autoLayoutProperty)
+        + static void setIsVertexSelectedProperty(SimpleBooleanProperty isVertexSelectedProperty)
+        + static void setInitialVertexSetProperty(SimpleBooleanProperty initialVertexSetProperty)
+        + static void setSelectedEdge(SmartGraphEdgeBase selectedEdge)
+        + static void setEdgePressed(boolean bool)
+        + static void setUnsavedChanges(boolean bool)
+        + static void setFileName(String fileName)
+        + static void setApp(Application app)
+        + static void setSolutionPane(SolutionPane solutionPane)
+        + static void setGraphSidePane(GraphSidePane graphSidePane)
+        + static boolean addFinalVertex(SmartGraphVertexNode vertexNode)
+        + static boolean removeFinalVertex(SmartGraphVertexNode vertexNode)
+        + static void deselectEdge()
+        + static boolean isEdgeSelected()
+        + static void createFileFromGraph(DigraphEdgeList graph, String fileName)
+        + static void deleteGraph(DigraphEdgeList graph)
+        + static void createGraphFromFile(String fileName)
+        + static void createModal(Parent root)
+        + static void showErrorPopup(String errorType, String errorMsg)
+        + static FileChooser initFileChooser()
+    }
+    
+    class TestGraphAlgoritm {
+        - static DigraphEdgeList graph
+        - static DigraphEdgeListUnique supportGraph
+        - static SmartGraphPanel graphView
+        - static int numberOfVertices
+        - static String testWord
+        - static int pointer
+        - Button cancelButton
+        - Button submitButton
+        - TextField graphTestWordNameField
+        + static void testGraph()
+        - static void initialize()
+        - static void choosePath(boolean isThereValidPath, MyVertexUnique initialVertexUnique)
+        - static MyVertexUnique creatingVertexUnique(Vertex Vertex)
+        - static boolean createGraphOfAllPossiblePaths(MyVertexUnique currentVertex, int pointerSubString)
+        - static int compareStrings(String firstString, String secondString)
+        - static void greedyChoice(MyVertexUnique vertex)
+        - static void colorVertexAfterTime(int milliseconds, MyVertexUnique vertex)
+        - static void colorEdgeAfterTime(int milliseconds, Edge edge)
+        - static void clearVertexAfterTime(int milliseconds, MyVertexUnique vertex)
+        - static void clearEdgeAfterTime(int milliseconds, Edge edge)
+        - static void clearVertex(MyVertexUnique vertex)
+        - static void clearEdge(Edge edge)
+        - static Edge returnEdgeWithLongestElement(Collection<Edge> edges)
+    }
+   
+}
+
+@enduml
+

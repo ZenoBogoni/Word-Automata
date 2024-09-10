@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
-import it.univr.ui.MainPane;
+import it.univr.ui.panes.MainPane;
 import it.univr.utils.SceneReference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

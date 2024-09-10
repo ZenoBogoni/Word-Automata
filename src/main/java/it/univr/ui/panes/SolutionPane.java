@@ -1,4 +1,4 @@
-package it.univr.ui.sidePanes;
+package it.univr.ui.panes;
 
 import java.io.IOException;
 

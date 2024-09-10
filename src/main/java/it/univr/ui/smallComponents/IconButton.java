@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import it.univr.ui.MainPane;
+import it.univr.ui.panes.MainPane;
 import it.univr.utils.SceneReference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

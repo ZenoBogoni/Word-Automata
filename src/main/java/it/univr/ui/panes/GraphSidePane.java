@@ -1,4 +1,4 @@
-package it.univr.ui.sidePanes;
+package it.univr.ui.panes;
 
 import java.io.IOException;
 
@@ -7,11 +7,10 @@ import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
-import it.univr.ui.MainPane;
-import it.univr.ui.TestGraphAlgoritm;
 import it.univr.ui.popups.ConfirmPopup;
 import it.univr.ui.popups.ErrorPopup;
 import it.univr.utils.SceneReference;
+import it.univr.utils.TestGraphAlgoritm;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
