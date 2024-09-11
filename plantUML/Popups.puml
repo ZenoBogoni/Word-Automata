@@ -1,7 +1,7 @@
 @startuml
 
 package ui.popups {
-   
+   skinparam classAttributeIconSize 0
     class VertexPopup {
         - Stage stage
         - static DigraphEdgeList graph

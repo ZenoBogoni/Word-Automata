@@ -1,0 +1,37 @@
+@startuml
+actor User 
+participant WordAutomata
+
+User -> WordAutomata : aggiungi stato
+activate WordAutomata
+WordAutomata -> VertexPopup ** : show
+
+    User -> VertexPopup : inserito nome stato
+    VertexPopup -> VertexPopup : controllo validità nome
+    VertexPopup --> VertexPopup : risultato
+
+    alt nome valido
+        VertexPopup -> VertexPopup : crea stato
+        VertexPopup --> User : stato creato
+        destroy VertexPopup
+    end
+
+' WordAutomata -> User : popup
+' alt imposta nome stato
+'     alt imposta iniziale
+'         User -> WordAutomata : imposta iniziale
+'         opt stato iniziale non presente 
+'             WordAutomata --> User : impostato iniziale
+'         end
+'     else imposta finale
+'         User -> WordAutomata : imposta finale
+'         WordAutomata --> User : impostato finale
+'     end
+'     User -> WordAutomata : imposta nome
+'     WordAutomata -> WordAutomata : controlla nome
+'     WordAutomata --> WordAutomata : risultato
+'     Al
+   
+' end
+             
+@enduml

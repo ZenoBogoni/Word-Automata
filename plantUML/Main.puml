@@ -1,5 +1,6 @@
 @startuml
 package it.univr {
+    skinparam classAttributeIconSize 0
     class Main {
         +main(args: String[]): void
     }

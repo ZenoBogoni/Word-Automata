@@ -1,5 +1,7 @@
     @startuml
+    left to right direction
     skinparam linetype ortho
+
     package it.univr {
         rectangle Main
         rectangle App
@@ -11,9 +13,9 @@
                 rectangle SolutionPane
             } 
             package smallComponents {
-                rectangle IconButton
                 rectangle PathEdgeNode
                 rectangle PathVertexNode
+                rectangle IconButton
             }
             package popups {
                 rectangle ClosePopup
@@ -23,26 +25,28 @@
                 rectangle TutorialPopup
                 rectangle VertexPopup
             }   
-        }
+        } 
+        
         package utils {
             rectangle Constants 
             rectangle GraphToFile
-            rectangle SceneReference 
             rectangle TestGraphAlgorithm
+            rectangle SceneReference 
         }
-    
-        Main .> App
-        App .-> MainPane
-        App -- popups
-        SolutionPane .-> PathEdgeNode
-        SolutionPane .-> PathVertexNode
-        GraphSidePane o--> IconButton
-        ui .> SceneReference
-        TestGraphAlgorithm .> MainPane
-        popups - panes
- 
-        MainPane o--> MagicLayoutSidePane
-        MainPane o--> GraphSidePane
-        MainPane o--> SolutionPane
+       
+        
+        MainPane *--> GraphSidePane
+        MagicLayoutSidePane <--* MainPane
+        MainPane *----> SolutionPane    
+        PathEdgeNode <----o SolutionPane
+        popups  --- MainPane : shows <
+        PathVertexNode <---o SolutionPane
+        IconButton <---o GraphSidePane
+        Main .--> App
+        App .> MainPane
+        panes .> SceneReference
+        popups .---> SceneReference
+        SolutionPane .> TestGraphAlgorithm
+        GraphToFile .-> MainPane
     }
     @enduml

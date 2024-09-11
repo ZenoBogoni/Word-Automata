@@ -1,7 +1,7 @@
 @startuml
 
 package utils {
-
+skinparam classAttributeIconSize 0
     class GraphToFile {
         - Collection vertexList
         - Collection edgeList

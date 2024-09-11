@@ -1,0 +1,8 @@
+@startuml
+start
+:visualizza EdgePopup;
+repeat
+:inserisci nome transizione;
+repeat while(nome unico fra le transi\n-zioni uscenti dallo stato) is(no) not(sì)
+stop
+@enduml

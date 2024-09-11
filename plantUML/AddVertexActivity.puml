@@ -1,0 +1,18 @@
+@startuml
+start
+:visualizza VertexPopup;
+fork
+    repeat
+        :inserisci nome stato;
+        repeat while(Nome disponibile) is(no) not(sì)
+fork again
+    if (stato iniziale impostato) then (sì)
+    else(no) 
+        :imposta iniziale;
+    endif
+fork again 
+:imposta finale;
+end fork 
+:conferma;
+stop
+@enduml

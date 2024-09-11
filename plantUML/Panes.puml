@@ -1,7 +1,6 @@
 @startuml
 package ui.panes {
-
-    
+skinparam classAttributeIconSize 0
     class MagicLayoutSidePane {
         - TextField repulsiveForceTextField
         - TextField attractiveForceTextField
