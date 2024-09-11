@@ -4,19 +4,24 @@ import java.io.File;
 import java.util.HashSet;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
+import com.brunomnsilva.smartgraph.graph.DigraphEdgeList.MyEdge;
+import com.brunomnsilva.smartgraph.graph.DigraphEdgeListUnique.MyEdgeUnique;
+import com.brunomnsilva.smartgraph.graph.DigraphEdgeListUnique.MyVertexUnique;
+import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeBase;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
-import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import it.univr.App;
-import it.univr.ui.panes.GraphSidePane;
-import it.univr.ui.panes.MainPane;
-import it.univr.ui.panes.SolutionPane;
-import it.univr.ui.popups.ErrorPopup;
+import it.univr.Controller.panes.GraphSidePane;
+import it.univr.Controller.panes.MainPane;
+import it.univr.Controller.panes.SolutionPane;
+import it.univr.Controller.popups.ErrorPopup;
+import it.univr.backend.GraphToFile;
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,6 +32,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 public class SceneReference {
     // java variables
@@ -55,6 +61,9 @@ public class SceneReference {
     private static SimpleStringProperty fileNameProperty = new SimpleStringProperty("Word Automata - unnamed Automata");
 
     private static String testWord;
+
+    private SceneReference() {
+    }
 
     /* -------------------------------------------------------------------------- */
     /* //ANCHOR - Getters */
@@ -345,9 +354,9 @@ public class SceneReference {
 
         // Scene Style
         if (App.isDarkMode()) {
-            App.applyDarkStyleSheet(scene);
+            applyDarkStyleSheet(scene);
         } else {
-            App.applyLightStyleSheet(scene);
+            applyLightStyleSheet(scene);
         }
         stage.initStyle(StageStyle.TRANSPARENT);
         scene.setFill(Color.TRANSPARENT);
@@ -390,4 +399,86 @@ public class SceneReference {
         fileChooser.getExtensionFilters().add(extFilter);
         return fileChooser;
     }
+
+    public static void applyDarkStyleSheet(Scene scene) {
+        scene.getStylesheets().add(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
+        scene.getStylesheets().add(SceneReference.getApp().getClass().getResource("stylesheets/smartgraph-dark.css").toExternalForm());
+        scene.getStylesheets().removeAll(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());
+        scene.getStylesheets().removeAll(SceneReference.getApp().getClass().getResource("stylesheets/smartgraph-light.css").toExternalForm());
+    }
+
+    public static void applyLightStyleSheet(Scene scene) {
+        scene.getStylesheets().add(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());
+        scene.getStylesheets().add(SceneReference.getApp().getClass().getResource("stylesheets/smartgraph-light.css").toExternalForm());
+        scene.getStylesheets().removeAll(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
+        scene.getStylesheets().removeAll(SceneReference.getApp().getClass().getResource("stylesheets/smartgraph-dark.css").toExternalForm());
+
+    }
+
+    public static void colorVertexAfterTime(int milliseconds, MyVertexUnique vertex) {
+
+        SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
+
+        PauseTransition pause = new PauseTransition(Duration.millis(750));
+        pause.setOnFinished(e -> {
+            SmartGraphVertexNode<String> currentVertexNode = graphView.getVertexNodeOf(vertex.getRealVertex());
+            currentVertexNode.addStyleClass("pathVertex");
+            SceneReference.getSolutionPane().insertVertexNode(currentVertexNode);
+        });
+
+        pause.play();
+    }
+
+    public static Edge colorEdgeAfterTime(int milliseconds, Edge<String, String> edge) {
+
+        SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
+        DigraphEdgeList<String, String> graph = SceneReference.getGraph();
+
+        PauseTransition pause = new PauseTransition(Duration.millis(milliseconds));
+        pause.setOnFinished(e -> {
+            Vertex<String> inbound = ((MyEdgeUnique) edge).getInboundUnique().getRealVertex();
+            Vertex<String> outbound = ((MyEdgeUnique) edge).getOutboundUnique().getRealVertex();
+            Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream().filter(edgeFilter -> ((MyEdge) edgeFilter).getInbound().equals(inbound)).findFirst().orElse(null);
+            SmartGraphEdgeBase<String, String> currentEdgeNode = graphView.getEdgeNodeOf(currentEdge);
+            currentEdgeNode.addStyleClass("pathEdge");
+
+            SceneReference.getSolutionPane().insertEdgeNode(currentEdgeNode);
+        });
+
+        pause.play();
+        return edge;
+    }
+
+    public static void clearVertexAfterTime(int milliseconds, MyVertexUnique vertex) {
+
+        PauseTransition pause = new PauseTransition(Duration.millis(milliseconds));
+        pause.setOnFinished(e -> {
+            clearVertex(vertex);
+        });
+        pause.play();
+    }
+
+    public static void clearEdgeAfterTime(int milliseconds, Edge<String, String> edge) {
+
+        DigraphEdgeList<String, String> graph = SceneReference.getGraph();
+        PauseTransition pause = new PauseTransition(Duration.millis(milliseconds));
+        pause.setOnFinished(e -> {
+            Vertex<String> inbound = ((MyEdgeUnique) edge).getInboundUnique().getRealVertex();
+            Vertex<String> outbound = ((MyEdgeUnique) edge).getOutboundUnique().getRealVertex();
+            Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream().filter(edgeFilter -> ((MyEdge) edgeFilter).getInbound().equals(inbound)).findFirst().orElse(null);
+            clearEdge(currentEdge);
+        });
+        pause.play();
+    }
+
+    private static void clearVertex(MyVertexUnique vertex) {
+        SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
+        graphView.getVertexNodeOf(vertex.getRealVertex()).removeStyleClass("pathVertex");
+    }
+
+    private static void clearEdge(Edge edge) {
+        SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
+        graphView.getEdgeNodeOf(edge).removeStyleClass("pathEdge");
+    }
+
 }

@@ -6,8 +6,8 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 
 import atlantafx.base.theme.NordDark;
 import atlantafx.base.theme.NordLight;
-import it.univr.ui.panes.MainPane;
-import it.univr.ui.popups.ClosePopup;
+import it.univr.Controller.panes.MainPane;
+import it.univr.Controller.popups.ClosePopup;
 import it.univr.utils.Constants;
 import it.univr.utils.SceneReference;
 import javafx.application.Application;
@@ -24,9 +24,8 @@ public class App extends Application {
 
     private Stage stage;
     private Scene scene;
-    private static boolean isDarkMode = true;
     private MainPane mainPane;
-    SmartGraphPanel<String, String> graphView;
+    private static boolean isDarkMode = true;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -41,6 +40,8 @@ public class App extends Application {
         mainPane = new MainPane(this);
         mainPane.initSceneReference();
 
+        SceneReference.applyDarkStyleSheet(scene);
+
         this.scene = new Scene(mainPane, Constants.WIDTH, Constants.HEIGHT);
 
         this.scene.setOnKeyPressed(key -> {
@@ -48,8 +49,6 @@ public class App extends Application {
                 this.stage.setFullScreen(!this.stage.isFullScreen());
             }
         });
-
-        applyDarkStyleSheet(scene);
 
         // Stage initialization
         this.stage.setScene(scene);
@@ -69,43 +68,30 @@ public class App extends Application {
         this.stage.show();
 
         mainPane.initMainPane();
+
     }
 
     public void changeTheme() {
-        graphView = SceneReference.getGraphView();
-        if (isDarkMode) {
+        SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
+
+        if (isDarkMode()) {
             Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
-            applyLightStyleSheet(scene);
+            SceneReference.applyLightStyleSheet(scene);
         } else {
             Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
-            applyDarkStyleSheet(scene);
+            SceneReference.applyDarkStyleSheet(scene);
         }
         graphView.changeGraphTheme();
-        ;
-        isDarkMode = !isDarkMode;
-    }
 
-    public void runApp(String[] args) {
-        launch(args);
-    }
-
-    public static void applyDarkStyleSheet(Scene scene) {
-        scene.getStylesheets().add(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
-        scene.getStylesheets().add(SceneReference.getApp().getClass().getResource("stylesheets/smartgraph-dark.css").toExternalForm());
-        scene.getStylesheets().removeAll(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());
-        scene.getStylesheets().removeAll(SceneReference.getApp().getClass().getResource("stylesheets/smartgraph-light.css").toExternalForm());
-    }
-
-    public static void applyLightStyleSheet(Scene scene) {
-        scene.getStylesheets().add(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-light.css").toExternalForm());
-        scene.getStylesheets().add(SceneReference.getApp().getClass().getResource("stylesheets/smartgraph-light.css").toExternalForm());
-        scene.getStylesheets().removeAll(SceneReference.getApp().getClass().getResource("stylesheets/mainPane-dark.css").toExternalForm());
-        scene.getStylesheets().removeAll(SceneReference.getApp().getClass().getResource("stylesheets/smartgraph-dark.css").toExternalForm());
-
+        isDarkMode = !isDarkMode();
     }
 
     public static boolean isDarkMode() {
         return isDarkMode;
+    }
+
+    public void runApp(String[] args) {
+        launch(args);
     }
 
 }
