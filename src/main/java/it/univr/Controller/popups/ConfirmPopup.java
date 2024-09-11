@@ -2,8 +2,6 @@ package it.univr.Controller.popups;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;

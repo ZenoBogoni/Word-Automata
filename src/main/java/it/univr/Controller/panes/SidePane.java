@@ -22,7 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class GraphSidePane extends VBox {
+public class SidePane extends VBox {
     // components
     private MainPane mainPane = SceneReference.getMainPane();
     private SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
@@ -49,7 +49,7 @@ public class GraphSidePane extends VBox {
     @FXML
     private Text vertexLabel, edgeLabel;
 
-    public GraphSidePane() {
+    public SidePane() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("graphSidePane.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import it.univr.App;
-import it.univr.Controller.panes.GraphSidePane;
+import it.univr.Controller.panes.SidePane;
 import it.univr.Controller.panes.MainPane;
 import it.univr.Controller.panes.SolutionPane;
 import it.univr.Controller.popups.ErrorPopup;
@@ -49,7 +49,7 @@ public class SceneReference {
     private static HashSet<SmartGraphVertexNode<String>> finalVerticesNodes;
     private static SmartGraphEdgeBase<String, String> selectedEdge;
     private static SolutionPane solutionPane;
-    private static GraphSidePane graphSidePane;
+    private static SidePane graphSidePane;
 
     // Properties
     private static SimpleBooleanProperty isVertexSelectedProperty;
@@ -249,7 +249,7 @@ public class SceneReference {
         SceneReference.solutionPane = solutionPane;
     }
 
-    public static void setGraphSidePane(GraphSidePane graphSidePane) {
+    public static void setGraphSidePane(SidePane graphSidePane) {
         SceneReference.graphSidePane = graphSidePane;
     }
 

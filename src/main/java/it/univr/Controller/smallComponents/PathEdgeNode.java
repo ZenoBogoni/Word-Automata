@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeBase;
 
-import it.univr.utils.SceneReference;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

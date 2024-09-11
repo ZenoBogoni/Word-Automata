@@ -66,7 +66,7 @@ public class MainPane extends BorderPane {
 
     // ANCHOR - Side Panes
     MagicLayoutSidePane magicLayoutSidePane;
-    GraphSidePane graphSidePane;
+    SidePane graphSidePane;
 
     // Vertex
     private SmartGraphVertexNode<String> selectedVertexNode, initialVertexNode;
@@ -158,7 +158,7 @@ public class MainPane extends BorderPane {
 
     public void initMainPane() {
         magicLayoutSidePane = new MagicLayoutSidePane();
-        graphSidePane = new GraphSidePane();
+        graphSidePane = new SidePane();
         SceneReference.setGraphSidePane(graphSidePane);
         initMenuBar();
         initSideMenu();
