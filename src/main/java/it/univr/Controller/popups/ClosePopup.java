@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 
+import it.univr.backend.GraphSaver;
 import it.univr.utils.SceneReference;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -43,16 +44,16 @@ public class ClosePopup extends AnchorPane {
         });
 
         saveButton.setOnAction(e -> {
-            FileChooser fileChooser = SceneReference.initFileChooser();
+            FileChooser fileChooser = GraphSaver.initFileChooser();
             File file = fileChooser.showSaveDialog(SceneReference.getStage());
             DigraphEdgeList<String, String> graph = SceneReference.getGraph();
 
             if (file != null) {
                 if (file.exists()) {
-                    SceneReference.createFileFromGraph(graph, file.getAbsolutePath());
+                    GraphSaver.createFileFromGraph(graph, file.getAbsolutePath());
                     Platform.exit();
                 } else {
-                    SceneReference.createFileFromGraph(graph, file.getAbsolutePath() + ".json");
+                    GraphSaver.createFileFromGraph(graph, file.getAbsolutePath() + ".json");
                     Platform.exit();
                 }
             }
