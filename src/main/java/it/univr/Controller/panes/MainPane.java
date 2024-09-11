@@ -16,6 +16,7 @@ import it.univr.Controller.popups.EdgePopup;
 import it.univr.Controller.popups.TutorialPopup;
 import it.univr.Controller.popups.VertexPopup;
 import it.univr.Controller.smallComponents.IconButton;
+import it.univr.backend.GraphSaver;
 import it.univr.utils.SceneReference;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -180,29 +181,29 @@ public class MainPane extends BorderPane {
         });
 
         importGraph.setOnAction(e -> {
-            FileChooser fileChooser = SceneReference.initFileChooser();
+            FileChooser fileChooser = GraphSaver.initFileChooser();
 
             File file = fileChooser.showOpenDialog(SceneReference.getStage());
 
             if (file != null) {
-                SceneReference.createGraphFromFile(file.getAbsolutePath());
+                GraphSaver.createGraphFromFile(file.getAbsolutePath());
                 SceneReference.setFileName(file.getName().substring(0, file.getName().lastIndexOf(".") == -1 ? file.getName().length() : file.getName().lastIndexOf(".")));
                 SceneReference.setUnsavedChanges(false);
             }
         });
 
         exportGraph.setOnAction(e -> {
-            FileChooser fileChooser = SceneReference.initFileChooser();
+            FileChooser fileChooser = GraphSaver.initFileChooser();
 
             File file = fileChooser.showSaveDialog(SceneReference.getStage());
 
             if (file != null) {
                 if (file.exists()) {
-                    SceneReference.createFileFromGraph(graph, file.getAbsolutePath());
+                    GraphSaver.createFileFromGraph(graph, file.getAbsolutePath());
                     SceneReference.setFileName(file.getName().substring(0, file.getName().lastIndexOf(".") == -1 ? file.getName().length() : file.getName().lastIndexOf(".")));
                     SceneReference.setUnsavedChanges(false);
                 } else {
-                    SceneReference.createFileFromGraph(graph, file.getAbsolutePath() + ".json");
+                    GraphSaver.createFileFromGraph(graph, file.getAbsolutePath() + ".json");
                     SceneReference.setFileName(file.getName().substring(0, file.getName().lastIndexOf(".") == -1 ? file.getName().length() : file.getName().lastIndexOf(".")));
                     SceneReference.setUnsavedChanges(false);
                 }

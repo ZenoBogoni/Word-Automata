@@ -23,7 +23,6 @@ public class PathFinder {
 
     private static DigraphEdgeListUnique<String, String> supportGraph;
     private static int numberOfVertices;
-    private static int pointer;
 
     @FXML
     private Button cancelButton, submitButton;
@@ -35,7 +34,6 @@ public class PathFinder {
 
         try {
             supportGraph = new DigraphEdgeListUnique<>();
-            pointer = 0;
             numberOfVertices = 0;
 
             MyVertexUnique initialVertexUnique = creatingVertexUnique(SceneReference.getInitialVertexNode().getUnderlyingVertex());
@@ -59,7 +57,7 @@ public class PathFinder {
     }
 
     private static boolean createGraphOfAllPossiblePaths(MyVertexUnique currentVertex, int pointerSubString) {
-
+        int pointer = 0;
         String testWord = SceneReference.getTestWord();
         DigraphEdgeList<String, String> graph = SceneReference.getGraph();
         boolean atLeastOnePathIsGood = false;
@@ -69,7 +67,6 @@ public class PathFinder {
         if (!edges.isEmpty()) {
 
             for (Edge<String, String> edge : edges) {
-                pointer = 0;
 
                 Vertex<String> nextVertex = ((MyEdge) edge).getInbound();
 
@@ -133,6 +130,8 @@ public class PathFinder {
 
     private static void greedyChoice(MyVertexUnique vertex) {
 
+        SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
+        DigraphEdgeList<String, String> graph = SceneReference.getGraph();
         Collection<Edge<String, String>> edges = supportGraph.outboundEdgesUnique(vertex);
         Edge<String, String> edgeWithLongestElement = returnEdgeWithLongestElement(edges);
 
@@ -140,9 +139,6 @@ public class PathFinder {
         SceneReference.clearVertexAfterTime(2250, vertex);
 
         if (edgeWithLongestElement != null) {
-
-            SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
-            DigraphEdgeList<String, String> graph = SceneReference.getGraph();
 
             PauseTransition pause = new PauseTransition(Duration.millis(1500));
             pause.setOnFinished(e -> {

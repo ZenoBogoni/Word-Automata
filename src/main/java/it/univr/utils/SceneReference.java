@@ -287,18 +287,6 @@ public class SceneReference {
         return isEdgeSelectedProperty.get();
     }
 
-    public static void createFileFromGraph(DigraphEdgeList<String, String> graph, String fileName) {
-        GraphToFile graphToFile = new GraphToFile();
-        graphToFile.setVertexList(graph.getMyVertexList());
-        graphToFile.setEdgeList(graph.getMyEdgeList());
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            mapper.writeValue(new File(fileName), graphToFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void deleteGraph(DigraphEdgeList<String, String> graph) {
         graph.vertices().forEach(vertex -> {
             graph.removeVertex(vertex);
@@ -307,40 +295,6 @@ public class SceneReference {
         SceneReference.getSolutionPane().clearHistory();
         SceneReference.getFinalVerticesNodes().clear();
         SceneReference.setInitialVertexNode(null);
-    }
-
-    public static void createGraphFromFile(String fileName) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        GraphToFile graphToFile;
-        try {
-            graphToFile = mapper.readValue(new File(fileName), GraphToFile.class);
-            deleteGraph(graph);
-
-            graphToFile.getVertexList().forEach(vertex -> {
-                Vertex<String> newVertex = SceneReference.graph.insertVertex(vertex.getElement());
-                SceneReference.graphView.updateAndWait();
-                SmartGraphVertexNode<String> newVertexNode = SceneReference.graphView.getVertexNodeOf(newVertex);
-                newVertexNode.setCenterX(vertex.getxPosition());
-                newVertexNode.setCenterY(vertex.getyPosition());
-                if (vertex.isFinalNode()) {
-                    SceneReference.addFinalvertex(newVertexNode);
-                } else if (vertex.isInitialNode()) {
-                    SceneReference.setInitialVertexNode(newVertexNode);
-                }
-            });
-
-            graphToFile.getEdgeList().forEach(edge -> {
-                Vertex<String> inbound = SceneReference.graph.vertexOf(edge.getInbound());
-                Vertex<String> outbound = SceneReference.graph.vertexOf(edge.getOutbound());
-                SceneReference.graph.insertEdge(outbound, inbound, edge.getElement());
-            });
-
-            SceneReference.graphView.update();
-        } catch (Exception e) {
-            SceneReference.showErrorPopup("File not compatible", fileName + "\ndoes not contain a valid Automata.");
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -391,13 +345,6 @@ public class SceneReference {
      */
     public static void showErrorPopup(String errorType, String errorMsg) {
         createModal(new ErrorPopup(errorType, errorMsg));
-    }
-
-    public static FileChooser initFileChooser() {
-        FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
-        fileChooser.getExtensionFilters().add(extFilter);
-        return fileChooser;
     }
 
     public static void applyDarkStyleSheet(Scene scene) {
