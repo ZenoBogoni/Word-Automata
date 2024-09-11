@@ -22,8 +22,7 @@ public class SolutionPane extends VBox {
     private ScrollPane nodesScrollPane;
 
     public SolutionPane() {
-        System.out.println(getClass().getResource("solutionPane.fxml"));
-        FXMLLoader fxmlLoader = new FXMLLoader();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("solutionPane.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 

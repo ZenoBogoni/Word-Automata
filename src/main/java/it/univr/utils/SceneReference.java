@@ -429,26 +429,6 @@ public class SceneReference {
         pause.play();
     }
 
-    public static Edge colorEdgeAfterTime(int milliseconds, Edge<String, String> edge) {
-
-        SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
-        DigraphEdgeList<String, String> graph = SceneReference.getGraph();
-
-        PauseTransition pause = new PauseTransition(Duration.millis(milliseconds));
-        pause.setOnFinished(e -> {
-            Vertex<String> inbound = ((MyEdgeUnique) edge).getInboundUnique().getRealVertex();
-            Vertex<String> outbound = ((MyEdgeUnique) edge).getOutboundUnique().getRealVertex();
-            Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream().filter(edgeFilter -> ((MyEdge) edgeFilter).getInbound().equals(inbound)).findFirst().orElse(null);
-            SmartGraphEdgeBase<String, String> currentEdgeNode = graphView.getEdgeNodeOf(currentEdge);
-            currentEdgeNode.addStyleClass("pathEdge");
-
-            SceneReference.getSolutionPane().insertEdgeNode(currentEdgeNode);
-        });
-
-        pause.play();
-        return edge;
-    }
-
     public static void clearVertexAfterTime(int milliseconds, MyVertexUnique vertex) {
 
         PauseTransition pause = new PauseTransition(Duration.millis(milliseconds));

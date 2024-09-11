@@ -40,8 +40,6 @@ public class App extends Application {
         mainPane = new MainPane(this);
         mainPane.initSceneReference();
 
-        SceneReference.applyDarkStyleSheet(scene);
-
         this.scene = new Scene(mainPane, Constants.WIDTH, Constants.HEIGHT);
 
         this.scene.setOnKeyPressed(key -> {
@@ -49,6 +47,8 @@ public class App extends Application {
                 this.stage.setFullScreen(!this.stage.isFullScreen());
             }
         });
+
+        SceneReference.applyDarkStyleSheet(scene);
 
         // Stage initialization
         this.stage.setScene(scene);

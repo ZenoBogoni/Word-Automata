@@ -9,11 +9,15 @@ import com.brunomnsilva.smartgraph.graph.DigraphEdgeListUnique.MyEdgeUnique;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeListUnique.MyVertexUnique;
 import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Vertex;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeBase;
+import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 
 import it.univr.utils.SceneReference;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 
 public class PathFinder {
 
@@ -137,9 +141,25 @@ public class PathFinder {
 
         if (edgeWithLongestElement != null) {
 
-            Edge edge = SceneReference.colorEdgeAfterTime(1500, edgeWithLongestElement);
+            SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
+            DigraphEdgeList<String, String> graph = SceneReference.getGraph();
+
+            PauseTransition pause = new PauseTransition(Duration.millis(1500));
+            pause.setOnFinished(e -> {
+                Vertex<String> inbound = ((MyEdgeUnique) edgeWithLongestElement).getInboundUnique().getRealVertex();
+                Vertex<String> outbound = ((MyEdgeUnique) edgeWithLongestElement).getOutboundUnique().getRealVertex();
+                Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream().filter(edgeFilter -> ((MyEdge) edgeFilter).getInbound().equals(inbound)).findFirst().orElse(null);
+                SmartGraphEdgeBase<String, String> currentEdgeNode = graphView.getEdgeNodeOf(currentEdge);
+                currentEdgeNode.addStyleClass("pathEdge");
+
+                SceneReference.getSolutionPane().insertEdgeNode(currentEdgeNode);
+                greedyChoice(((MyEdgeUnique) edgeWithLongestElement).getInboundUnique());
+            });
+
+            pause.play();
+
             SceneReference.clearEdgeAfterTime(3000, edgeWithLongestElement);
-            greedyChoice(((MyEdgeUnique) edge).getInboundUnique());
+
         }
     }
 
