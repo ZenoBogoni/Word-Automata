@@ -123,6 +123,8 @@ public class PathFinder {
     private static void choosePath(boolean isThereValidPath, MyVertexUnique initialVertexUnique) {
         if (!isThereValidPath) {
             supportGraph.removeVertex(initialVertexUnique);
+            SceneReference.showErrorPopup("No valid path found", "This automata couldn't find a valid path for the word \"" + SceneReference.getTestWord() +
+                    "\".\nPlease try with another word or check if the final and initial vertices are set correctly.");
         } else {
             greedyChoice(initialVertexUnique);
         }
