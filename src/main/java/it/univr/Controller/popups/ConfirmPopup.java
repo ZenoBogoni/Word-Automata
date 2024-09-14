@@ -2,6 +2,7 @@ package it.univr.Controller.popups;
 
 import java.io.IOException;
 
+import it.univr.utils.SceneReference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -44,6 +45,7 @@ public class ConfirmPopup extends AnchorPane {
         });
 
         confirmButton.setOnAction(e -> {
+            SceneReference.stopAllAnimations();
             onConfirm.run();
             ((Stage) getScene().getWindow()).close();
         });

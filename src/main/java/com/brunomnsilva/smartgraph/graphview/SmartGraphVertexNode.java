@@ -509,14 +509,14 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
                 /* -------------------------------------------------------------------------- */
                 /* //! Aggiunto io */
 
-                mainPane.setVertexPressed(true);
+                SceneReference.setVertexPressed(true);
 
                 /* -------------------------------------------------------------------------- */
 
                 mouseEvent.consume();
-            } else if (mouseEvent.isSecondaryButtonDown() && this.equals(mainPane.getSelectedVertexNode())) {
-                mainPane.setVertexPressed(true);
-                mainPane.deselectVertex();
+            } else if (mouseEvent.isSecondaryButtonDown() && this.equals(SceneReference.getSelectedVertexNode())) {
+                SceneReference.setVertexPressed(true);
+                SceneReference.deselectVertex();
             }
         });
 
@@ -529,9 +529,9 @@ public class SmartGraphVertexNode<T> extends Group implements SmartGraphVertex<T
 
             // ! AGGIUNTO IO -----------------
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                mainPane.setSelectedVertexNode((SmartGraphVertexNode<String>) this);
+                SceneReference.setSelectedVertexNode((SmartGraphVertexNode<String>) this);
             }
-            mainPane.setVertexPressed(false);
+            SceneReference.setVertexPressed(false);
             // ! -----------------------------
             mouseEvent.consume();
         });

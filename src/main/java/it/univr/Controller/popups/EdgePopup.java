@@ -48,13 +48,13 @@ public class EdgePopup extends AnchorPane {
             errorText.setText("Enter a non blank edge name");
             edgeNameField.setText("");
         } else {
-            mainPane.setEdgeName(edgeName);
-            Edge<String, String> newEgde = SceneReference.getGraph().insertEdge(from.getUnderlyingVertex(), to.getUnderlyingVertex(), edgeName);
-            if (newEgde == null) {
+            if (!SceneReference.getGraph().isDeterministic(from.getUnderlyingVertex(), edgeName)) {
                 errorText.setText("This vertex has an outgoing edge with the same name");
                 edgeNameField.setText("");
                 return;
             }
+            SceneReference.stopAllAnimations();
+            Edge<String, String> newEgde = SceneReference.getGraph().insertEdge(from.getUnderlyingVertex(), to.getUnderlyingVertex(), edgeName);
             SceneReference.getGraphView().updateAndWait();
             SceneReference.setSelectedEdge(SceneReference.getGraphView().getEdgeNodeOf(newEgde));
             SceneReference.setUnsavedChanges(true);

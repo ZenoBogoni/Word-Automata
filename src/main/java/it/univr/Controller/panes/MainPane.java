@@ -22,6 +22,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -38,27 +39,21 @@ import javafx.stage.FileChooser;
 public class MainPane extends BorderPane {
 
     // ANCHOR - Java variables
-    private static boolean isLinkingPhase = false; // are we trying to link vertices?
     private boolean isSideHidden = false; // is the side panel hidden?
-    private boolean isVertexPressed = false; // is a vertex being pressed?
-    private double mouseX;
-    private double mouseY;
 
     // ANCHOR - JavaFX variables
     private App app;
     private DigraphEdgeList<String, String> graph = new DigraphEdgeList<>();
-    private SmartPlacementStrategy initialPlacement = new SmartCircularSortedPlacementStrategy();
-    private SmartGraphPanel<String, String> graphView = new SmartGraphPanel<>(graph, initialPlacement);
+    private SmartGraphPanel<String, String> graphView = new SmartGraphPanel<>(graph);
     private ContentZoomScrollPane graphPane = new ContentZoomScrollPane(graphView);
     private VBox centerPane = new VBox();
-    private SolutionPane solutionPane = new SolutionPane();
+    private SolutionPane solutionPane = SceneReference.getSolutionPane();
 
     // ANCHOR - Properties
-    private SimpleBooleanProperty isVertexSelectedProperty = new SimpleBooleanProperty(false);
-    private SimpleBooleanProperty confirmToApplyProperty = new SimpleBooleanProperty(false);
-    private SimpleBooleanProperty autoLayoutProperty = new SimpleBooleanProperty(false);
-    private SimpleBooleanProperty clearTextOnClickProperty = new SimpleBooleanProperty(true);
-    private SimpleBooleanProperty initialVertexSetProperty = new SimpleBooleanProperty(false);
+    private SimpleBooleanProperty isVertexSelectedProperty = SceneReference.getIsVertexSelectedProperty();
+    private SimpleBooleanProperty confirmToApplyProperty = SceneReference.getConfirmToApplyProperty();
+    private SimpleBooleanProperty autoLayoutProperty = SceneReference.getAutoLayoutProperty();
+    private SimpleBooleanProperty clearTextOnClickProperty = SceneReference.getClearTextOnClickProperty();
 
     // ANCHOR - Icons
     IconButton nodeIcon;
@@ -66,11 +61,7 @@ public class MainPane extends BorderPane {
 
     // ANCHOR - Side Panes
     MagicLayoutSidePane magicLayoutSidePane;
-    SidePane graphSidePane;
-
-    // Vertex
-    private SmartGraphVertexNode<String> selectedVertexNode, initialVertexNode;
-    private HashSet<SmartGraphVertexNode<String>> finalVerticesNodes = new HashSet<SmartGraphVertexNode<String>>();
+    GraphSidePane graphSidePane;
 
     // ANCHOR - FXML elements
     @FXML
@@ -144,21 +135,13 @@ public class MainPane extends BorderPane {
     /* -------------------------------------------------------------------------- */
     public void initSceneReference() {
         SceneReference.setMainPane(this);
-        SceneReference.setAutoLayoutProperty(autoLayoutProperty);
-        SceneReference.setConfirmToApplyProperty(confirmToApplyProperty);
-        SceneReference.setClearTextOnClickProperty(clearTextOnClickProperty);
         SceneReference.setGraph(graph);
         SceneReference.setGraphView(graphView);
-        SceneReference.setInitialVertexSetProperty(initialVertexSetProperty);
-        SceneReference.setInitialVertexNode(initialVertexNode);
-        SceneReference.setFinalVerticesNodes(finalVerticesNodes);
-        SceneReference.setIsVertexSelectedProperty(isVertexSelectedProperty);
-        SceneReference.setSolutionPane(solutionPane);
     }
 
     public void initMainPane() {
         magicLayoutSidePane = new MagicLayoutSidePane();
-        graphSidePane = new SidePane();
+        graphSidePane = new GraphSidePane();
         SceneReference.setGraphSidePane(graphSidePane);
         initMenuBar();
         initSideMenu();
@@ -177,7 +160,7 @@ public class MainPane extends BorderPane {
         help.getItems().addAll(tutorial);
 
         tutorial.setOnAction(e -> {
-            tutorialPopup();
+            SceneReference.createModal(new TutorialPopup());
         });
 
         importGraph.setOnAction(e -> {
@@ -238,10 +221,9 @@ public class MainPane extends BorderPane {
         this.setCenter(centerPane);
         graphPane.setPadding(new Insets(10));
         graphView.setOnMouseClicked(e -> {
-            if (e.getButton().equals(MouseButton.PRIMARY) && e.getClickCount() == 2 && selectedVertexNode == null) {
-                mouseX = e.getX();
-                mouseY = e.getY();
-                vertexNamePopup();
+            if (e.getButton().equals(MouseButton.PRIMARY) && e.getClickCount() == 2 && SceneReference.getSelectedVertexNode() == null) {
+                SceneReference.setMousePostion(e.getX(), e.getY());
+                SceneReference.createModal(new VertexPopup());
             }
         });
 
@@ -267,20 +249,20 @@ public class MainPane extends BorderPane {
 
         this.setOnKeyPressed(key -> {
             if (key.getCode() == KeyCode.CONTROL) {
-                isLinkingPhase = true;
+                SceneReference.setLinkingPhase(true);
             }
         });
 
         this.setOnKeyReleased(key -> {
             if (key.getCode() == KeyCode.CONTROL) {
-                isLinkingPhase = false;
+                SceneReference.setLinkingPhase(false);
             }
         });
 
         graphPane.setOnMousePressed(e -> {
             if (e.getButton().equals(MouseButton.PRIMARY)) {
-                if (!isVertexPressed && !SceneReference.isEdgePressed()) {
-                    deselectNodes();
+                if (!SceneReference.isVertexPressed() && !SceneReference.isEdgePressed()) {
+                    SceneReference.deselectNodes();
                 }
             }
         });
@@ -305,136 +287,4 @@ public class MainPane extends BorderPane {
     public void setSidePane(VBox sidePane) {
         sideMenuHidable.setContent(sidePane);
     }
-
-    /* -------------------------------------------------------------------------- */
-    /* //ANCHOR - Edge popup */
-    /* -------------------------------------------------------------------------- */
-
-    /**
-     * Shows a popup asking the user to insert the name of the edge
-     * 
-     * @param from the outbound vertex
-     * @param to   the inbound vertex
-     */
-    private void edgeNamePopup(SmartGraphVertexNode<String> from, SmartGraphVertexNode<String> to) {
-        SceneReference.createModal(new EdgePopup(from, to));
-    }
-
-    public void deselectNodes() {
-        deselectVertex();
-        if (SceneReference.isEdgeSelected()) {
-            SceneReference.deselectEdge();
-        }
-    }
-
-    public void deselectVertex() {
-        if (selectedVertexNode != null) {
-            setIsVertexSelected(false);
-            selectedVertexNode.removeStyleClass("selectedVertex");
-            selectedVertexNode = null;
-        }
-    }
-
-    /* -------------------------------------------------------------------------- */
-    /* /// ANCHOR - Popups */
-    /* -------------------------------------------------------------------------- */
-
-    private void vertexNamePopup() {
-        SceneReference.createModal(new VertexPopup());
-    }
-
-    private void tutorialPopup() {
-        SceneReference.createModal(new TutorialPopup());
-    }
-
-    /* -------------------------------------------------------------------------- */
-    /* //ANCHOR - Getters */
-    /* -------------------------------------------------------------------------- */
-
-    public SmartGraphVertexNode<String> getSelectedVertexNode() {
-        return selectedVertexNode;
-    }
-
-    public SmartGraphVertexNode<String> getInitialVertexNode() {
-        return initialVertexNode;
-    }
-
-    public HashSet<SmartGraphVertexNode<String>> getFinalVerticesNodes() {
-        return finalVerticesNodes;
-    }
-
-    public boolean isVertexPressed() {
-        return isVertexPressed;
-    }
-
-    public DigraphEdgeList<String, String> getGraph() {
-        return graph;
-    }
-
-    public double getMouseX() {
-        return mouseX;
-    }
-
-    public double getMouseY() {
-        return mouseY;
-    }
-
-    public boolean getIsVertexSelected() {
-        return isVertexSelectedProperty.get();
-    }
-
-    public boolean isLinkingPhase() {
-        return isLinkingPhase;
-    }
-
-    /* -------------------------------------------------------------------------- */
-    /* //ANCHOR - Setters */
-    /* -------------------------------------------------------------------------- */
-
-    public void setSelectedVertexNode(SmartGraphVertexNode<String> vertex) {
-        if (selectedVertexNode != null) {
-
-            if (isLinkingPhase) {
-                if (graph.areAdjacent(selectedVertexNode.getUnderlyingVertex(), vertex.getUnderlyingVertex())) {
-                    SceneReference.showErrorPopup("Edge already exists", "An edge from vertex " + selectedVertexNode.getAttachedLabel().getText() + " to vertex " + vertex.getAttachedLabel().getText()
-                            + " already exists, please modify the existing one instead of creating a new one");
-                } else {
-                    edgeNamePopup(selectedVertexNode, vertex);
-                    isLinkingPhase = false;
-                }
-            } else {
-                if (selectedVertexNode.equals(vertex)) {
-                    graphSidePane.focusVertexField();
-                    return;
-                }
-                selectedVertexNode.removeStyleClass("selectedVertex");
-                isVertexSelectedProperty.set(false);
-                selectedVertexNode = vertex;
-                isVertexSelectedProperty.set(true);
-                selectedVertexNode.addStyleClassLast("selectedVertex");
-                graphSidePane.focusVertexField();
-            }
-        } else {
-            selectedVertexNode = vertex;
-            setIsVertexSelected(true);
-            selectedVertexNode.addStyleClassLast("selectedVertex");
-            graphSidePane.focusVertexField();
-        }
-    }
-
-    public void setVertexPressed(boolean isVertexPressed) {
-        this.isVertexPressed = isVertexPressed;
-    }
-
-    public void setEdgeName(String edgeName) {
-    }
-
-    public void setIsVertexSelected(boolean bool) {
-        isVertexSelectedProperty.set(bool);
-    }
-
-    public void setIsLinkingPhase(boolean bool) {
-        isLinkingPhase = bool;
-    }
-
 }

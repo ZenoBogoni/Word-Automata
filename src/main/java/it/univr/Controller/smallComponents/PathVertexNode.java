@@ -54,7 +54,7 @@ public class PathVertexNode extends AnchorPane {
 
         vertexCircle.setOnMouseClicked(e -> {
             if (vertexNode != null)
-                SceneReference.getMainPane().setSelectedVertexNode(vertexNode);
+                SceneReference.setSelectedVertexNode(vertexNode);
         });
     }
 

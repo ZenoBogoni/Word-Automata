@@ -13,6 +13,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeBase;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 
 import it.univr.utils.SceneReference;
+import javafx.animation.Animation;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -143,6 +144,7 @@ public class PathFinder {
         if (edgeWithLongestElement != null) {
 
             PauseTransition pause = new PauseTransition(Duration.millis(1500));
+            SceneReference.addAnimation(pause);
             pause.setOnFinished(e -> {
                 Vertex<String> inbound = ((MyEdgeUnique) edgeWithLongestElement).getInboundUnique().getRealVertex();
                 Vertex<String> outbound = ((MyEdgeUnique) edgeWithLongestElement).getOutboundUnique().getRealVertex();
@@ -152,6 +154,7 @@ public class PathFinder {
 
                 SceneReference.getSolutionPane().insertEdgeNode(currentEdgeNode);
                 greedyChoice(((MyEdgeUnique) edgeWithLongestElement).getInboundUnique());
+                SceneReference.removeAnimation(pause);
             });
 
             pause.play();

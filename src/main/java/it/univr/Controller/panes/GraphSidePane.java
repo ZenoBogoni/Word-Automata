@@ -10,8 +10,10 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 import it.univr.Controller.popups.ConfirmPopup;
 import it.univr.backend.PathFinder;
 import it.univr.utils.SceneReference;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -22,7 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class SidePane extends VBox {
+public class GraphSidePane extends VBox {
     // components
     private MainPane mainPane = SceneReference.getMainPane();
     private SmartGraphPanel<String, String> graphView = SceneReference.getGraphView();
@@ -49,7 +51,7 @@ public class SidePane extends VBox {
     @FXML
     private Text vertexLabel, edgeLabel;
 
-    public SidePane() {
+    public GraphSidePane() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("graphSidePane.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -79,6 +81,7 @@ public class SidePane extends VBox {
         });
 
         initialNodeRadioButton.setOnAction(e -> {
+            SceneReference.stopAllAnimations();
             if (initialNodeRadioButton.isSelected()) {
                 if (selectedVertexNode.getUnderlyingVertex().isFinal()) {
                     finalNodeRadioButton.setSelected(false);
@@ -93,6 +96,7 @@ public class SidePane extends VBox {
         });
 
         finalNodeRadioButton.setOnAction(e -> {
+            SceneReference.stopAllAnimations();
             if (finalNodeRadioButton.isSelected()) {
                 if (selectedVertexNode.getUnderlyingVertex().isInitial()) {
                     initialNodeRadioButton.setSelected(false);
@@ -121,7 +125,7 @@ public class SidePane extends VBox {
                 vertexLabelTextField.setPromptText("no vertex selected");
                 vertexLabel.setStyle("-fx-fill: gray");
             } else {
-                selectedVertexNode = mainPane.getSelectedVertexNode();
+                selectedVertexNode = SceneReference.getSelectedVertexNode();
                 vertexLabelTextField.setText(selectedVertexNode.getAttachedLabel().getText());
                 vertexLabelTextField.setPromptText("");
                 lastVertexName = (lastVertexName == null) ? new String(vertexLabelTextField.getText()) : vertexLabelTextField.getText();
@@ -147,6 +151,7 @@ public class SidePane extends VBox {
         deleteVertexButton.disableProperty().bind(Bindings.not(isVertexSelectedProperty));
         deleteVertexButton.setOnAction(e -> {
             if (selectedVertexNode != null) {
+                SceneReference.stopAllAnimations();
                 if (selectedVertexNode.equals(SceneReference.getInitialVertexNode())) {
                     SceneReference.setInitialVertexNode(null);
                 } else if (SceneReference.getFinalVerticesNodes().contains(selectedVertexNode)) {
@@ -155,7 +160,7 @@ public class SidePane extends VBox {
                 graph.removeVertex(selectedVertexNode.getUnderlyingVertex());
                 System.out.println(graph);
                 graphView.update();
-                mainPane.deselectNodes();
+                SceneReference.deselectNodes();
                 SceneReference.setUnsavedChanges(true);
             }
 
@@ -200,6 +205,7 @@ public class SidePane extends VBox {
         deleteEdgeButton.disableProperty().bind(Bindings.not(isEdgeSelectedProperty));
 
         deleteEdgeButton.setOnAction(e -> {
+            SceneReference.stopAllAnimations();
             graph.removeEdge(SceneReference.getSelectedEdge().getUnderlyingEdge());
             graphView.update();
             SceneReference.deselectEdge();
@@ -248,6 +254,7 @@ public class SidePane extends VBox {
         if (newVertex == null) {
             return;
         }
+        SceneReference.stopAllAnimations();
         graphView.updateAndWait();
         // mainPane.setSelectedVertexNode(graphView.getVertexNodeOf(newVertex));
         lastVertexName = new String(newVertex.element());
@@ -266,6 +273,7 @@ public class SidePane extends VBox {
             edgeLabelTextField.setText("");
             return;
         }
+        SceneReference.stopAllAnimations();
         graphView.update();
         SceneReference.setUnsavedChanges(true);
     }
@@ -279,6 +287,7 @@ public class SidePane extends VBox {
             SceneReference.showErrorPopup("Invalid testing word", "It's not possible to test the automata with an empty testing word, please insert a valid testing word.");
         } else {
             SceneReference.setTestWord(testWordTextField.getText());
+            SceneReference.stopAllAnimations();
             PathFinder.getPaths();
         }
     }

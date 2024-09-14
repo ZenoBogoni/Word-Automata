@@ -17,6 +17,7 @@ public class GraphSaver {
     private static DigraphEdgeList<String, String> graph = SceneReference.getGraph();
 
     public static void createGraphFromFile(String fileName) {
+        SceneReference.stopAllAnimations();
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         GraphToFile graphToFile;

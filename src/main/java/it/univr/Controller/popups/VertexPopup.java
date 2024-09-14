@@ -66,14 +66,15 @@ public class VertexPopup extends AnchorPane {
                 errorText.setText("A vertex with this name already esists");
                 vertexNameField.setText("");
             } else {
+                SceneReference.stopAllAnimations();
                 errorText.setText("");
                 Vertex<String> newVertex = graph.insertVertex(vertexName);
                 graphView.updateAndWait();
                 SmartGraphVertexNode<String> newVertexNode = graphView.getVertexNodeOf(newVertex);
-                newVertexNode.setCenterX(SceneReference.getMainPane().getMouseX());
-                newVertexNode.setCenterY(SceneReference.getMainPane().getMouseY());
+                newVertexNode.setCenterX(SceneReference.getMouseX());
+                newVertexNode.setCenterY(SceneReference.getMouseY());
                 updateSpecialVertices(newVertexNode);
-                SceneReference.getMainPane().setSelectedVertexNode(newVertexNode);
+                SceneReference.setSelectedVertexNode(newVertexNode);
                 SceneReference.setUnsavedChanges(true);
                 stage.close();
             }

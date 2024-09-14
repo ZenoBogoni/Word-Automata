@@ -35,7 +35,7 @@ public class ErrorPopup extends BorderPane {
     public void initialize() {
         closeButton.setOnAction(e -> {
             this.stage = (Stage) getScene().getWindow();
-            SceneReference.getMainPane().setIsLinkingPhase(false);
+            SceneReference.setLinkingPhase(false);
             stage.close();
         });
         titleText.setText(errorType);

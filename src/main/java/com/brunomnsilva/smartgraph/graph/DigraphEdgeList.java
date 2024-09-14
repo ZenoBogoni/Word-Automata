@@ -496,7 +496,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         return edgeList;
     }
 
-    private boolean isDeterministic(Vertex<V> vertex, E edgeElement) {
+    public boolean isDeterministic(Vertex<V> vertex, E edgeElement) {
         return !outboundEdges(vertex).stream().anyMatch(edge -> edge.element().equals(edgeElement));
     }
 }
