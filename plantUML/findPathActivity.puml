@@ -1,0 +1,16 @@
+@startuml
+skinparam dpi 400
+start
+:aperto il pannello di modifica automa;
+:inserisci percorso da trovare;
+if(percorso presente) then (no)
+:visualizza nessun percorso trovato;
+else (sì)
+fork
+:colora temporaneamente percorso;
+fork again
+:mostra percorso nel pannello inferiore; 
+end fork
+endif
+stop
+@enduml

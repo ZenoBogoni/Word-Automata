@@ -1,6 +1,7 @@
 @startuml
+skinparam dpi 400
 start
-:visualizza VertexPopup;
+:visualizza popup stato;
 fork
     repeat
         :inserisci nome stato;

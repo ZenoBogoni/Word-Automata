@@ -1,0 +1,25 @@
+@startuml
+skinparam dpi 400
+start
+:aperto il pannello di modifica automa;
+fork
+:seleziona stato;
+fork
+repeat
+:modifica nome stato;
+repeat while(nome disponibile) is(no) not(sì)
+fork again
+:elimina stato;
+end fork
+fork again
+:seleziona transizione;
+fork
+repeat
+:modifica nome transizione;
+repeat while(nome disponibile) is(no) not(sì)
+fork again
+:elimina transizione;
+end fork
+end fork
+stop
+@enduml

@@ -1,4 +1,5 @@
 @startuml
+skinparam dpi 400
 start
 :mostra finestra esplora file;
 :seleziona file;

@@ -1,8 +1,9 @@
 @startuml
+skinparam dpi 400
 start
-:visualizza EdgePopup;
+:visualizza popup transizione;
 repeat
 :inserisci nome transizione;
-repeat while(nome unico fra le transi\n-zioni uscenti dallo stato) is(no) not(sì)
+repeat while(nome disponibile) is(no) not(sì)
 stop
 @enduml
