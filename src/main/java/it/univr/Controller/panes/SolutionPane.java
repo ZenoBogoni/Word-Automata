@@ -8,7 +8,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.Controller.smallComponents.PathEdgeNode;
 import it.univr.Controller.smallComponents.PathVertexNode;
-import it.univr.utils.SceneReference;
+import it.univr.backend.SceneReference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollPane;

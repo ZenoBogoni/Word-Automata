@@ -51,8 +51,7 @@ import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 
 import it.univr.App;
-import it.univr.utils.Constants;
-import it.univr.utils.SceneReference;
+import it.univr.backend.SceneReference;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
@@ -1329,7 +1328,7 @@ public class SmartGraphPanel<V, E> extends Pane {
      */
     private void loadAndApplyStylesheet(URI cssFile) {
         try {
-            String css = Constants.GRAPH_DARK;
+            String css = SceneReference.GRAPH_DARK;
             getStylesheets().add(css);
             this.getStyleClass().add("graph");
         } catch (Exception ex) {
@@ -1432,11 +1431,11 @@ public class SmartGraphPanel<V, E> extends Pane {
 
     public void changeGraphTheme() {
         if (App.isDarkMode()) {
-            getStylesheets().addAll(Constants.GRAPH_LIGHT);
-            getStylesheets().removeAll(Constants.GRAPH_DARK);
+            getStylesheets().addAll(SceneReference.GRAPH_LIGHT);
+            getStylesheets().removeAll(SceneReference.GRAPH_DARK);
         } else {
-            getStylesheets().addAll(Constants.GRAPH_DARK);
-            getStylesheets().removeAll(Constants.GRAPH_LIGHT);
+            getStylesheets().addAll(SceneReference.GRAPH_DARK);
+            getStylesheets().removeAll(SceneReference.GRAPH_LIGHT);
         }
     }
 

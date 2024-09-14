@@ -2,7 +2,7 @@ package it.univr.Controller.popups;
 
 import java.io.IOException;
 
-import it.univr.utils.SceneReference;
+import it.univr.backend.SceneReference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;

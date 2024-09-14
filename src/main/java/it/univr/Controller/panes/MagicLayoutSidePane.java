@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.brunomnsilva.smartgraph.graphview.ForceDirectedLayoutStrategy;
 import com.brunomnsilva.smartgraph.graphview.ForceDirectedSpringGravityLayoutStrategy;
 
-import it.univr.utils.SceneReference;
+import it.univr.backend.SceneReference;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.beans.property.DoubleProperty;

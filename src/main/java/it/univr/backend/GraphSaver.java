@@ -7,7 +7,6 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import it.univr.utils.SceneReference;
 import java.io.File;
 import javafx.stage.FileChooser;
 

@@ -1,4 +1,4 @@
-package it.univr.utils;
+package it.univr.backend;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,6 +33,12 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class SceneReference {
+    private static App app;
+    // Constants
+    public static final int HEIGHT = 768;
+    public static final int WIDTH = 1024;
+    public static String GRAPH_DARK;
+    public static String GRAPH_LIGHT;
     // java variables
     private static boolean isEdgePressed = false;
     private static boolean isVertexPressed = false;
@@ -41,7 +47,6 @@ public class SceneReference {
     private static double mouseX, mouseY;
 
     // Components
-    private static App app;
     private static Stage stage;
     private static MainPane mainPane;
     private static DigraphEdgeList<String, String> graph;
@@ -293,6 +298,8 @@ public class SceneReference {
     }
 
     public static void setApp(App app) {
+        GRAPH_DARK = app.getClass().getResource("stylesheets/smartgraph-dark.css").toExternalForm();
+        GRAPH_LIGHT = app.getClass().getResource("stylesheets/smartgraph-light.css").toExternalForm();
         SceneReference.app = app;
     }
 

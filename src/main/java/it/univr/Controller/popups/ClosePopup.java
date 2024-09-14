@@ -6,7 +6,7 @@ import java.io.IOException;
 import com.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 
 import it.univr.backend.GraphSaver;
-import it.univr.utils.SceneReference;
+import it.univr.backend.SceneReference;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

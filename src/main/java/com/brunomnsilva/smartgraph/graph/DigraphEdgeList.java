@@ -32,7 +32,7 @@ import java.util.Map;
 
 import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
-import it.univr.utils.SceneReference;
+import it.univr.backend.SceneReference;
 
 /**
  * Implementation of a digraph that adheres to the {@link Digraph} interface.

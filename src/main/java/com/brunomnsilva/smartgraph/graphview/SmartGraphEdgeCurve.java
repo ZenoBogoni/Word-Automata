@@ -26,7 +26,7 @@ package com.brunomnsilva.smartgraph.graphview;
 import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 
-import it.univr.utils.SceneReference;
+import it.univr.backend.SceneReference;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseButton;

@@ -8,8 +8,7 @@ import atlantafx.base.theme.NordDark;
 import atlantafx.base.theme.NordLight;
 import it.univr.Controller.panes.MainPane;
 import it.univr.Controller.popups.ClosePopup;
-import it.univr.utils.Constants;
-import it.univr.utils.SceneReference;
+import it.univr.backend.SceneReference;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -40,7 +39,7 @@ public class App extends Application {
         mainPane = new MainPane(this);
         mainPane.initSceneReference();
 
-        this.scene = new Scene(mainPane, Constants.WIDTH, Constants.HEIGHT);
+        this.scene = new Scene(mainPane, SceneReference.WIDTH, SceneReference.HEIGHT);
 
         this.scene.setOnKeyPressed(key -> {
             if (key.getCode() == KeyCode.F11 || key.isAltDown() && key.getCode() == KeyCode.ENTER) {
@@ -54,8 +53,8 @@ public class App extends Application {
         this.stage.setScene(scene);
         this.stage.getIcons().add(new Image(getClass().getResource("assets/WordAutomataIcon7.png").toExternalForm()));
         this.stage.titleProperty().bind(SceneReference.getFileNameProperty());
-        this.stage.setMinHeight(Constants.HEIGHT);
-        this.stage.setMinWidth(Constants.WIDTH);
+        this.stage.setMinHeight(SceneReference.HEIGHT);
+        this.stage.setMinWidth(SceneReference.WIDTH);
         this.stage.setScene(scene);
         this.stage.setOnCloseRequest(e -> {
             if (SceneReference.getUnsavedChanges()) {

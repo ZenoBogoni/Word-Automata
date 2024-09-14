@@ -9,7 +9,7 @@ import com.brunomnsilva.smartgraph.graphview.SmartGraphVertexNode;
 
 import it.univr.Controller.popups.ConfirmPopup;
 import it.univr.backend.PathFinder;
-import it.univr.utils.SceneReference;
+import it.univr.backend.SceneReference;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;

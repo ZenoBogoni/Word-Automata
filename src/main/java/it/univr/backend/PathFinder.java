@@ -12,7 +12,6 @@ import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphEdgeBase;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 
-import it.univr.utils.SceneReference;
 import javafx.animation.Animation;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;

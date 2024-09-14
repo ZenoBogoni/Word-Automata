@@ -30,7 +30,7 @@ import java.util.Set;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 
 import it.univr.Controller.panes.MainPane;
-import it.univr.utils.SceneReference;
+import it.univr.backend.SceneReference;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
