@@ -42,7 +42,7 @@ public class EdgePopup extends AnchorPane {
         }
     }
 
-    private void checkName() {
+    private void addEdge() {
         String edgeName = edgeNameField.getText();
         if (edgeName.equals("")) {
             errorText.setText("Enter a non blank edge name");
@@ -66,12 +66,12 @@ public class EdgePopup extends AnchorPane {
     public void initialize() {
         submitButton.setOnAction(e -> {
             this.stage = (Stage) getScene().getWindow();
-            checkName();
+            addEdge();
         });
 
         edgeNameField.setOnAction(e -> {
             this.stage = (Stage) getScene().getWindow();
-            checkName();
+            addEdge();
         });
 
         cancelButton.setOnAction(e -> {

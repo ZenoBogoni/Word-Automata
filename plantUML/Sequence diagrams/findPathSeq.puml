@@ -1,0 +1,4 @@
+@startuml
+participant "Model:PathFinder" as PathFinder
+participant "Model:SceneReference" as SceneReference
+@enduml

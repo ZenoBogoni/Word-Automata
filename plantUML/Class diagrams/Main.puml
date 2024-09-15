@@ -7,18 +7,14 @@ package it.univr {
     class App {
         - Stage stage
         - Scene scene
-        - static boolean isDarkMode
         - MainPane mainPane
-        - SmartGraphPanel graphView
-
+        - static boolean isDarkMode
         + void start(Stage stage) throws IOException
         + void changeTheme()
-        + void runApp(String[] args)
-        + static void applyDarkStyleSheet(Scene scene)
-        + static void applyLightStyleSheet(Scene scene)
         + static boolean isDarkMode()
+        + void runApp(String[] args)
     }
-    Main --> App : creates instance
+    Main .-> App : <<launch>>
 }
 
 @enduml

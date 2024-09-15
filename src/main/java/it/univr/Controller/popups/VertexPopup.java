@@ -54,7 +54,7 @@ public class VertexPopup extends AnchorPane {
         }
     }
 
-    private void checkName() {
+    private void addVertex() {
 
         vertexName = vertexNameField.getText();
 
@@ -112,12 +112,12 @@ public class VertexPopup extends AnchorPane {
 
         submitButton.setOnAction(e -> {
             this.stage = (Stage) getScene().getWindow();
-            checkName();
+            addVertex();
         });
 
         vertexNameField.setOnAction(e -> {
             this.stage = (Stage) getScene().getWindow();
-            checkName();
+            addVertex();
         });
 
         cancelButton.setOnAction(e -> {

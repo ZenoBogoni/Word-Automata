@@ -1,0 +1,21 @@
+@startuml
+skinparam dpi 300
+participant "Controller:MainPane" as MainPane 
+participant "Model:GraphSaver" as GraphSaver
+activate MainPane
+MainPane -> GraphSaver :createFileFromGraph(graph)
+activate GraphSaver
+GraphSaver --> "Model:GraphToFile" as GraphToFile ** : <<create>>
+database "File:file" as file
+activate GraphToFile
+GraphToFile -> GraphToFile : create file structure
+GraphToFile --> GraphSaver
+deactivate GraphToFile
+GraphSaver -> file : create file
+activate file
+file --> GraphSaver
+deactivate file
+deactivate GraphToFile
+GraphSaver --> MainPane
+deactivate GraphSaver
+@enduml

@@ -1,0 +1,34 @@
+@startuml
+skinparam dpi 300
+participant "Controller:MainPane" as MainPane 
+participant "Model:GraphSaver" as GraphSaver
+participant "View:SmartGraphPanel" as SmartGraphPanel
+participant "Model:SceneReference" as SceneReference
+database "File:file" as file
+activate MainPane
+MainPane -> GraphSaver : createGraphFromFile(file)
+activate GraphSaver
+alt file compatibile
+GraphSaver -> file : read value
+activate file 
+file --> GraphSaver : oggetto compatibile  
+deactivate file 
+GraphSaver -> GraphSaver : create graph
+GraphSaver -> SmartGraphPanel : update()
+activate SmartGraphPanel
+GraphSaver --> MainPane
+deactivate SmartGraphPanel
+
+else file non compatibile
+GraphSaver -> file : read value
+activate file
+file --> GraphSaver : file non compatibile
+deactivate file
+GraphSaver -> SceneReference : showErrorPopup()
+activate SceneReference
+SceneReference --> GraphSaver
+deactivate SceneReference
+GraphSaver --> MainPane
+deactivate GraphSaver
+end
+@enduml

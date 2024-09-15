@@ -1,0 +1,17 @@
+@startuml
+skinparam dpi 300
+"Controller:MainPane" --> "popup:EdgePopup" ** : <<create>>
+activate "popup:EdgePopup"
+"popup:EdgePopup" -> "Model:SceneReference" : getGraph()
+activate "Model:SceneReference"
+"popup:EdgePopup" <-- "Model:SceneReference" : graph
+deactivate "Model:SceneReference"
+"popup:EdgePopup" -> "popup:EdgePopup" : addEdge()
+"popup:EdgePopup" -> "View:SmartGraphPanel" : updateAndWait()
+activate "View:SmartGraphPanel"
+"popup:EdgePopup" <-- "View:SmartGraphPanel"
+deactivate "View:SmartGraphPanel"
+"Controller:MainPane" <-- "popup:EdgePopup" 
+destroy "popup:EdgePopup"
+             
+@enduml

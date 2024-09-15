@@ -1,0 +1,17 @@
+@startuml
+skinparam dpi 300
+"Controller:MainPane" --> "popup:VertexPopup" ** : <<create>>
+activate "popup:VertexPopup"
+"popup:VertexPopup" -> "Model:SceneReference" : getGraph()
+activate "Model:SceneReference"
+"popup:VertexPopup" <-- "Model:SceneReference" : graph
+deactivate "Model:SceneReference"
+"popup:VertexPopup" -> "popup:VertexPopup" : addVertex()
+"popup:VertexPopup" -> "View:SmartGraphPanel" : updateAndWait()
+activate "View:SmartGraphPanel"
+"popup:VertexPopup" <-- "View:SmartGraphPanel"
+deactivate "View:SmartGraphPanel"
+"Controller:MainPane" <-- "popup:VertexPopup" 
+destroy "popup:VertexPopup"
+             
+@enduml
