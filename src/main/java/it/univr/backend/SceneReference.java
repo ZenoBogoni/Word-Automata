@@ -320,13 +320,13 @@ public class SceneReference {
         if (selectedVertexNode != null) {
 
             if (isLinkingPhase) {
-                if (graph.areAdjacent(selectedVertexNode.getUnderlyingVertex(), vertex.getUnderlyingVertex())) {
-                    SceneReference.showErrorPopup("Edge already exists", "An edge from vertex " + selectedVertexNode.getAttachedLabel().getText() + " to vertex " + vertex.getAttachedLabel().getText()
-                            + " already exists, please modify the existing one instead of creating a new one");
-                } else {
-                    SceneReference.createModal(new EdgePopup(selectedVertexNode, vertex));
-                    isLinkingPhase = false;
-                }
+                // if (graph.areAdjacent(selectedVertexNode.getUnderlyingVertex(), vertex.getUnderlyingVertex())) {
+                // SceneReference.showErrorPopup("Edge already exists", "An edge from vertex " + selectedVertexNode.getAttachedLabel().getText() + " to vertex " + vertex.getAttachedLabel().getText()
+                // + " already exists, please modify the existing one instead of creating a new one");
+                // } else {
+                SceneReference.createModal(new EdgePopup(selectedVertexNode, vertex));
+                isLinkingPhase = false;
+                // }
             } else {
                 if (selectedVertexNode.equals(vertex)) {
                     graphSidePane.focusVertexField();
@@ -506,7 +506,9 @@ public class SceneReference {
         pause.setOnFinished(e -> {
             Vertex<String> inbound = ((MyEdgeUnique) edge).getInboundUnique().getRealVertex();
             Vertex<String> outbound = ((MyEdgeUnique) edge).getOutboundUnique().getRealVertex();
-            Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream().filter(edgeFilter -> ((MyEdge) edgeFilter).getInbound().equals(inbound)).findFirst().orElse(null);
+            Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream()
+                    .filter(edgeFilter -> ((MyEdge) edgeFilter).getInbound().equals(inbound) && edgeFilter.element() == edge.element())
+                    .findFirst().orElse(null);
             clearEdge(currentEdge);
             removeAnimation(pause);
         });

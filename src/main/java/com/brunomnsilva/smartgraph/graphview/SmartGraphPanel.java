@@ -542,6 +542,7 @@ public class SmartGraphPanel<V, E> extends Pane {
         removeNodes();
         insertNodes();
         updateNodes();
+        updateAllEdges();
     }
 
     /*
@@ -1117,6 +1118,16 @@ public class SmartGraphPanel<V, E> extends Pane {
         return count;
     }
 
+    public int getBetweenEdgesInOrder(Vertex<V> v, Vertex<V> u) {
+        int count = 0;
+        for (Edge<E, V> edge : theGraph.edges()) {
+            if (edge.vertices()[0] == v && edge.vertices()[1] == u) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     private List<Edge<E, V>> listOfEdges() {
         return new LinkedList<>(theGraph.edges());
     }
@@ -1452,6 +1463,10 @@ public class SmartGraphPanel<V, E> extends Pane {
             return (SmartGraphEdgeBase<String, String>) edgeNodes.get(edge);
         }
         return null;
+    }
+
+    private void updateAllEdges() {
+        edgeNodes.values().forEach(edge -> ((SmartGraphEdgeCurve) edge).update());
     }
 
 }

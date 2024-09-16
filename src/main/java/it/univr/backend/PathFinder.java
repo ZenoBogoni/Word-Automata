@@ -147,7 +147,9 @@ public class PathFinder {
             pause.setOnFinished(e -> {
                 Vertex<String> inbound = ((MyEdgeUnique) edgeWithLongestElement).getInboundUnique().getRealVertex();
                 Vertex<String> outbound = ((MyEdgeUnique) edgeWithLongestElement).getOutboundUnique().getRealVertex();
-                Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream().filter(edgeFilter -> ((MyEdge) edgeFilter).getInbound().equals(inbound)).findFirst().orElse(null);
+                Edge<String, String> currentEdge = graph.outboundEdges(outbound).stream()
+                        .filter(edgeFilter -> ((MyEdge) edgeFilter).getInbound().equals(inbound) && edgeFilter.element() == edgeWithLongestElement.element())
+                        .findFirst().orElse(null);
                 SmartGraphEdgeBase<String, String> currentEdgeNode = graphView.getEdgeNodeOf(currentEdge);
                 currentEdgeNode.addStyleClass("pathEdge");
 
@@ -171,9 +173,9 @@ public class PathFinder {
             if (edge.element().length() > maxLength) {
                 maxLength = edge.element().length();
                 max = edge;
+
             }
         }
-
         return max;
     }
 

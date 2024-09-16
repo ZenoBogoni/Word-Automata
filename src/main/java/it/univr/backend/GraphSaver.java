@@ -42,9 +42,10 @@ public class GraphSaver {
                 Vertex<String> inbound = graph.vertexOf(edge.getInbound());
                 Vertex<String> outbound = graph.vertexOf(edge.getOutbound());
                 graph.insertEdge(outbound, inbound, edge.getElement());
+                // graphView.updateAndWait();
             });
 
-            graphView.update();
+            graphView.updateAndWait();
         } catch (Exception e) {
             SceneReference.showErrorPopup("File not compatible", fileName + "\ndoes not contain a valid Automata.");
             e.printStackTrace();

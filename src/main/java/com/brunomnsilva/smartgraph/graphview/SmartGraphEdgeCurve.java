@@ -25,9 +25,11 @@ package com.brunomnsilva.smartgraph.graphview;
 
 import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Vertex;
+import com.brunomnsilva.smartgraph.graph.DigraphEdgeList.MyVertex;
 
 import it.univr.backend.SceneReference;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -55,6 +57,7 @@ import javafx.scene.transform.Translate;
  * @author brunomnsilva
  */
 public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphEdgeBase<E, V> {
+    private double myAngle;
 
     private static final double MAX_EDGE_CURVE_ANGLE = 30;
     private static final double MIN_EDGE_CURVE_ANGLE = 5;
@@ -105,6 +108,7 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
         this.outbound = outbound;
 
         this.underlyingEdge = edge;
+        updateMyAngle();
 
         styleProxy = new SmartStyleProxy(this);
         styleProxy.addStyleClass("edge");
@@ -158,7 +162,8 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
     }
 
     @SuppressWarnings("unchecked")
-    private void update() {
+    protected void update() {
+        updateMyAngle();
         if (inbound == outbound) {
             /* Make a loop using the control points proportional to the vertex radius */
 
@@ -196,7 +201,7 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
 
             double distance = startpoint.distance(endpoint);
 
-            double angle = linearDecay(MAX_EDGE_CURVE_ANGLE, MIN_EDGE_CURVE_ANGLE, distance, DISTANCE_THRESHOLD);
+            double angle = (myAngle * 5) + linearDecay(MAX_EDGE_CURVE_ANGLE, MIN_EDGE_CURVE_ANGLE, distance, DISTANCE_THRESHOLD);
 
             Point2D midpoint = UtilitiesPoint2D.calculateTriangleBetween(startpoint, endpoint, angle);
 
@@ -346,5 +351,9 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
             SceneReference.setEdgePressed(false);
         });
 
+    }
+
+    private void updateMyAngle() {
+        myAngle = ((MyVertex) underlyingEdge.vertices()[0]).getIndexOf(underlyingEdge);
     }
 }

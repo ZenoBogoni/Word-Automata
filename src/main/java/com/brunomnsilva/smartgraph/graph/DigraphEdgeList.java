@@ -118,6 +118,8 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         MyEdge newEdge = new MyEdge(id, edgeElement, outVertex, inVertex);
 
         edges.put(id, newEdge);
+        outVertex.addEdgeToMap(newEdge);
+
         id++;
         return newEdge;
     }
@@ -140,6 +142,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         MyVertex inVertex = vertexOf(inboundElement);
 
         MyEdge newEdge = new MyEdge(id, edgeElement, outVertex, inVertex);
+        outVertex.addEdgeToMap(newEdge);
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         edges.put(id, newEdge);
         id++;
@@ -220,6 +223,8 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         checkEdge(e);
 
         E element = e.element();
+        // !
+        ((MyVertex) e.vertices()[0]).removeEdgeFromMap(e);
         edges.remove(e.getId());
 
         return element;
@@ -297,6 +302,7 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
         V element;
         boolean finalNode = false;
         boolean initialNode = false;
+        HashMap<Vertex<V>, List<Edge<E, V>>> edgeMap = new HashMap<>();
 
         public MyVertex(V element) {
             this.element = element;
@@ -334,6 +340,26 @@ public class DigraphEdgeList<V, E> implements Digraph<V, E> {
 
         public String getElement() {
             return element + "";
+        }
+
+        public void addEdgeToMap(Edge<E, V> edge) {
+            if (!edgeMap.containsKey(edge.vertices()[1])) {
+                edgeMap.put(edge.vertices()[1], new ArrayList<Edge<E, V>>());
+            }
+            edgeMap.get(edge.vertices()[1]).add(edge);
+        }
+
+        public void removeEdgeFromMap(Edge<E, V> edge) {
+            if (edgeMap.containsKey(edge.vertices()[1])) {
+                edgeMap.get(edge.vertices()[1]).remove(edge);
+            }
+        }
+
+        public int getIndexOf(Edge<E, V> edge) {
+            if (edgeMap.containsKey(edge.vertices()[1])) {
+                return edgeMap.get(edge.vertices()[1]).indexOf(edge);
+            }
+            return -1;
         }
     }
 

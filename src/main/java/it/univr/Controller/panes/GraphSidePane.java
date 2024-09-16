@@ -158,7 +158,6 @@ public class GraphSidePane extends VBox {
                     SceneReference.removeFinalVertex(selectedVertexNode);
                 }
                 graph.removeVertex(selectedVertexNode.getUnderlyingVertex());
-                System.out.println(graph);
                 graphView.update();
                 SceneReference.deselectNodes();
                 SceneReference.setUnsavedChanges(true);
