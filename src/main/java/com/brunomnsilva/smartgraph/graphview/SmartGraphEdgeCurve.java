@@ -66,7 +66,7 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
     public static final int DISTANCE_THRESHOLD = 400;
 
     /** Radius applied to loop curves */
-    public static final int LOOP_RADIUS_FACTOR = 4;
+    public static final int LOOP_RADIUS_FACTOR = 3;
 
     private final Edge<E, V> underlyingEdge;
 
@@ -168,11 +168,11 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
             /* Make a loop using the control points proportional to the vertex radius */
 
             // TODO: take into account several "self-loops" with randomAngleFactor
-            double midpointX1 = outbound.getCenterX() - inbound.getRadius() * LOOP_RADIUS_FACTOR;
-            double midpointY1 = outbound.getCenterY() - inbound.getRadius() * LOOP_RADIUS_FACTOR;
+            double midpointX1 = outbound.getCenterX() - inbound.getRadius() * (LOOP_RADIUS_FACTOR + myAngle);
+            double midpointY1 = outbound.getCenterY() - inbound.getRadius() * (LOOP_RADIUS_FACTOR + myAngle);
 
-            double midpointX2 = outbound.getCenterX() + inbound.getRadius() * LOOP_RADIUS_FACTOR;
-            double midpointY2 = outbound.getCenterY() - inbound.getRadius() * LOOP_RADIUS_FACTOR;
+            double midpointX2 = outbound.getCenterX() + inbound.getRadius() * (LOOP_RADIUS_FACTOR + myAngle);
+            double midpointY2 = outbound.getCenterY() - inbound.getRadius() * (LOOP_RADIUS_FACTOR + myAngle);
 
             setControlX1(midpointX1);
             setControlY1(midpointY1);
@@ -201,7 +201,7 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
 
             double distance = startpoint.distance(endpoint);
 
-            double angle = (myAngle * 5) + linearDecay(MAX_EDGE_CURVE_ANGLE, MIN_EDGE_CURVE_ANGLE, distance, DISTANCE_THRESHOLD);
+            double angle = (myAngle * (10 - myAngle / 2)) + linearDecay(MAX_EDGE_CURVE_ANGLE, MIN_EDGE_CURVE_ANGLE, distance, DISTANCE_THRESHOLD);
 
             Point2D midpoint = UtilitiesPoint2D.calculateTriangleBetween(startpoint, endpoint, angle);
 
@@ -258,10 +258,24 @@ public class SmartGraphEdgeCurve<E, V> extends CubicCurve implements SmartGraphE
     public void attachLabel(SmartLabel label) {
         this.attachedLabel = label;
 
-        label.xProperty().bind(controlX1Property().add(controlX2Property()).divide(2)
-                .subtract(Bindings.divide(label.layoutWidthProperty(), 2)));
-        label.yProperty().bind(controlY1Property().add(controlY2Property()).divide(2)
-                .add(Bindings.divide(label.layoutHeightProperty(), 2)));
+        DoubleBinding bezierX = Bindings.createDoubleBinding(() -> {
+            double t = 0.5;
+            return Math.pow(1 - t, 3) * startXProperty().get() +
+                    3 * Math.pow(1 - t, 2) * t * controlX1Property().get() +
+                    3 * (1 - t) * Math.pow(t, 2) * controlX2Property().get() +
+                    Math.pow(t, 3) * endXProperty().get();
+        }, startXProperty(), controlX1Property(), controlX2Property(), endXProperty());
+
+        DoubleBinding bezierY = Bindings.createDoubleBinding(() -> {
+            double t = 0.5;
+            return Math.pow(1 - t, 3) * startYProperty().get() +
+                    3 * Math.pow(1 - t, 2) * t * controlY1Property().get() +
+                    3 * (1 - t) * Math.pow(t, 2) * controlY2Property().get() +
+                    Math.pow(t, 3) * endYProperty().get();
+        }, startYProperty(), controlY1Property(), controlY2Property(), endYProperty());
+
+        label.xProperty().bind(bezierX.subtract(Bindings.divide(label.layoutWidthProperty(), 2)));
+        label.yProperty().bind(bezierY.add(Bindings.divide(label.layoutHeightProperty(), 3)));
         this.outbound.setCenterX(outbound.getCenterX() + 0.01);
         handleClicks();
     }

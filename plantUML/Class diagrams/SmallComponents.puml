@@ -1,5 +1,6 @@
 @startuml
 package ui.smallComponents {
+    skinparam Linetype ortho
   skinparam classAttributeIconSize 0  
     class PathEdgeNode {
         - Text edgeText
@@ -35,6 +36,7 @@ package ui.smallComponents {
     + initialize()
     + circle() : Circle
 }
-
+PathVertexNode -[hidden]left- IconButton
+IconButton -[hidden]right- PathEdgeNode
 }
 @enduml

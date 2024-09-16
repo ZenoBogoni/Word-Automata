@@ -115,8 +115,8 @@ package Controller.panes {
         + void clearHistory()
     }
     MainPane *--> SolutionPane
-    MainPane *-> MagicLayoutSidePane
-    MainPane *--> GraphSidePane
+    MainPane *--> MagicLayoutSidePane
+    MainPane *-right-> GraphSidePane
 
 }
 @enduml

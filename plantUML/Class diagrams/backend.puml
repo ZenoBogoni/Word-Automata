@@ -1,6 +1,5 @@
 @startuml
 
-@startuml
 
 package backend {
     skinparam classAttributeIconSize 0
@@ -139,8 +138,8 @@ package backend {
         ' + static void stopAllAnimations()
     }
 }
-
+GraphSaver .down-> GraphToFile
+PathFinder -[hidden]- SceneReference
 @enduml
 
-@enduml
 

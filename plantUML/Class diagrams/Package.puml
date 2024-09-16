@@ -1,11 +1,11 @@
     @startuml
-    left to right direction
-    skinparam linetype ortho
+    skinparam dpi 300
+    skinparam Linetype ortho
 
     package it.univr {
         rectangle Main
         rectangle App
-        package ui {
+        package Controller {
             package panes {
                 rectangle GraphSidePane
                 rectangle MagicLayoutSidePane
@@ -27,26 +27,27 @@
             }   
         } 
         
-        package utils {
-            rectangle Constants 
+        package backend {
+            rectangle PathFinder 
             rectangle GraphToFile
-            rectangle TestGraphAlgorithm
+            rectangle GraphSaver
             rectangle SceneReference 
         }
        
-        
-        MainPane *--> GraphSidePane
-        MagicLayoutSidePane <--* MainPane
-        MainPane *----> SolutionPane    
-        PathEdgeNode <----o SolutionPane
-        popups  --- MainPane : shows <
-        PathVertexNode <---o SolutionPane
-        IconButton <---o GraphSidePane
-        Main .--> App
+        Main .up-> App : <<launch>>
         App .> MainPane
-        panes .> SceneReference
-        popups .---> SceneReference
-        SolutionPane .> TestGraphAlgorithm
-        GraphToFile .-> MainPane
+        MainPane *--> SolutionPane
+        GraphSidePane <-* MainPane
+        MainPane *-right-> MagicLayoutSidePane
+        panes -down- popups
+        SolutionPane .-> PathEdgeNode
+        SolutionPane .-> PathVertexNode
+        SolutionPane .-right-> PathFinder
+        Controller .up-> SceneReference
+        MainPane *--> IconButton
+        GraphSaver .-left-> GraphToFile
+        MainPane .-up-> GraphSaver
+    
+        
     }
     @enduml

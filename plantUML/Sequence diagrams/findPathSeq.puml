@@ -1,4 +1,29 @@
 @startuml
+skinparam dpi 300
+participant "Controller:GraphSidePane" as GraphSidePane
 participant "Model:PathFinder" as PathFinder
 participant "Model:SceneReference" as SceneReference
+participant "Controller:SolutionPane" as SolutionPane
+activate GraphSidePane
+GraphSidePane -> PathFinder : getPaths()
+activate PathFinder
+PathFinder -> PathFinder : trova percorso
+alt percorso trovato
+PathFinder -> SceneReference : colora percorso
+activate SceneReference
+SceneReference --> PathFinder
+deactivate SceneReference
+PathFinder -> SolutionPane : mostra percorso
+activate SolutionPane
+SolutionPane --> PathFinder
+deactivate SolutionPane
+PathFinder --> GraphSidePane
+else percorso non trovato
+PathFinder -> SceneReference : showErrorPopup()
+activate SceneReference
+SceneReference --> PathFinder
+deactivate SceneReference
+PathFinder --> GraphSidePane
+deactivate PathFinder
+end
 @enduml
